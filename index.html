@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YJR Humanitarian Innovation Ecosystem Map - Yemen</title>
+  
+  <!-- CDNs for visual libraries (Chart.js, Vis-Network, Leaflet) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="lang-ar theme-neon">
+
+  <div class="glass-panel" style="margin-bottom: 15px; padding: 15px 25px;">
+    <header>
+      <div class="brand-section">
+        <img src="diversity_logo_%23Sharoobi.jpg" alt="Diversity Organization Logo" class="brand-logo-img">
+        <div class="brand-title">
+          <h1 id="txt-title">خريطة منظومة الابتكار الإنساني والاجتماعي - اليمن</h1>
+          <p id="txt-subtitle">منصة تفاعلية وديناميكية لرصد وتصنيف الفاعلين وبناء شبكات التشبيك (YJR)</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <select id="theme-selector" class="filter-select" style="width: auto; padding: 6px 12px; font-size: 13px;" onchange="changeTheme(this.value)">
+          <option value="neon">Cyber Neon 🌌</option>
+          <option value="emerald">Emerald Organic 🌿</option>
+          <option value="light">Frosty Light ❄️</option>
+        </select>
+        <button class="btn-lang" id="btn-lang-toggle" onclick="toggleLanguage()">English</button>
+        <button class="btn-primary" onclick="switchTab('tab-simulator')">
+          <i data-lucide="smartphone" class="btn-icon"></i>
+          <span id="txt-nav-sim-btn">محاكي إدخال Kobo</span>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs-navigation">
+    <button class="tab-btn active" id="tab-btn-dash" onclick="switchTab('tab-dashboard')">
+      <i data-lucide="bar-chart-3" class="btn-icon"></i>
+      <span id="txt-tab-dash">📊 لوحة التحكم والإحصائيات</span>
+    </button>
+    <button class="tab-btn" id="tab-btn-dir" onclick="switchTab('tab-directory')">
+      <i data-lucide="users" class="btn-icon"></i>
+      <span id="txt-tab-dir">📁 دليل الفاعلين الكامل</span>
+    </button>
+    <button class="tab-btn" id="tab-btn-sim" onclick="switchTab('tab-simulator')">
+      <i data-lucide="smartphone" class="btn-icon"></i>
+      <span id="txt-tab-sim">📱 محاكي استمارة Kobo Toolbox</span>
+    </button>
+  </div>
+
+  <!-- Tab 1: Dashboard -->
+  <div id="tab-dashboard" class="tab-content active">
+    <!-- Statistics Cards -->
+    <div class="stats-container">
+      <div class="stat-card blue">
+        <div class="stat-card-header">
+          <i data-lucide="globe" class="stat-icon"></i>
+          <span class="stat-badge success" id="badge-stat-total">100%</span>
+        </div>
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-label" id="lbl-stat-total">إجمالي الجهات الفاعلة</div>
+        <div class="stat-progress-container"><div class="stat-progress-bar" id="pb-stat-total" style="width: 100%;"></div></div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-card-header">
+          <i data-lucide="heart" class="stat-icon" style="color: #10b981;"></i>
+          <span class="stat-badge info" id="badge-stat-civil">0%</span>
+        </div>
+        <div class="stat-val" id="stat-civil">0</div>
+        <div class="stat-label" id="lbl-stat-civil">منظمات المجتمع المدني</div>
+        <div class="stat-progress-container"><div class="stat-progress-bar success" id="pb-stat-civil" style="width: 0%;"></div></div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-card-header">
+          <i data-lucide="briefcase" class="stat-icon" style="color: #f59e0b;"></i>
+          <span class="stat-badge warning" id="badge-stat-private">0%</span>
+        </div>
+        <div class="stat-val" id="stat-private">0</div>
+        <div class="stat-label" id="lbl-stat-private">القطاع الخاص ورواد الأعمال</div>
+        <div class="stat-progress-container"><div class="stat-progress-bar warning" id="pb-stat-private" style="width: 0%;"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <i data-lucide="graduation-cap" class="stat-icon" style="color: #8a2be2;"></i>
+          <span class="stat-badge" id="badge-stat-public">0%</span>
+        </div>
+        <div class="stat-val" id="stat-public">0</div>
+        <div class="stat-label" id="lbl-stat-public">القطاع الأكاديمي والحكومي</div>
+        <div class="stat-progress-container"><div class="stat-progress-bar info" id="pb-stat-public" style="width: 0%;"></div></div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid (Sidebar filters + visualizations) -->
+    <div class="dashboard-grid">
+      <!-- Sidebar Filters -->
+      <aside class="glass-panel filter-section">
+        <h3>
+          <i data-lucide="sliders-horizontal" class="visual-icon"></i>
+          <span id="lbl-filters-title">تصفية وبحث</span>
+        </h3>
+        
+        <div class="search-wrapper">
+          <input type="text" id="search-box" class="search-input" placeholder="ابحث باسم الجهة..." onkeyup="applyFilters()">
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="lbl-filter-gov">المحافظة</label>
+          <select id="filter-gov" class="filter-select" onchange="applyFilters()">
+            <option value="all" id="opt-gov-all">كل المحافظات</option>
+            <option value="Aden">عدن (Aden)</option>
+            <option value="Sanaa">صنعاء (Sanaa)</option>
+            <option value="Taiz">تعز (Taiz)</option>
+            <option value="Hadramout">حضرموت (Hadramout)</option>
+            <option value="Marib">مأرب (Marib)</option>
+            <option value="Hodeidah">الحديدة (Hodeidah)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="lbl-filter-sector">القطاع</label>
+          <select id="filter-sector" class="filter-select" onchange="applyFilters()">
+            <option value="all" id="opt-sector-all">كل القطاعات</option>
+            <option value="civil_society" id="opt-sector-civil">المجتمع المدني (NGOs)</option>
+            <option value="private" id="opt-sector-private">القطاع الخاص</option>
+            <option value="public" id="opt-sector-public">القطاع العام / الأكاديمي</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="lbl-filter-stage">مرحلة الابتكار</label>
+          <select id="filter-stage" class="filter-select" onchange="applyFilters()">
+            <option value="all" id="opt-stage-all">كل المراحل</option>
+            <option value="research" id="opt-stage-res">البحث (Research)</option>
+            <option value="ideation" id="opt-stage-idea">توليد الأفكار (Ideation)</option>
+            <option value="adaptation" id="opt-stage-adapt">التكييف والملائمة (Adaptation)</option>
+            <option value="prototyping" id="opt-stage-proto">النماذج الأولية (Prototyping)</option>
+            <option value="scaling" id="opt-stage-scale">التوسع والاستدامة (Scaling)</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="resetFilters()" id="btn-reset-filters">
+          <i data-lucide="refresh-cw" class="btn-icon"></i>
+          <span id="btn-reset-filters-text">إعادة ضبط الفلاتر</span>
+        </button>
+      </aside>
+
+      <!-- Visualization Content -->
+      <main>
+        <div class="visuals-container">
+          <!-- Leaflet Interactive Map Card -->
+          <div class="glass-panel visual-box">
+            <h4>
+              <span>
+                <i data-lucide="map" class="visual-icon"></i>
+                <span id="lbl-title-map">📍 الخريطة التفاعلية للفاعلين (اليمن)</span>
+              </span>
+              <span style="font-size: 11px; color: var(--primary);" id="lbl-map-hint">اسحب الخريطة واضغط على المؤشرات</span>
+            </h4>
+            <div id="yemen-map"></div>
+          </div>
+
+          <!-- Vis.js Relationships Network Card -->
+          <div class="glass-panel visual-box">
+            <h4>
+              <span>
+                <i data-lucide="network" class="visual-icon"></i>
+                <span id="lbl-title-network">🕸️ شبكة العلاقات والتشبيك بين الشركاء</span>
+              </span>
+              <span style="font-size: 11px; color: var(--secondary);" id="lbl-net-hint">اضغط على العقدة لعرض العلاقات</span>
+            </h4>
+            <div id="network-graph"></div>
+            
+            <!-- Interactive Network Physics Control Panel -->
+            <div class="network-controls" id="network-controls">
+              <button type="button" class="btn-sec" id="btn-net-physics" onclick="toggleNetworkPhysics()">
+                <i data-lucide="pause" class="btn-icon-sm"></i>
+                <span id="lbl-btn-physics">تجميد فيزيائية الحركة</span>
+              </button>
+              <button type="button" class="btn-sec" id="btn-net-stabilize" onclick="stabilizeNetwork()">
+                <i data-lucide="refresh-cw" class="btn-icon-sm"></i>
+                <span id="lbl-btn-stabilize">إعادة تنظيم</span>
+              </button>
+              <span class="net-control-sep">|</span>
+              <span class="net-density-badge" id="lbl-net-density">كثافة التشبيك: 0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategic Gaps Analyzer Panel -->
+        <div class="glass-panel" style="border-color: rgba(138, 43, 226, 0.3); margin-bottom: 20px; position: relative; overflow: hidden;">
+          <div style="position: absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(to right, var(--accent), var(--primary));"></div>
+          <h4 style="font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+            <i data-lucide="brain" class="visual-icon" style="color: var(--accent); margin:0;"></i>
+            <span id="lbl-title-gaps">محلل الفجوات والفرص الاستراتيجية (نظام دعم القرار الذكي)</span>
+          </h4>
+          <div id="gaps-analyzer-output" style="font-size: 13px; line-height: 1.8; color: var(--text-primary);">
+            <!-- Dynamically generated strategic insights -->
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="glass-panel">
+          <h4 style="margin-bottom: 20px; display: flex; align-items: center;">
+            <i data-lucide="pie-chart" class="visual-icon"></i>
+            <span id="lbl-title-charts">📊 الرسوم التحليلية والتوزيع الإحصائي</span>
+          </h4>
+          <div class="charts-grid">
+            <div class="chart-wrapper">
+              <canvas id="chart-sectors"></canvas>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="chart-stages"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Tab 2: Directory -->
+  <div id="tab-directory" class="tab-content">
+    <div class="glass-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+        <h3>
+          <i data-lucide="users" class="visual-icon"></i>
+          <span id="lbl-dir-title">📁 دليل الجهات الفاعلة المسجلة</span>
+        </h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-primary" onclick="exportData('csv')" id="btn-export-csv">
+            <i data-lucide="download" class="btn-icon"></i>
+            <span id="btn-export-csv-text">تصدير CSV</span>
+          </button>
+          <button class="btn-primary" onclick="exportData('json')" id="btn-export-json" style="background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);">
+            <i data-lucide="file-json" class="btn-icon"></i>
+            <span id="btn-export-json-text">تصدير JSON</span>
+          </button>
+          <button class="btn-primary" onclick="resetDatabase()" id="btn-reset-db" style="background: #ef4444; color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);">
+            <i data-lucide="trash-2" class="btn-icon"></i>
+            <span id="btn-reset-db-text">إعادة تعيين قاعدة البيانات</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="directory-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th id="th-name">اسم الجهة</th>
+              <th id="th-sector">القطاع</th>
+              <th id="th-stage">مرحلة الابتكار</th>
+              <th id="th-gov">المحافظة</th>
+              <th id="th-email">البريد الإلكتروني</th>
+              <th id="th-phone">الهاتف</th>
+              <th id="th-desc">الوصف والنشاط</th>
+            </tr>
+          </thead>
+          <tbody id="directory-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Simulator -->
+  <div id="tab-simulator" class="tab-content">
+    <div class="glass-panel">
+      <h3 style="margin-bottom: 10px; display: flex; align-items: center;">
+        <i data-lucide="smartphone" class="visual-icon"></i>
+        <span id="lbl-sim-title">📱 محاكاة استمارة Kobo Toolbox لتسجيل فاعل جديد</span>
+      </h3>
+      <p id="lbl-sim-subtitle" style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;">قم بملء البيانات أدناه لمحاكاة عملية الإرسال الفعلي للاستبيان ورؤية كيف يتم تحديث لوحة التحكم تفاعلياً بشكل فوري دون الحاجة لخوادم وسيطة.</p>
+
+      <div class="simulator-pane">
+        <!-- Form Area -->
+        <div class="glass-panel" style="background: rgba(0,0,0,0.1); border: 1px dashed var(--glass-border);">
+          <form id="kobo-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label id="lbl-form-name-ar">اسم الجهة (بالعربية) *</label>
+                <input type="text" id="form-name-ar" class="form-control" required placeholder="مثال: مبادرة التكنولوجيا الإنسانية">
+              </div>
+              <div class="form-group">
+                <label id="lbl-form-name-en">اسم الجهة (بالإنجليزية) *</label>
+                <input type="text" id="form-name-en" class="form-control" required placeholder="e.g. Humanitarian Tech Initiative">
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label id="lbl-form-sector">القطاع الرئيسي *</label>
+                <select id="form-sector" class="form-control" required>
+                  <option value="civil_society" id="opt-form-sec-civil">مجتمع مدني (NGOs)</option>
+                  <option value="private" id="opt-form-sec-private">القطاع الخاص (Business)</option>
+                  <option value="public" id="opt-form-sec-public">القطاع العام أو الأكاديمي</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label id="lbl-form-stage">مرحلة الابتكار الحالية *</label>
+                <select id="form-stage" class="form-control" required>
+                  <option value="research" id="opt-form-stg-res">البحث (Research)</option>
+                  <option value="ideation" id="opt-form-stg-idea">الأفكار والحلول (Ideation)</option>
+                  <option value="adaptation" id="opt-form-stg-adapt">التكييف والملائمة (Adaptation)</option>
+                  <option value="prototyping" id="opt-form-stg-proto">تطوير النماذج الأولية (Prototyping)</option>
+                  <option value="scaling" id="opt-form-stg-scale">التوسع والاستدامة (Scaling)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label id="lbl-form-gov">المحافظة *</label>
+                <select id="form-gov" class="form-control" required>
+                  <option value="Aden">عدن (Aden)</option>
+                  <option value="Sanaa">صنعاء (Sanaa)</option>
+                  <option value="Taiz">تعز (Taiz)</option>
+                  <option value="Hadramout">حضرموت (Hadramout)</option>
+                  <option value="Marib">مأرب (Marib)</option>
+                  <option value="Hodeidah">الحديدة (Hodeidah)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label id="lbl-form-partner">الشريك المرتبط (للتشبيك) (اختياري)</label>
+                <select id="form-partner" class="form-control">
+                  <option value="none" id="opt-form-partner-none">لا يوجد - مستقل</option>
+                  <!-- Dynamically populated with existing actors -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label id="lbl-form-email">البريد الإلكتروني</label>
+                <input type="email" id="form-email" class="form-control" placeholder="info@example.com">
+              </div>
+              <div class="form-group">
+                <label id="lbl-form-phone">الهاتف</label>
+                <input type="text" id="form-phone" class="form-control" placeholder="+967 777111222">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label id="lbl-form-desc-ar">شرح النشاط والابتكار (بالعربية)</label>
+              <textarea id="form-desc-ar" class="form-control" rows="2" placeholder="اكتب نبذة عن القيمة التي تقدمها في المنظومة..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label id="lbl-form-desc-en">شرح النشاط والابتكار (بالإنجليزية)</label>
+              <textarea id="form-desc-en" class="form-control" rows="2" placeholder="Write a summary of the value proposed..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+              <button type="button" class="btn-primary" style="background: var(--accent); color: white; flex: 1; min-width: 180px; justify-content: center;" onclick="generateRandomActorPreset()">
+                <i data-lucide="dices" class="btn-icon"></i>
+                <span id="btn-rand-actor-text">توليد جهة عشوائية ذكية</span>
+              </button>
+              <button type="submit" class="btn-primary" style="flex: 2; min-width: 250px; justify-content: center;" id="btn-submit-form">
+                <i data-lucide="send" class="btn-icon"></i>
+                <span id="btn-submit-form-text">🚀 إرسال البيانات وتحديث لوحة البيانات فوراً</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Output Console -->
+        <div class="output-console">
+          <div class="console-header">
+            <span id="lbl-console-title">Kobo API Data Packet Output</span>
+            <span>STATUS: READY</span>
+          </div>
+          <div class="console-content" id="console-output">
+[INFO] Awaiting form submission. When you submit a new actor, the raw JSON payload parsed by the Kobo API will be displayed here, showing real-time ingestion to our interactive database.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Premium Footer with Sharoobi Signature -->
+  <footer class="glass-panel main-footer">
+    <div class="footer-grid">
+      <div class="footer-branding">
+        <div class="footer-logo">
+          <i data-lucide="map-pinned" style="stroke-width: 2.5; color: var(--primary);"></i>
+          <span id="txt-footer-logo-text">منظومة YJR لخرائط الابتكار</span>
+        </div>
+        <p class="footer-desc" id="txt-footer-desc">خريطة منظومة الابتكار الإنساني والاجتماعي - اليمن (YJR). منصة متقدمة وتفاعلية لإدارة وتصنيف الفاعلين وبناء شبكات التشبيك الفعالة.</p>
+      </div>
+      <div class="footer-philosophy">
+        <h5 id="txt-footer-philosophy-title">
+          <i data-lucide="lightbulb" class="btn-icon-sm"></i>
+          <span>💡 فلسفة المنظومة</span>
+        </h5>
+        <p id="txt-footer-philosophy-desc">نؤمن بأن الاستجابة الإنسانية الفعالة في اليمن تبدأ من التمكين والابتكار المحلي. من خلال ربط البحث الأكاديمي، الأفكار الإبداعية، والتمويل المستدام، نخلق شبكة متكاملة قادرة على الصمود ومواجهة التحديات في المناطق الأكثر احتياجاً.</p>
+      </div>
+      <div class="footer-meta">
+        <h5 id="txt-footer-meta-title">
+          <i data-lucide="info" class="btn-icon-sm"></i>
+          <span>⚙️ تفاصيل الإصدار</span>
+        </h5>
+        <p><strong>Version:</strong> 2.0.0 (Interactive Prototype)</p>
+        <p><strong>Target:</strong> YJR-Innovation-ecosystem-TOR</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="txt-footer-copy">
+        تم التطوير بواسطة 
+        <a href="https://github.com/Sharoobi" target="_blank" class="designer-link">Sharoobi</a> 
+        لصالح منظومة الابتكار المشتركة لليمن 
+        <br>
+        <span style="font-size: 11px; opacity: 0.7;">Prototype built for YJR Evaluation &copy; 2026. All rights reserved.</span>
+      </p>
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

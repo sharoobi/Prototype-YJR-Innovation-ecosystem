@@ -1,0 +1,21 @@
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Temp/logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
