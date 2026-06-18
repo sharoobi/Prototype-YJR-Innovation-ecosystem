@@ -686,8 +686,14 @@ body.theme-light .insight-card {
 /* Charts Wrapper */
 .charts-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
+}
+
+@media (max-width: 992px) {
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 576px) {
@@ -1289,4 +1295,118 @@ body.theme-light .pres-dot {
 body.theme-light .pres-dot.active {
   background: var(--primary);
 }
+
+/* ========================================================
+   YIEP Extended Component Styles (Proof & Lifecycle Hub)
+   ======================================================== */
+
+/* Theory of Change cards styling */
+.theory-of-change-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+.toc-layer-card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--glass-border);
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  position: relative;
+  transition: var(--transition);
+}
+.toc-layer-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Stepper Steppers styling */
+.wizard-stepper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 25px;
+  align-items: center;
+}
+.wizard-step.active .wstep-circle {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: rgba(0, 242, 254, 0.15) !important;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+}
+.wizard-step.active .wstep-label {
+  color: #ffffff !important;
+}
+
+/* Kanban Funding board styling */
+.funding-lifecycle-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+.kanban-col {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 15px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+.kanban-col:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.kanban-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.kanban-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--primary);
+  box-shadow: 0 5px 15px rgba(0, 242, 254, 0.1);
+}
+body.theme-emerald .kanban-card:hover {
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1);
+  border-color: var(--primary);
+}
+body.theme-light .kanban-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+body.theme-light .kanban-col {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Recommendation cards */
+.recommendation-card {
+  transition: var(--transition);
+}
+.recommendation-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Custom layout adjustments for AI Co-Pilot grid */
+@media (max-width: 768px) {
+  #copilot-grid-layout {
+    grid-template-columns: 1fr !important;
+  }
+  #recommendations-grid-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 

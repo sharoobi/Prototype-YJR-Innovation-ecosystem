@@ -317,6 +317,262 @@ const defaultActorsBackup = [
   }
 ];
 
+const yemenGovernorates = [
+  { id: "Aden", ar: "عدن", en: "Aden", lat: 12.7855, lng: 45.0186 },
+  { id: "Sanaa", ar: "صنعاء", en: "Sanaa", lat: 15.3694, lng: 44.1910 },
+  { id: "Taiz", ar: "تعز", en: "Taiz", lat: 13.5795, lng: 44.0159 },
+  { id: "Hadramout", ar: "حضرموت", en: "Hadramout", lat: 14.5400, lng: 49.1200 },
+  { id: "Hodeidah", ar: "الحديدة", en: "Hodeidah", lat: 14.7979, lng: 42.9530 },
+  { id: "Marib", ar: "مأرب", en: "Marib", lat: 15.4630, lng: 45.3252 },
+  { id: "Ibb", ar: "إب", en: "Ibb", lat: 13.9734, lng: 44.1786 },
+  { id: "Dhamar", ar: "ذمار", en: "Dhamar", lat: 14.5427, lng: 44.4072 },
+  { id: "Shabwah", ar: "شبوة", en: "Shabwah", lat: 14.5298, lng: 46.8319 },
+  { id: "Saada", ar: "صعدة", en: "Saada", lat: 16.9452, lng: 43.7639 },
+  { id: "Al-Jawf", ar: "الجوف", en: "Al-Jawf", lat: 16.1623, lng: 44.7836 },
+  { id: "Al-Mahrah", ar: "المهرة", en: "Al-Mahrah", lat: 16.2081, lng: 52.1748 },
+  { id: "Socotra", ar: "سقطرى", en: "Socotra", lat: 12.4634, lng: 53.8237 },
+  { id: "Hajjah", ar: "حجة", en: "Hajjah", lat: 15.6942, lng: 43.6041 },
+  { id: "Amran", ar: "عمران", en: "Amran", lat: 15.9592, lng: 43.9439 },
+  { id: "Al-Mahwit", ar: "المحويت", en: "Al-Mahwit", lat: 15.4703, lng: 43.5414 },
+  { id: "Raymah", ar: "ريمة", en: "Raymah", lat: 14.6192, lng: 43.7125 },
+  { id: "Al-Bayda", ar: "البيضاء", en: "Al-Bayda", lat: 14.0159, lng: 45.4244 },
+  { id: "Abyan", ar: "أبين", en: "Abyan", lat: 13.2045, lng: 45.3789 },
+  { id: "Lahj", ar: "لحج", en: "Lahj", lat: 13.0583, lng: 44.8778 },
+  { id: "Al-Dhale", ar: "الضالع", en: "Al-Dhale'e", lat: 13.6953, lng: 44.7314 },
+  { id: "Sanaa_City", ar: "أمانة العاصمة", en: "Sanaa City", lat: 15.3524, lng: 44.2078 }
+];
+
+function rebuildEcosystemDatabase() {
+  const roleMapping = {
+    funder: { ar: "ممول", en: "Funder" },
+    enabler: { ar: "ممكن", en: "Enabler" },
+    researcher: { ar: "باحث", en: "Researcher" },
+    implementer: { ar: "منفذ", en: "Implementer" }
+  };
+  
+  const thematicMapping = {
+    water_energy: { ar: "المياه والطاقة", en: "Water & Energy" },
+    food_agri: { ar: "الأمن الغذائي والزراعة", en: "Food & Agriculture" },
+    health_nutrition: { ar: "الصحة والتغذية", en: "Health & Nutrition" },
+    education_tech: { ar: "التعليم والتكنولوجيا", en: "Education & Tech" },
+    logistics_response: { ar: "اللوجستيات والاستجابة الطارئة", en: "Logistics & Response" }
+  };
+
+  // Upgraded Seeds mapping
+  const upgradedSeeds = defaultActorsBackup.map(actor => {
+    let role = "implementer";
+    let thematic_area = "education_tech";
+    let maturity_score = 3.5;
+    let funding_received = 25000;
+    
+    if (actor.id === 1) { role = "enabler"; thematic_area = "education_tech"; maturity_score = 4.8; funding_received = 150000; }
+    else if (actor.id === 2) { role = "funder"; thematic_area = "logistics_response"; maturity_score = 5.0; funding_received = 0; }
+    else if (actor.id === 3) { role = "researcher"; thematic_area = "education_tech"; maturity_score = 4.2; funding_received = 45000; }
+    else if (actor.id === 4) { role = "enabler"; thematic_area = "education_tech"; maturity_score = 4.0; funding_received = 60000; }
+    else if (actor.id === 5) { role = "implementer"; thematic_area = "food_agri"; maturity_score = 3.8; funding_received = 75000; }
+    else if (actor.id === 6) { role = "implementer"; thematic_area = "education_tech"; maturity_score = 4.1; funding_received = 35000; }
+    else if (actor.id === 7) { role = "enabler"; thematic_area = "education_tech"; maturity_score = 3.9; funding_received = 40000; }
+    else if (actor.id === 8) { role = "implementer"; thematic_area = "education_tech"; maturity_score = 3.5; funding_received = 20000; }
+    else if (actor.id === 9) { role = "researcher"; thematic_area = "water_energy"; maturity_score = 4.3; funding_received = 50000; }
+    else if (actor.id === 10) { role = "implementer"; thematic_area = "water_energy"; maturity_score = 4.5; funding_received = 85000; }
+    else if (actor.id === 11) { role = "researcher"; thematic_area = "food_agri"; maturity_score = 4.1; funding_received = 30000; }
+    else if (actor.id === 12) { role = "implementer"; thematic_area = "education_tech"; maturity_score = 3.7; funding_received = 55000; }
+    else if (actor.id === 13) { role = "enabler"; thematic_area = "food_agri"; maturity_score = 4.4; funding_received = 90000; }
+    else if (actor.id === 14) { role = "implementer"; thematic_area = "food_agri"; maturity_score = 4.2; funding_received = 80000; }
+    else if (actor.id === 15) { role = "researcher"; thematic_area = "water_energy"; maturity_score = 3.9; funding_received = 25000; }
+
+    return {
+      ...actor,
+      role,
+      role_ar: roleMapping[role].ar,
+      role_en: roleMapping[role].en,
+      thematic_area,
+      thematic_area_ar: thematicMapping[thematic_area].ar,
+      thematic_area_en: thematicMapping[thematic_area].en,
+      maturity_score,
+      funding_received
+    };
+  });
+
+  const generatedActors = [...upgradedSeeds];
+
+  // Helper patterns for names
+  const ngoPrefixes = {
+    ar: ["مؤسسة", "منظمة", "جمعية", "مبادرة", "شبكة"],
+    en: ["Foundation", "Organization", "Association", "Initiative", "Network"]
+  };
+  const privatePrefixes = {
+    ar: ["شركة", "منصة", "حاضنة كبرى لـ", "مسرعة أعمال", "مجموعة"],
+    en: ["Company", "Platform", "Incubator", "Accelerator", "Group"]
+  };
+  const publicPrefixes = {
+    ar: ["جامعة", "مركز أبحاث لـ", "الهيئة العامة لتنمية", "معهد", "مكتب وزارة"],
+    en: ["University of", "Research Center for", "General Authority for", "Institute of", "Department of"]
+  };
+
+  const suffixes = {
+    water_energy: {
+      ar: ["الطاقة الشمسية", "تطوير مصادر المياه", "الطاقة المتجددة", "مشاريع سقي المياه", "الحلول البيئية المستدامة"],
+      en: ["Solar Energy", "Water Resources Development", "Renewable Power", "Water Infiltration Projects", "Sustainable Eco-Solutions"]
+    },
+    food_agri: {
+      ar: ["التنمية الزراعية", "الأمن الغذائي والري", "سلاسل قيمة المحاصيل", "أنظمة الري الذكية", "دعم الثروة الحيوانية والسمكية"],
+      en: ["Agricultural Development", "Food Security & Irrigation", "Crop Value Chains", "Smart Irrigation Systems", "Livestock & Fisheries Support"]
+    },
+    health_nutrition: {
+      ar: ["الرعاية الصحية الأولية", "مكافحة الأوبئة والاستجابة", "التغذية العلاجية المجتمعية", "العيادات الريفية المتنقلة", "صحة الأم والطفل"],
+      en: ["Primary Healthcare", "Epidemic Control & Response", "Community Nutrition", "Rural Mobile Clinics", "Maternal & Child Health"]
+    },
+    education_tech: {
+      ar: ["التعليم والابتكار التقني", "التدريب المهني والحرفي", "بناء القدرات والتعليم الرقمي", "الحلول البرمجية الإنسانية", "أكاديمية الريادة التكنولوجية"],
+      en: ["Education & Tech Innovation", "Vocational & Craft Training", "Digital Capacity Building", "Humanitarian Tech Solutions", "Tech Leadership Academy"]
+    },
+    logistics_response: {
+      ar: ["الاستجابة والخدمات اللوجستية في", "سلاسل الإمداد الإنسانية في", "تجهيز وتوزيع السلال الغذائية في", "الدعم الميداني العاجل في", "الإغاثة الطارئة والمأوى في"],
+      en: ["Humanitarian Logistics Services in", "Ecosystem Supply Chains in", "Food Parcel Distribution in", "Urgent Field Support Services in", "Emergency Shelter & Relief in"]
+    }
+  };
+
+  // Generate 200 actors (to reach exactly 215 total)
+  for (let i = 16; i <= 215; i++) {
+    const gov = yemenGovernorates[(i - 16) % yemenGovernorates.length];
+    
+    // Deterministic distribution based on ID
+    let sector = "civil_society";
+    if (i % 3 === 0) sector = "private";
+    else if (i % 5 === 0) sector = "public";
+    
+    const sectorMapping = {
+      civil_society: { ar: "مجتمع مدني", en: "Civil Society" },
+      private: { ar: "خاص", en: "Private" },
+      public: { ar: "عام / حكومي", en: "Public / Academic" }
+    };
+    
+    const stageValues = ["research", "ideation", "adaptation", "prototyping", "scaling"];
+    const stage = stageValues[(i % stageValues.length)];
+    const stageMapping = {
+      research: { ar: "البحث", en: "Research" },
+      ideation: { ar: "الأفكار", en: "Ideation" },
+      adaptation: { ar: "التكييف", en: "Adaptation" },
+      prototyping: { ar: "النماذج", en: "Prototyping" },
+      scaling: { ar: "التوسع", en: "Scaling" }
+    };
+    
+    const thematicKeys = ["water_energy", "food_agri", "health_nutrition", "education_tech", "logistics_response"];
+    const thematic_area = thematicKeys[(i % thematicKeys.length)];
+    
+    let role = "implementer";
+    if (sector === "public") {
+      role = (i % 2 === 0) ? "researcher" : "enabler";
+    } else if (sector === "private") {
+      role = (i % 3 === 0) ? "enabler" : "implementer";
+    } else {
+      role = (i % 7 === 0) ? "funder" : "implementer";
+    }
+    
+    const maturity_score = parseFloat((2.5 + ((i * 13) % 25) / 10).toFixed(1)); // 2.5 to 4.9 stars
+    const funding_received = role === "funder" ? 0 : Math.round((15000 + ((i * 723) % 85000)) / 1000) * 1000;
+    
+    // Choose prefixes & suffixes
+    let prefix_ar = "";
+    let prefix_en = "";
+    if (sector === "public") {
+      prefix_ar = publicPrefixes.ar[i % publicPrefixes.ar.length];
+      prefix_en = publicPrefixes.en[i % publicPrefixes.en.length];
+    } else if (sector === "private") {
+      prefix_ar = privatePrefixes.ar[i % privatePrefixes.ar.length];
+      prefix_en = privatePrefixes.en[i % privatePrefixes.en.length];
+    } else {
+      prefix_ar = ngoPrefixes.ar[i % ngoPrefixes.ar.length];
+      prefix_en = ngoPrefixes.en[i % ngoPrefixes.en.length];
+    }
+    
+    const suffix_ar = suffixes[thematic_area].ar[i % suffixes[thematic_area].ar.length];
+    const suffix_en = suffixes[thematic_area].en[i % suffixes[thematic_area].en.length];
+    
+    // Construct names
+    let name_ar = "";
+    let name_en = "";
+    if (sector === "public") {
+      name_ar = `${prefix_ar} ${gov.ar} لـ ${suffix_ar}`;
+      name_en = `${prefix_en} ${suffix_en} of ${gov.en}`;
+    } else if (sector === "private") {
+      name_ar = `${prefix_ar} ${gov.ar} لـ ${suffix_ar}`;
+      name_en = `${gov.en} ${suffix_en} ${prefix_en}`;
+    } else {
+      name_ar = `${prefix_ar} ${suffix_ar} في ${gov.ar}`;
+      name_en = `${gov.en} ${suffix_en} ${prefix_en}`;
+    }
+    
+    const lat = gov.lat + (Math.sin(i) * 0.08); // Spiral dispersion around gov coordinates
+    const lng = gov.lng + (Math.cos(i) * 0.08);
+    
+    generatedActors.push({
+      id: i,
+      name_ar,
+      name_en,
+      sector,
+      sector_ar: sectorMapping[sector].ar,
+      sector_en: sectorMapping[sector].en,
+      stage,
+      stage_ar: stageMapping[stage].ar,
+      stage_en: stageMapping[stage].en,
+      role,
+      role_ar: roleMapping[role].ar,
+      role_en: roleMapping[role].en,
+      thematic_area,
+      thematic_area_ar: thematicMapping[thematic_area].ar,
+      thematic_area_en: thematicMapping[thematic_area].en,
+      maturity_score,
+      funding_received,
+      governorate: gov.id,
+      governorate_ar: gov.ar,
+      governorate_en: gov.en,
+      lat,
+      lng,
+      description_ar: `تعتبر ${name_ar} إحدى الجهات الرائدة في اليمن التي تركز على تطوير وتنفيذ حلول ذكية في قطاع ${thematicMapping[thematic_area].ar} لخدمة النازحين والفئات المتأثرة.`,
+      description_en: `${name_en} is a leading institution in Yemen focused on launching smart solutions within the ${thematicMapping[thematic_area].en} sector to support vulnerable local groups.`,
+      email: `contact@${name_en.toLowerCase().replace(/[^a-z0-9]/g, "")}.org.ye`,
+      phone: `+967 7${(1000000 + (i * 9213) % 8999999)}`,
+      connections: []
+    });
+  }
+
+  // Generate bidirectional connections sequentially for structured networks
+  for (let j = 0; j < generatedActors.length; j++) {
+    const actor = generatedActors[j];
+    
+    // Link to at least one actor in the same governorate
+    const sameGov = generatedActors.filter(a => a.governorate === actor.governorate && a.id !== actor.id);
+    if (sameGov.length > 0) {
+      const target = sameGov[j % sameGov.length];
+      if (!actor.connections.includes(target.id)) actor.connections.push(target.id);
+      if (!target.connections.includes(actor.id)) target.connections.push(actor.id);
+    }
+    
+    // Link to at least one actor in the same thematic area
+    const sameTheme = generatedActors.filter(a => a.thematic_area === actor.thematic_area && a.id !== actor.id);
+    if (sameTheme.length > 0) {
+      const target = sameTheme[(j + 2) % sameTheme.length];
+      if (!actor.connections.includes(target.id)) actor.connections.push(target.id);
+      if (!target.connections.includes(actor.id)) target.connections.push(actor.id);
+    }
+    
+    // Random extra link to funder if it's an implementer
+    if (actor.role === "implementer" && j % 4 === 0) {
+      const funders = generatedActors.filter(a => a.role === "funder");
+      if (funders.length > 0) {
+        const funder = funders[j % funders.length];
+        if (!actor.connections.includes(funder.id)) actor.connections.push(funder.id);
+        if (!funder.connections.includes(actor.id)) funder.connections.push(actor.id);
+      }
+    }
+  }
+
+  actors = generatedActors;
+  saveDatabase();
+}
+
 // Presets for the Auto-Generator
 const randomActorPresets = [
   {
@@ -399,6 +655,14 @@ let networkInstance = null;
 let networkPhysicsEnabled = true; // Global network physics state
 let chartSectors = null;
 let chartStages = null;
+let chartThematic = null;
+
+function maskPhone(phone) {
+  if (!phone) return '-';
+  const cleaned = phone.trim();
+  if (cleaned.length <= 5) return '*****';
+  return cleaned.substring(0, cleaned.length - 5) + '*****';
+}
 
 // Presentation & Strategy Portal State
 let currentPresSlide = 0;
@@ -615,18 +879,25 @@ function loadDatabase() {
     if (themeSelector) themeSelector.value = activeTheme;
   }
   
+  let needsRebuild = false;
   if (localDb) {
     try {
       actors = JSON.parse(localDb);
+      if (actors.length < 215 || !actors[0].hasOwnProperty('role')) {
+        needsRebuild = true;
+      }
     } catch (e) {
-      actors = [...defaultActorsBackup];
-      safeSetItem("yjr_actors_db", JSON.stringify(actors));
+      needsRebuild = true;
     }
   } else {
-    actors = [...defaultActorsBackup];
-    safeSetItem("yjr_actors_db", JSON.stringify(actors));
+    needsRebuild = true;
   }
-  filteredActors = [...actors];
+  
+  if (needsRebuild) {
+    rebuildEcosystemDatabase();
+  } else {
+    filteredActors = [...actors];
+  }
 }
 
 function saveDatabase() {
@@ -639,8 +910,7 @@ function resetDatabase() {
     "Are you sure you want to reset the database to defaults and delete all added actors?";
     
   if (confirm(confirmMsg)) {
-    actors = [...defaultActorsBackup];
-    saveDatabase();
+    rebuildEcosystemDatabase();
     filteredActors = [...actors];
     populateFiltersAndForms();
     updateDashboardViews();
@@ -692,6 +962,16 @@ function changeTheme(themeName) {
       
       chartSectors.update();
       chartStages.update();
+    }
+    
+    if (chartThematic) {
+      chartThematic.options.plugins.title.color = isLight ? '#0f172a' : '#f3f4f6';
+      if (chartThematic.options.scales && chartThematic.options.scales.r) {
+        const gridCol = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+        chartThematic.options.scales.r.grid.color = gridCol;
+        chartThematic.options.scales.r.angleLines.color = gridCol;
+      }
+      chartThematic.update();
     }
   }
   
@@ -866,17 +1146,17 @@ function initMap() {
       <div class="offline-placeholder" style="padding: 40px 20px; text-align: center; color: var(--text-secondary); background: rgba(0, 0, 0, 0.1); border: 1px dashed var(--glass-border); border-radius: 8px; margin: 10px 0;">
         <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
         <p style="font-weight: bold; margin-bottom: 8px;">
-          \${currentLang === 'ar' ? 'تعذر تحميل خريطة اليمن التفاعلية' : 'Interactive Map could not be loaded'}
+          ${currentLang === 'ar' ? 'تعذر تحميل خريطة اليمن التفاعلية' : 'Interactive Map could not be loaded'}
         </p>
         <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
-          \${currentLang === 'ar' ? 'يتطلب تحميل الخريطة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Leaflet والخرائط الأساسية.' : 'Loading the map requires an active internet connection to load Leaflet and map tiles.'}
+          ${currentLang === 'ar' ? 'يتطلب تحميل الخريطة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Leaflet والخرائط الأساسية.' : 'Loading the map requires an active internet connection to load Leaflet and map tiles.'}
         </p>
       </div>
     `;
   }
 }
 
-// Update Map tiles dynamically based on theme selection
+// Update Map tiles dynamically based on theme selection and language
 function updateMapTiles() {
   if (!mapInstance || typeof L === 'undefined') return;
   
@@ -886,14 +1166,18 @@ function updateMapTiles() {
     }
     
     let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'; // Neon (Default Dark)
-    if (activeTheme === 'light') {
-      tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'; // Frosty Light (Positron)
-    } else if (activeTheme === 'emerald') {
-      tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; // Emerald Organic (Voyager)
+    if (currentLang === 'ar') {
+      tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'; // OpenStreetMap Arabic/Localized for Yemen
+    } else {
+      if (activeTheme === 'light') {
+        tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'; // Frosty Light (Positron)
+      } else if (activeTheme === 'emerald') {
+        tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; // Emerald Organic (Voyager)
+      }
     }
     
     mapTileLayer = L.tileLayer(tileUrl, {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      attribution: currentLang === 'ar' ? '&copy; المساهمون في OpenStreetMap' : '&copy; OpenStreetMap contributors &copy; CARTO',
       subdomains: 'abcd',
       maxZoom: 20
     }).addTo(mapInstance);
@@ -906,6 +1190,7 @@ function updateMapTiles() {
 function initCharts() {
   const canvasSectors = document.getElementById("chart-sectors");
   const canvasStages = document.getElementById("chart-stages");
+  const canvasThematic = document.getElementById("chart-thematic");
   if (!canvasSectors || !canvasStages) return;
   
   try {
@@ -966,18 +1251,56 @@ function initCharts() {
         }
       }
     });
+
+    // Thematic Areas Chart
+    if (canvasThematic) {
+      const ctxThematic = canvasThematic.getContext("2d");
+      chartThematic = new Chart(ctxThematic, {
+        type: 'polarArea',
+        data: {
+          labels: [],
+          datasets: [{
+            data: [],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.55)', 
+              'rgba(245, 158, 11, 0.55)', 
+              'rgba(16, 185, 129, 0.55)', 
+              'rgba(138, 43, 226, 0.55)', 
+              'rgba(236, 72, 153, 0.55)'
+            ],
+            borderColor: ['#3b82f6', '#f59e0b', '#10b981', '#8a2be2', '#ec4899'],
+            borderWidth: 1.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              grid: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255, 255, 255, 0.05)' },
+              angleLines: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255, 255, 255, 0.05)' },
+              ticks: { display: false }
+            }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 9 } } },
+            title: { display: true, text: currentLang === 'ar' ? 'مجالات التركيز القطاعية' : 'Thematic Focus Areas', color: activeTheme === 'light' ? '#0f172a' : '#f3f4f6' }
+          }
+        }
+      });
+    }
   } catch (err) {
     console.error("Charts initialization failed:", err);
     const chartsGrid = document.querySelector(".charts-grid");
     if (chartsGrid) {
       chartsGrid.innerHTML = `
-        <div class="offline-placeholder" style="grid-column: span 2; padding: 40px 20px; text-align: center; color: var(--text-secondary); border: 1px dashed var(--glass-border); border-radius: 8px; background: rgba(0, 0, 0, 0.1);">
+        <div class="offline-placeholder" style="grid-column: span 3; padding: 40px 20px; text-align: center; color: var(--text-secondary); border: 1px dashed var(--glass-border); border-radius: 8px; background: rgba(0, 0, 0, 0.1);">
           <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
           <p style="font-weight: bold; margin-bottom: 8px;">
-            \${currentLang === 'ar' ? 'تعذر تحميل الرسوم البيانية التحليلية' : 'Analytical Charts could not be loaded'}
+            ${currentLang === 'ar' ? 'تعذر تحميل الرسوم البيانية التحليلية' : 'Analytical Charts could not be loaded'}
           </p>
           <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
-            \${currentLang === 'ar' ? 'يتطلب رسم المخططات اتصالاً نشطاً بالإنترنت لتحميل مكتبة Chart.js.' : 'Rendering charts requires an active internet connection to load the Chart.js library.'}
+            ${currentLang === 'ar' ? 'يتطلب رسم المخططات اتصالاً نشطاً بالإنترنت لتحميل مكتبة Chart.js.' : 'Rendering charts requires an active internet connection to load the Chart.js library.'}
           </p>
         </div>
       `;
@@ -1020,13 +1343,17 @@ function toggleLanguage() {
   if (presToggleBtn) presToggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
   
   applyLocalization();
+  updateMapTiles();
   
   // Re-run graphs and charts in new language if Chart.js is loaded
-  if (typeof Chart !== 'undefined' && chartSectors && chartStages) {
+  if (typeof Chart !== 'undefined') {
     Chart.defaults.font.family = currentLang === 'ar' ? 'Tajawal' : 'Inter';
-    chartSectors.options.plugins.title.text = currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution';
-    chartStages.options.plugins.title.text = currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages';
-    chartStages.data.datasets[0].label = currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors';
+    if (chartSectors) chartSectors.options.plugins.title.text = currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution';
+    if (chartStages) {
+      chartStages.options.plugins.title.text = currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages';
+      chartStages.data.datasets[0].label = currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors';
+    }
+    if (chartThematic) chartThematic.options.plugins.title.text = currentLang === 'ar' ? 'مجالات التركيز القطاعية' : 'Thematic Focus Areas';
   }
   
   populateFiltersAndForms();
@@ -1043,10 +1370,10 @@ function applyLocalization() {
   document.getElementById("txt-tab-dir").innerText = dict.tabDir;
   document.getElementById("txt-tab-sim").innerText = dict.tabSim;
   
-  document.getElementById("lbl-stat-total").innerText = dict.statTotal;
-  document.getElementById("lbl-stat-civil").innerText = dict.statCivil;
-  document.getElementById("lbl-stat-private").innerText = dict.statPrivate;
-  document.getElementById("lbl-stat-public").innerText = dict.statPublic;
+  if (document.getElementById("lbl-stat-total")) document.getElementById("lbl-stat-total").innerText = currentLang === 'ar' ? "إجمالي الجهات الفاعلة" : "Total Mapped Actors";
+  if (document.getElementById("lbl-stat-funding")) document.getElementById("lbl-stat-funding").innerText = currentLang === 'ar' ? "التمويل الموجه للابتكار" : "Total Directed Funding";
+  if (document.getElementById("lbl-stat-partnerships")) document.getElementById("lbl-stat-partnerships").innerText = currentLang === 'ar' ? "الشراكات والتحالفات" : "Ecosystem Partnerships";
+  if (document.getElementById("lbl-stat-innovations")) document.getElementById("lbl-stat-innovations").innerText = currentLang === 'ar' ? "الابتكارات الميدانية الموسعة" : "Scaled Innovations Mapped";
   
   document.getElementById("lbl-filters-title").innerText = dict.filtersTitle;
   document.getElementById("search-box").placeholder = dict.searchPlaceholder;
@@ -1054,11 +1381,20 @@ function applyLocalization() {
   document.getElementById("lbl-filter-sector").innerText = dict.filterSector;
   document.getElementById("lbl-filter-stage").innerText = dict.filterStage;
   
+  // New filters
+  if (document.getElementById("lbl-filter-role")) document.getElementById("lbl-filter-role").innerText = currentLang === 'ar' ? "دور الجهة" : "Role";
+  if (document.getElementById("lbl-filter-thematic")) document.getElementById("lbl-filter-thematic").innerText = currentLang === 'ar' ? "المجال القطاعي" : "Thematic Area";
+  if (document.getElementById("lbl-filter-maturity")) document.getElementById("lbl-filter-maturity").innerText = currentLang === 'ar' ? "مؤشر نضج الابتكار" : "Innovation Maturity";
+  
   document.getElementById("opt-gov-all").innerText = dict.govAll;
   document.getElementById("opt-sector-all").innerText = dict.sectorAll;
   document.getElementById("opt-sector-civil").innerText = dict.sectorCivil;
   document.getElementById("opt-sector-private").innerText = dict.sectorPrivate;
   document.getElementById("opt-sector-public").innerText = dict.sectorPublic;
+  
+  if (document.getElementById("opt-role-all")) document.getElementById("opt-role-all").innerText = currentLang === 'ar' ? "كل الأدوار" : "All Roles";
+  if (document.getElementById("opt-thematic-all")) document.getElementById("opt-thematic-all").innerText = currentLang === 'ar' ? "كل المجالات" : "All Thematic Areas";
+  if (document.getElementById("opt-maturity-all")) document.getElementById("opt-maturity-all").innerText = currentLang === 'ar' ? "كل درجات النضج" : "All Maturity Scores";
   
   document.getElementById("opt-stage-all").innerText = dict.stageAll;
   document.getElementById("opt-stage-res").innerText = dict.stageRes;
@@ -1081,8 +1417,11 @@ function applyLocalization() {
   
   document.getElementById("th-name").innerText = dict.thName;
   document.getElementById("th-sector").innerText = dict.thSector;
+  if (document.getElementById("th-role")) document.getElementById("th-role").innerText = currentLang === 'ar' ? "دور الجهة" : "Role";
+  if (document.getElementById("th-thematic")) document.getElementById("th-thematic").innerText = currentLang === 'ar' ? "المجال القطاعي" : "Thematic Area";
   document.getElementById("th-stage").innerText = dict.thStage;
   document.getElementById("th-gov").innerText = dict.thGov;
+  if (document.getElementById("th-maturity")) document.getElementById("th-maturity").innerText = currentLang === 'ar' ? "مؤشر النضج" : "Maturity Score";
   document.getElementById("th-email").innerText = dict.thEmail;
   document.getElementById("th-phone").innerText = dict.thPhone;
   document.getElementById("th-desc").innerText = dict.thDesc;
@@ -1137,20 +1476,25 @@ function switchTab(tabId) {
   contents.forEach(content => content.classList.remove("active"));
   buttons.forEach(btn => btn.classList.remove("active"));
   
-  document.getElementById(tabId).classList.add("active");
+  const activeContent = document.getElementById(tabId);
+  if (activeContent) activeContent.classList.add("active");
   
   // Highlight correct button
-  if (tabId === 'tab-dashboard') {
-    document.getElementById("tab-btn-dash").classList.add("active");
-    // Recalculate leaflet map sizing since it was hidden
+  let btnId = "";
+  if (tabId === 'tab-landing') btnId = "tab-btn-land";
+  else if (tabId === 'tab-dashboard') {
+    btnId = "tab-btn-dash";
     if (mapInstance) {
       setTimeout(() => mapInstance.invalidateSize(), 100);
     }
-  } else if (tabId === 'tab-directory') {
-    document.getElementById("tab-btn-dir").classList.add("active");
-  } else if (tabId === 'tab-simulator') {
-    document.getElementById("tab-btn-sim").classList.add("active");
   }
+  else if (tabId === 'tab-funding') btnId = "tab-btn-funding";
+  else if (tabId === 'tab-copilot') btnId = "tab-btn-copilot";
+  else if (tabId === 'tab-directory') btnId = "tab-btn-dir";
+  else if (tabId === 'tab-simulator') btnId = "tab-btn-sim";
+  
+  const activeBtn = document.getElementById(btnId);
+  if (activeBtn) activeBtn.classList.add("active");
 }
 
 // Filters logic
@@ -1159,6 +1503,11 @@ function applyFilters() {
   const govFilter = document.getElementById("filter-gov").value;
   const sectorFilter = document.getElementById("filter-sector").value;
   const stageFilter = document.getElementById("filter-stage").value;
+  
+  // New filters
+  const roleFilter = document.getElementById("filter-role") ? document.getElementById("filter-role").value : 'all';
+  const thematicFilter = document.getElementById("filter-thematic") ? document.getElementById("filter-thematic").value : 'all';
+  const maturityFilter = document.getElementById("filter-maturity") ? document.getElementById("filter-maturity").value : 'all';
   
   filteredActors = actors.filter(actor => {
     const matchesSearch = actor.name_ar.toLowerCase().includes(searchQuery) || 
@@ -1170,7 +1519,17 @@ function applyFilters() {
     const matchesSector = sectorFilter === 'all' || actor.sector === sectorFilter;
     const matchesStage = stageFilter === 'all' || actor.stage === stageFilter;
     
-    return matchesSearch && matchesGov && matchesSector && matchesStage;
+    // New filter matching
+    const matchesRole = roleFilter === 'all' || actor.role === roleFilter;
+    const matchesThematic = thematicFilter === 'all' || actor.thematic_area === thematicFilter;
+    
+    let matchesMaturity = true;
+    if (maturityFilter !== 'all') {
+      const minMaturity = parseFloat(maturityFilter);
+      matchesMaturity = (actor.maturity_score || 0) >= minMaturity;
+    }
+    
+    return matchesSearch && matchesGov && matchesSector && matchesStage && matchesRole && matchesThematic && matchesMaturity;
   });
   
   updateDashboardViews();
@@ -1181,6 +1540,9 @@ function resetFilters() {
   document.getElementById("filter-gov").value = "all";
   document.getElementById("filter-sector").value = "all";
   document.getElementById("filter-stage").value = "all";
+  if (document.getElementById("filter-role")) document.getElementById("filter-role").value = "all";
+  if (document.getElementById("filter-thematic")) document.getElementById("filter-thematic").value = "all";
+  if (document.getElementById("filter-maturity")) document.getElementById("filter-maturity").value = "all";
   applyFilters();
 }
 
@@ -1188,44 +1550,72 @@ function resetFilters() {
 function updateDashboardViews() {
   // 1. Update Stats Card Counters, Progress Bars & Badges
   const totalCount = filteredActors.length;
-  const civilCount = filteredActors.filter(a => a.sector === 'civil_society').length;
-  const privateCount = filteredActors.filter(a => a.sector === 'private').length;
-  const publicCount = filteredActors.filter(a => a.sector === 'public').length;
+  
+  let totalFunding = 0;
+  let scaledCount = 0;
+  let linksSet = new Set();
+  
+  filteredActors.forEach(actor => {
+    totalFunding += actor.funding_received || 0;
+    if ((actor.maturity_score || 0) >= 4.0) {
+      scaledCount++;
+    }
+    
+    if (actor.connections) {
+      actor.connections.forEach(connId => {
+        const isTargetInFiltered = filteredActors.some(a => a.id === connId);
+        if (isTargetInFiltered) {
+          const pair = [actor.id, connId].sort((a,b) => a-b).join('-');
+          linksSet.add(pair);
+        }
+      });
+    }
+  });
+
+  // Inject additional demo funding award if step 3 is triggered in guided tour
+  if (window.demoFundingAwarded) {
+    totalFunding += 85000;
+  }
+  
+  const partnershipsCount = linksSet.size;
 
   const statTotalEl = document.getElementById("stat-total");
-  const statCivilEl = document.getElementById("stat-civil");
-  const statPrivateEl = document.getElementById("stat-private");
-  const statPublicEl = document.getElementById("stat-public");
+  const statFundingEl = document.getElementById("stat-funding");
+  const statPartnershipsEl = document.getElementById("stat-partnerships");
+  const statInnovationsEl = document.getElementById("stat-innovations");
 
   if (statTotalEl) statTotalEl.innerText = totalCount;
-  if (statCivilEl) statCivilEl.innerText = civilCount;
-  if (statPrivateEl) statPrivateEl.innerText = privateCount;
-  if (statPublicEl) statPublicEl.innerText = publicCount;
-
-  // Calculate percentages
-  const civilPct = totalCount > 0 ? Math.round((civilCount / totalCount) * 100) : 0;
-  const privatePct = totalCount > 0 ? Math.round((privateCount / totalCount) * 100) : 0;
-  const publicPct = totalCount > 0 ? Math.round((publicCount / totalCount) * 100) : 0;
+  if (statFundingEl) statFundingEl.innerText = "$" + (totalFunding / 1000000).toFixed(2) + "M";
+  if (statPartnershipsEl) statPartnershipsEl.innerText = partnershipsCount;
+  if (statInnovationsEl) statInnovationsEl.innerText = scaledCount;
 
   // Update progress bars widths
   const pbTotal = document.getElementById("pb-stat-total");
-  const pbCivil = document.getElementById("pb-stat-civil");
-  const pbPrivate = document.getElementById("pb-stat-private");
-  const pbPublic = document.getElementById("pb-stat-public");
+  const pbFunding = document.getElementById("pb-stat-funding");
+  const pbPartnerships = document.getElementById("pb-stat-partnerships");
+  const pbInnovations = document.getElementById("pb-stat-innovations");
 
-  if (pbTotal) pbTotal.style.width = "100%";
-  if (pbCivil) pbCivil.style.width = civilPct + "%";
-  if (pbPrivate) pbPrivate.style.width = privatePct + "%";
-  if (pbPublic) pbPublic.style.width = publicPct + "%";
+  // Max bounds for percentages (realistic estimations)
+  const maxActors = 250;
+  const maxFunding = 2000000;
+  const maxPartnerships = 60;
+  const maxInnovations = 30;
+
+  if (pbTotal) pbTotal.style.width = Math.min(100, Math.round((totalCount / maxActors) * 100)) + "%";
+  if (pbFunding) pbFunding.style.width = Math.min(100, Math.round((totalFunding / maxFunding) * 100)) + "%";
+  if (pbPartnerships) pbPartnerships.style.width = Math.min(100, Math.round((partnershipsCount / maxPartnerships) * 100)) + "%";
+  if (pbInnovations) pbInnovations.style.width = Math.min(100, Math.round((scaledCount / maxInnovations) * 100)) + "%";
 
   // Update badges text
-  const badgeCivil = document.getElementById("badge-stat-civil");
-  const badgePrivate = document.getElementById("badge-stat-private");
-  const badgePublic = document.getElementById("badge-stat-public");
+  const badgeTotal = document.getElementById("badge-stat-total");
+  const badgeFunding = document.getElementById("badge-stat-funding");
+  const badgePartnerships = document.getElementById("badge-stat-partnerships");
+  const badgeInnovations = document.getElementById("badge-stat-innovations");
 
-  if (badgeCivil) badgeCivil.innerText = civilPct + "%";
-  if (badgePrivate) badgePrivate.innerText = privatePct + "%";
-  if (badgePublic) badgePublic.innerText = publicPct + "%";
+  if (badgeTotal) badgeTotal.innerText = currentLang === 'ar' ? "نشط" : "Active";
+  if (badgeFunding) badgeFunding.innerText = currentLang === 'ar' ? "منح" : "Grants";
+  if (badgePartnerships) badgePartnerships.innerText = currentLang === 'ar' ? "روابط" : "Links";
+  if (badgeInnovations) badgeInnovations.innerText = "★4.0+";
   
   // 2. Render Map markers with Sonar Pulse CSS
   try {
@@ -1241,15 +1631,15 @@ function updateDashboardViews() {
         const popupContent = `
           <div class="popup-title">${title}</div>
           <div style="font-size: 11px; margin-bottom: 5px;">
-            <strong>\${currentLang === 'ar' ? 'القطاع' : 'Sector'}:</strong> \${secName} | 
-            <strong>\${currentLang === 'ar' ? 'المحافظة' : 'Gov'}:</strong> \${govName}
+            <strong>${currentLang === 'ar' ? 'القطاع' : 'Sector'}:</strong> ${secName} | 
+            <strong>${currentLang === 'ar' ? 'المحافظة' : 'Gov'}:</strong> ${govName}
           </div>
           <div style="font-size: 11px; margin-bottom: 8px;">
-            <strong>\${currentLang === 'ar' ? 'المرحلة' : 'Stage'}:</strong> \${stgName}
+            <strong>${currentLang === 'ar' ? 'المرحلة' : 'Stage'}:</strong> ${stgName}
           </div>
-          <div class="popup-desc">\${desc}</div>
+          <div class="popup-desc">${desc}</div>
           <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; color: var(--primary);">
-            \${actor.email || ''} | \${actor.phone || ''}
+            ${actor.email || ''} | ${maskPhone(actor.phone)}
           </div>
         `;
         
@@ -1261,7 +1651,7 @@ function updateDashboardViews() {
         // Dynamic Sonar Pulse Icon
         const customIcon = L.divIcon({
           className: 'custom-map-icon',
-          html: `<div class="sonar-dot" style="background-color: \${color}; color: \${color};"></div>`,
+          html: `<div class="sonar-dot" style="background-color: ${color}; color: ${color};"></div>`,
           iconSize: [14, 14]
         });
 
@@ -1323,15 +1713,35 @@ function renderNetwork() {
         color = { background: 'rgba(16, 185, 129, 0.85)', border: '#10b981', highlight: '#34d399' };
       }
       
+      // Dynamic shape based on role
+      let shape = 'dot';
+      const roleLower = (actor.role || '').toLowerCase();
+      const roleEnLower = (actor.role_en || '').toLowerCase();
+      const roleAr = actor.role_ar || '';
+      
+      if (roleLower === 'funder' || roleEnLower === 'funder' || roleAr === 'ممول') {
+        shape = 'diamond';
+      } else if (roleLower === 'enabler' || roleEnLower === 'enabler' || roleAr === 'ممكن') {
+        shape = 'star';
+      } else if (roleLower === 'researcher' || roleEnLower === 'researcher' || roleAr === 'باحث') {
+        shape = 'hexagon';
+      } else {
+        shape = 'dot'; // Implementer / Circle Dot
+      }
+      
+      // Dynamic size based on maturity score
+      const maturityScore = actor.maturity_score || 3.0;
+      const size = 15 + (maturityScore * 3.5);
+      
       nodesArray.push({
         id: actor.id,
         label: label,
         color: color,
-        font: { color: activeTheme === 'light' ? '#0f172a' : '#ffffff', face: currentLang === 'ar' ? 'Tajawal' : 'Inter', size: 11, bold: true },
-        shape: 'box',
-        borderWidth: 1.5,
-        shadow: true,
-        margin: 8
+        font: { color: activeTheme === 'light' ? '#0f172a' : '#e2e8f0', face: currentLang === 'ar' ? 'Tajawal' : 'Inter', size: 10, bold: true },
+        shape: shape,
+        size: size,
+        borderWidth: 2.5,
+        shadow: { enabled: true, color: 'rgba(0,0,0,0.35)', size: 5, x: 2, y: 2 }
       });
       
       // Add edges for connections if target exists in our filtered list
@@ -1341,8 +1751,9 @@ function renderNetwork() {
             edgesArray.push({
               from: actor.id,
               to: connId,
-              color: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.15)', highlight: 'var(--primary)' },
-              width: 1.5
+              color: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)', highlight: 'var(--primary)' },
+              width: 2.0,
+              smooth: { type: 'continuous', roundness: 0.5 }
             });
           }
         });
@@ -1430,10 +1841,10 @@ function renderNetwork() {
       <div class="offline-placeholder" style="padding: 40px 20px; text-align: center; color: var(--text-secondary); background: rgba(0,0,0,0.1); border: 1px dashed var(--glass-border); border-radius: 8px;">
         <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
         <p style="font-weight: bold; margin-bottom: 8px;">
-          \${currentLang === 'ar' ? 'تعذر تحميل شبكة العلاقات التفاعلية' : 'Interactive Linkages Network could not be loaded'}
+          ${currentLang === 'ar' ? 'تعذر تحميل شبكة العلاقات التفاعلية' : 'Interactive Linkages Network could not be loaded'}
         </p>
         <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
-          \${currentLang === 'ar' ? 'تتطلب هذه الشبكة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Vis.js وتشغيل المحاكي الفيزيائي.' : 'This network graph requires an active internet connection to load the Vis.js library.'}
+          ${currentLang === 'ar' ? 'تتطلب هذه الشبكة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Vis.js وتشغيل المحاكي الفيزيائي.' : 'This network graph requires an active internet connection to load the Vis.js library.'}
         </p>
       </div>
     `;
@@ -1513,6 +1924,28 @@ function renderCharts() {
     countsStage.scaling
   ];
   chartStages.update();
+
+  // Calculate Thematic Areas distribution
+  if (chartThematic) {
+    const countsThematic = { water_energy: 0, food_agri: 0, health_nutrition: 0, edu_tech: 0, logistics_emergency: 0 };
+    filteredActors.forEach(a => {
+      if (countsThematic.hasOwnProperty(a.thematic_area)) {
+        countsThematic[a.thematic_area]++;
+      }
+    });
+    
+    chartThematic.data.labels = currentLang === 'ar' ? 
+      ['المياه والطاقة', 'الأمن الغذائي والزراعة', 'الصحة والتغذية', 'التعليم والتكنولوجيا', 'اللوجستيات والطوارئ'] : 
+      ['Water & Energy', 'Food & Agriculture', 'Health & Nutrition', 'Education & Tech', 'Logistics & Emergency'];
+    chartThematic.data.datasets[0].data = [
+      countsThematic.water_energy, 
+      countsThematic.food_agri, 
+      countsThematic.health_nutrition, 
+      countsThematic.edu_tech, 
+      countsThematic.logistics_emergency
+    ];
+    chartThematic.update();
+  }
 }
 
 // Table Directory render
@@ -1524,7 +1957,7 @@ function renderDirectoryTable() {
   
   if (filteredActors.length === 0) {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="7" style="text-align: center; color: var(--text-secondary);">
+    tr.innerHTML = `<td colspan="10" style="text-align: center; color: var(--text-secondary);">
       ${currentLang === 'ar' ? 'لا توجد جهات مطابقة للتصفية حالياً' : 'No matching actors found for current filters'}
     </td>`;
     tbody.appendChild(tr);
@@ -1536,9 +1969,12 @@ function renderDirectoryTable() {
     
     const name = currentLang === 'ar' ? actor.name_ar : actor.name_en;
     const secName = currentLang === 'ar' ? actor.sector_ar : actor.sector_en;
+    const roleName = currentLang === 'ar' ? actor.role_ar : actor.role_en;
+    const thematicName = currentLang === 'ar' ? actor.thematic_area_ar : actor.thematic_area_en;
     const stgName = currentLang === 'ar' ? actor.stage_ar : actor.stage_en;
     const govName = currentLang === 'ar' ? actor.governorate_ar : actor.governorate_en;
     const desc = currentLang === 'ar' ? actor.description_ar : actor.description_en;
+    const maturity = (actor.maturity_score || 3.0).toFixed(1) + " ★";
     
     let badgeClass = 'badge-public';
     if (actor.sector === 'private') badgeClass = 'badge-private';
@@ -1547,11 +1983,14 @@ function renderDirectoryTable() {
     tr.innerHTML = `
       <td><strong>${name}</strong></td>
       <td><span class="badge ${badgeClass}">${secName}</span></td>
+      <td><span style="font-size: 11px; opacity: 0.9;">${roleName}</span></td>
+      <td><span style="font-size: 11px; opacity: 0.9;">${thematicName}</span></td>
       <td>${stgName}</td>
       <td>${govName}</td>
+      <td><span style="color: var(--accent); font-weight: bold;">${maturity}</span></td>
       <td><a href="mailto:${actor.email}" style="color: var(--primary); text-decoration: none;">${actor.email || '-'}</a></td>
-      <td>${actor.phone || '-'}</td>
-      <td style="font-size: 12px; color: var(--text-secondary); max-width: 250px;">${desc}</td>
+      <td>${maskPhone(actor.phone)}</td>
+      <td style="font-size: 11px; color: var(--text-secondary); max-width: 200px; line-height: 1.4;">${desc}</td>
     `;
     
     tbody.appendChild(tr);
@@ -1566,7 +2005,10 @@ function handleFormSubmit(e) {
   const nameEn = document.getElementById("form-name-en").value;
   const sector = document.getElementById("form-sector").value;
   const stage = document.getElementById("form-stage").value;
+  const role = document.getElementById("form-role").value;
+  const thematic = document.getElementById("form-thematic").value;
   const gov = document.getElementById("form-gov").value;
+  const maturityVal = parseFloat(document.getElementById("form-maturity").value) || 3.0;
   const partnerId = document.getElementById("form-partner").value;
   const email = document.getElementById("form-email").value;
   const phone = document.getElementById("form-phone").value;
@@ -1580,10 +2022,29 @@ function handleFormSubmit(e) {
     Taiz: { lat: 13.5795 + (Math.random() - 0.5) * 0.05, lng: 44.0159 + (Math.random() - 0.5) * 0.05 },
     Hadramout: { lat: 14.5400 + (Math.random() - 0.5) * 0.05, lng: 49.1200 + (Math.random() - 0.5) * 0.05 },
     Marib: { lat: 15.4630 + (Math.random() - 0.5) * 0.05, lng: 45.3252 + (Math.random() - 0.5) * 0.05 },
-    Hodeidah: { lat: 14.7979 + (Math.random() - 0.5) * 0.05, lng: 42.9530 + (Math.random() - 0.5) * 0.05 }
+    Hodeidah: { lat: 14.7979 + (Math.random() - 0.5) * 0.05, lng: 42.9530 + (Math.random() - 0.5) * 0.05 },
+    Ibb: { lat: 13.9734 + (Math.random() - 0.5) * 0.05, lng: 44.1786 + (Math.random() - 0.5) * 0.05 },
+    Dhamar: { lat: 14.5427 + (Math.random() - 0.5) * 0.05, lng: 44.4072 + (Math.random() - 0.5) * 0.05 },
+    Shabwah: { lat: 14.5298 + (Math.random() - 0.5) * 0.05, lng: 46.8319 + (Math.random() - 0.5) * 0.05 },
+    Saada: { lat: 16.9452 + (Math.random() - 0.5) * 0.05, lng: 43.7639 + (Math.random() - 0.5) * 0.05 },
+    "Al-Jawf": { lat: 16.1623 + (Math.random() - 0.5) * 0.05, lng: 44.7836 + (Math.random() - 0.5) * 0.05 },
+    "Al-Mahrah": { lat: 16.2081 + (Math.random() - 0.5) * 0.05, lng: 52.1748 + (Math.random() - 0.5) * 0.05 },
+    Socotra: { lat: 12.4634 + (Math.random() - 0.5) * 0.05, lng: 53.8237 + (Math.random() - 0.5) * 0.05 },
+    Hajjah: { lat: 15.6942 + (Math.random() - 0.5) * 0.05, lng: 43.6041 + (Math.random() - 0.5) * 0.05 },
+    Amran: { lat: 15.9592 + (Math.random() - 0.5) * 0.05, lng: 43.9439 + (Math.random() - 0.5) * 0.05 },
+    "Al-Mahwit": { lat: 15.4703 + (Math.random() - 0.5) * 0.05, lng: 43.5414 + (Math.random() - 0.5) * 0.05 },
+    Raymah: { lat: 14.6192 + (Math.random() - 0.5) * 0.05, lng: 43.7125 + (Math.random() - 0.5) * 0.05 },
+    "Al-Bayda": { lat: 14.0159 + (Math.random() - 0.5) * 0.05, lng: 45.4244 + (Math.random() - 0.5) * 0.05 },
+    Abyan: { lat: 13.2045 + (Math.random() - 0.5) * 0.05, lng: 45.3789 + (Math.random() - 0.5) * 0.05 },
+    Lahj: { lat: 13.0583 + (Math.random() - 0.5) * 0.05, lng: 44.8778 + (Math.random() - 0.5) * 0.05 },
+    "Al-Dhale": { lat: 13.6953 + (Math.random() - 0.5) * 0.05, lng: 44.7314 + (Math.random() - 0.5) * 0.05 },
+    Sanaa_City: { lat: 15.3524 + (Math.random() - 0.5) * 0.05, lng: 44.2078 + (Math.random() - 0.5) * 0.05 }
   };
   
-  const coords = govCoordinates[gov];
+  // Find governorate in yemenGovernorates or default to Aden
+  const govObj = yemenGovernorates.find(g => g.id === gov) || yemenGovernorates[0];
+  const coords = govCoordinates[gov] || { lat: govObj.lat + (Math.random() - 0.5) * 0.05, lng: govObj.lng + (Math.random() - 0.5) * 0.05 };
+  
   const newId = actors.length > 0 ? Math.max(...actors.map(a => a.id)) + 1 : 1;
   
   // Build Localized terms
@@ -1601,13 +2062,19 @@ function handleFormSubmit(e) {
     scaling: { ar: "التوسع", en: "Scaling" }
   };
   
-  const govMapping = {
-    Aden: { ar: "عدن", en: "Aden" },
-    Sanaa: { ar: "صنعاء", en: "Sanaa" },
-    Taiz: { ar: "تعز", en: "Taiz" },
-    Hadramout: { ar: "حضرموت", en: "Hadramout" },
-    Marib: { ar: "مأرب", en: "Marib" },
-    Hodeidah: { ar: "الحديدة", en: "Hodeidah" }
+  const roleMapping = {
+    funder: { ar: "ممول", en: "Funder" },
+    enabler: { ar: "ممكن", en: "Enabler" },
+    researcher: { ar: "باحث", en: "Researcher" },
+    implementer: { ar: "منفذ", en: "Implementer" }
+  };
+  
+  const thematicMapping = {
+    water_energy: { ar: "المياه والطاقة", en: "Water & Energy" },
+    food_agri: { ar: "الأمن الغذائي والزراعة", en: "Food & Agriculture" },
+    health_nutrition: { ar: "الصحة والتغذية", en: "Health & Nutrition" },
+    education_tech: { ar: "التعليم والتكنولوجيا", en: "Education & Tech" },
+    logistics_response: { ar: "اللوجستيات والاستجابة الطارئة", en: "Logistics & Response" }
   };
   
   const isPartnerValid = partnerId && partnerId !== 'none' && !isNaN(parseInt(partnerId));
@@ -1623,9 +2090,17 @@ function handleFormSubmit(e) {
     stage: stage,
     stage_ar: stageMapping[stage].ar,
     stage_en: stageMapping[stage].en,
+    role: role,
+    role_ar: roleMapping[role].ar,
+    role_en: roleMapping[role].en,
+    thematic_area: thematic,
+    thematic_area_ar: thematicMapping[thematic].ar,
+    thematic_area_en: thematicMapping[thematic].en,
+    maturity_score: maturityVal,
+    funding_received: role === 'funder' ? 0 : Math.round((10000 + Math.random() * 50000) / 1000) * 1000,
     governorate: gov,
-    governorate_ar: govMapping[gov].ar,
-    governorate_en: govMapping[gov].en,
+    governorate_ar: govObj.ar,
+    governorate_en: govObj.en,
     lat: coords.lat,
     lng: coords.lng,
     description_ar: descAr || "لا يوجد شرح متوفر حالياً.",
@@ -1711,16 +2186,19 @@ function exportData(format) {
     mimeType = "application/json";
     fileName = "yjr_innovation_ecosystem.json";
   } else if (format === 'csv') {
-    const headers = ["ID", "Name (AR)", "Name (EN)", "Sector", "Stage", "Governorate", "Email", "Phone", "Description (AR)", "Description (EN)"];
+    const headers = ["ID", "Name (AR)", "Name (EN)", "Sector", "Role", "Thematic Area", "Stage", "Maturity Score", "Governorate", "Email", "Phone", "Description (AR)", "Description (EN)"];
     const rows = filteredActors.map(a => [
       a.id,
       `"${a.name_ar.replace(/"/g, '""')}"`,
       `"${a.name_en.replace(/"/g, '""')}"`,
       a.sector,
+      a.role,
+      a.thematic_area,
       a.stage,
+      a.maturity_score,
       a.governorate,
       a.email,
-      a.phone,
+      maskPhone(a.phone),
       `"${a.description_ar.replace(/"/g, '""')}"`,
       `"${a.description_en.replace(/"/g, '""')}"`
     ]);
@@ -1910,4 +2388,251 @@ function exitDashboard() {
   
   // Re-initialize or refresh presentation state
   initPresentation();
+}
+
+/* ========================================================
+   YIEP Strategic Platform Extended Controllers (Proof Layer)
+   ======================================================== */
+
+let demoFundingAwarded = false;
+
+function runDemoStep(step) {
+  if (step === 1) {
+    const govSelect = document.getElementById("filter-gov");
+    const thematicSelect = document.getElementById("filter-thematic");
+    
+    if (govSelect) govSelect.value = "Hodeidah";
+    if (thematicSelect) thematicSelect.value = "food_agri";
+    
+    applyFilters();
+    
+    if (mapInstance) {
+      mapInstance.setView([14.7979, 42.9530], 9);
+    }
+    
+    document.getElementById("wstep-1").classList.remove("active");
+    document.getElementById("wstep-1").querySelector(".wstep-circle").style.borderColor = "#10b981";
+    document.getElementById("wstep-1").querySelector(".wstep-circle").style.background = "rgba(16,185,129,0.15)";
+    document.getElementById("wstep-1").querySelector(".wstep-circle").style.color = "#10b981";
+    
+    document.getElementById("wstep-2").classList.add("active");
+    document.getElementById("wpane-1").style.display = "none";
+    document.getElementById("wpane-2").style.display = "block";
+    document.getElementById("wizard-progress-active").style.width = "33%";
+    
+    showToast(currentLang === 'ar' ? "تمت تصفية الحديدة وقطاع الأمن الغذائي بنجاح!" : "Filtered Hodeidah & Food Security sector!");
+    
+  } else if (step === 2) {
+    const placeholder = document.getElementById("demo-ai-match-placeholder");
+    placeholder.style.display = "block";
+    
+    let dots = 0;
+    const interval = setInterval(() => {
+      dots = (dots + 1) % 4;
+      placeholder.innerHTML = `<span style="color: var(--primary); font-weight: bold;">${currentLang === 'ar' ? 'جاري تحليل المنظومة وتشغيل مطابقة الذكاء الاصطناعي' : 'Running AI Matching'}${'.'.repeat(dots)}</span>`;
+    }, 250);
+    
+    setTimeout(() => {
+      clearInterval(interval);
+      placeholder.innerHTML = currentLang === 'ar' ? 
+        `<strong>التحالف المقترح المعتمد:</strong><br>
+         🤝 الشريك المنفذ: <strong>شبكة مزارعي تهامة التعاونية</strong> (نضج: 4.2)<br>
+         ⚡ الشريك التقني: <strong>مؤسسة سحاب لحلول الطاقة الشمسية</strong> (نضج: 4.5)<br>
+         <strong>المبرر:</strong> ربط الثقة الميدانية والوصول الواسع للمزارعين بالحلول التقنية والريادية لمؤسسة سحاب.` :
+        `<strong>Consortium Recommended:</strong><br>
+         🤝 Local Implementer: <strong>Tihama Cooperative Farmers Network</strong> (Maturity: 4.2)<br>
+         ⚡ Tech Partner: <strong>Sahab Solar Solutions</strong> (Maturity: 4.5)<br>
+         <strong>Rationale:</strong> Links community trust and agricultural reach with Sahab's technical solar pumps innovation.`;
+      
+      // Sync Co-Pilot View
+      document.getElementById("copilot-gov").value = "Hodeidah";
+      document.getElementById("copilot-thematic").value = "food_agri";
+      document.getElementById("copilot-budget").value = 85000;
+      document.getElementById("copilot-budget-val").innerText = "$85,000";
+      
+      document.getElementById("partner1-name").innerText = currentLang === 'ar' ? "شبكة مزارعي تهامة" : "Tihama Farmers Network";
+      document.getElementById("partner2-name").innerText = currentLang === 'ar' ? "مؤسسة سحاب لطاقة الشمس" : "Sahab Solar Solutions";
+      document.getElementById("partner1-meta").innerText = "Maturity Score: 4.2 | Role: Implementer";
+      document.getElementById("partner2-meta").innerText = "Maturity Score: 4.5 | Role: Enabler";
+      
+      document.getElementById("matching-rationale").innerText = currentLang === 'ar' ?
+        "الربط المباشر بين الثقة والوصول الميداني للجمعيات الزراعية في سهل تهامة مع الحلول التقنية المتطورة لمؤسسة سحاب لطاقة الشمس." :
+        "Directly linking local trust and agricultural access of Tihama Farmers Network with the advanced tech capability of Sahab Solar Solutions.";
+      
+      const copilotOutput = document.getElementById("copilot-output");
+      copilotOutput.innerHTML = `
+<span style="color: #60a5fa;">[INFO] Initializing Consortium Matching for Hodeidah...</span>
+<span style="color: #60a5fa;">[INFO] Loaded Hodeidah governorate node records...</span>
+<span style="color: #a78bfa;">[AI Engine] Analyzing node density, centrality and link indices...</span>
+<span style="color: #a78bfa;">[AI Engine] Cross-referencing maturity scores...</span>
+<span style="color: #34d399;">[SUCCESS] Top Consortium Match Found: CODE CON-YE-8832</span>
+<span style="color: #34d399;">[SUCCESS] Rationale formulated. Consortium match coefficient: 0.94</span>
+      `;
+      document.getElementById("copilot-result-box").style.display = "block";
+      document.getElementById("copilot-status").innerText = "STATUS: SUCCESS";
+      
+      document.getElementById("wstep-2").classList.remove("active");
+      document.getElementById("wstep-2").querySelector(".wstep-circle").style.borderColor = "#10b981";
+      document.getElementById("wstep-2").querySelector(".wstep-circle").style.background = "rgba(16,185,129,0.15)";
+      document.getElementById("wstep-2").querySelector(".wstep-circle").style.color = "#10b981";
+      
+      document.getElementById("wstep-3").classList.add("active");
+      document.getElementById("wpane-2").style.display = "none";
+      document.getElementById("wpane-3").style.display = "block";
+      document.getElementById("wizard-progress-active").style.width = "66%";
+      
+      showToast(currentLang === 'ar' ? "اكتملت المطابقة الذكية بنجاح!" : "Consortium matched successfully!");
+    }, 1500);
+    
+  } else if (step === 3) {
+    const demoCard = document.getElementById("demo-funded-card");
+    if (demoCard) demoCard.style.display = "block";
+    
+    // Increment local counts in Kanban board
+    const colCount = document.getElementById("col-count-3");
+    if (colCount) colCount.innerText = "2";
+    
+    window.demoFundingAwarded = true;
+    updateDashboardViews();
+    
+    document.getElementById("wstep-3").classList.remove("active");
+    document.getElementById("wstep-3").querySelector(".wstep-circle").style.borderColor = "#10b981";
+    document.getElementById("wstep-3").querySelector(".wstep-circle").style.background = "rgba(16,185,129,0.15)";
+    document.getElementById("wstep-3").querySelector(".wstep-circle").style.color = "#10b981";
+    
+    document.getElementById("wstep-4").classList.add("active");
+    document.getElementById("wpane-3").style.display = "none";
+    document.getElementById("wpane-4").style.display = "block";
+    document.getElementById("wizard-progress-active").style.width = "100%";
+    
+    showToast(currentLang === 'ar' ? "تم منح وتخصيص المنحة بقيمة $85,000 للمشروع!" : "Simulated allocation of $85,000 grant!");
+    
+  } else if (step === 4) {
+    switchTab('tab-funding');
+    
+    const demoCard = document.getElementById("demo-funded-card");
+    if (demoCard) {
+      demoCard.style.boxShadow = "0 0 20px rgba(16, 185, 129, 0.7)";
+      demoCard.style.borderColor = "#10b981";
+      setTimeout(() => {
+        demoCard.style.boxShadow = "";
+        demoCard.style.borderColor = "var(--glass-border)";
+      }, 5000);
+    }
+    
+    setTimeout(() => {
+      resetWizardStepper();
+    }, 1000);
+  }
+}
+
+function resetWizardStepper() {
+  document.getElementById("wpane-4").style.display = "none";
+  document.getElementById("wpane-1").style.display = "block";
+  document.getElementById("wizard-progress-active").style.width = "0%";
+  
+  const steps = ["wstep-1", "wstep-2", "wstep-3", "wstep-4"];
+  steps.forEach((stepId, idx) => {
+    const el = document.getElementById(stepId);
+    el.classList.remove("active");
+    const circle = el.querySelector(".wstep-circle");
+    circle.style.borderColor = "";
+    circle.style.background = "";
+    circle.style.color = "";
+    if (idx === 0) el.classList.add("active");
+  });
+  
+  const placeholder = document.getElementById("demo-ai-match-placeholder");
+  if (placeholder) {
+    placeholder.style.display = "none";
+    placeholder.innerHTML = "";
+  }
+}
+
+function triggerAICopilotMatch() {
+  const gov = document.getElementById("copilot-gov").value;
+  const thematic = document.getElementById("copilot-thematic").value;
+  const budget = parseInt(document.getElementById("copilot-budget").value);
+  
+  const statusEl = document.getElementById("copilot-status");
+  const outputEl = document.getElementById("copilot-output");
+  const resultBox = document.getElementById("copilot-result-box");
+  
+  statusEl.innerText = "STATUS: PROCESSING...";
+  outputEl.innerHTML = `<span style="color: var(--primary);">[AI Engine] Analyzing criteria for ${gov} / ${thematic}...</span>`;
+  resultBox.style.display = "none";
+  
+  // Find realistic matching actors in the selected Gov and Thematic
+  let localActors = actors.filter(a => a.governorate === gov && a.thematic_area === thematic);
+  
+  if (localActors.length < 2) {
+    localActors = actors.filter(a => a.thematic_area === thematic);
+  }
+  
+  const implementers = localActors.filter(a => a.role === "implementer" || a.role === "researcher");
+  const enablers = localActors.filter(a => a.role === "enabler" || a.role === "funder");
+  
+  const partner1 = implementers.length > 0 ? implementers[0] : actors.find(a => a.role === 'implementer');
+  const partner2 = enablers.length > 0 ? enablers[0] : actors.find(a => a.role === 'enabler');
+  
+  setTimeout(() => {
+    outputEl.innerHTML += `<br><span style="color: #60a5fa;">[INFO] Scanning regional database... Found ${localActors.length} candidates.</span>`;
+  }, 400);
+
+  setTimeout(() => {
+    outputEl.innerHTML += `<br><span style="color: #a78bfa;">[AI Engine] Cross-referencing maturity matrices and structural link density...</span>`;
+  }, 900);
+
+  setTimeout(() => {
+    outputEl.innerHTML += `<br><span style="color: #34d399;">[SUCCESS] Top Consortium Match Found! Code: CON-YE-88${Math.floor(Math.random()*90)+10}</span>`;
+    statusEl.innerText = "STATUS: SUCCESS";
+    
+    // Set names and meta
+    document.getElementById("partner1-name").innerText = currentLang === 'ar' ? partner1.name_ar : partner1.name_en;
+    document.getElementById("partner2-name").innerText = currentLang === 'ar' ? partner2.name_ar : partner2.name_en;
+    
+    document.getElementById("partner1-meta").innerText = `Maturity: ${partner1.maturity_score}★ | Role: ${currentLang === 'ar' ? partner1.role_ar : partner1.role_en}`;
+    document.getElementById("partner2-meta").innerText = `Maturity: ${partner2.maturity_score}★ | Role: ${currentLang === 'ar' ? partner2.role_ar : partner2.role_en}`;
+    
+    const rationales = {
+      food_agri: {
+        ar: `يجمع هذا التحالف بين القدرة التنفيذية والموثوقية المحلية لـ (${partner1.name_ar}) مع الريادة التقنية والحلول الذكية لـ (${partner2.name_ar}) لتأمين استدامة المشروع.`,
+        en: `This alliance integrates the field-level execution and local trust of (${partner1.name_en}) with the tech innovator and systems scaling of (${partner2.name_en}).`
+      },
+      water_energy: {
+        ar: `يسهم دمج الخبرة الميدانية لـ (${partner1.name_ar}) مع حلول الطاقة الذكية لـ (${partner2.name_ar}) في خفض تكاليف التشغيل للخدمات الإنسانية بنسبة 30%.`,
+        en: `Merging the field experience of (${partner1.name_en}) with smart energy solutions of (${partner2.name_en}) cuts operational overheads by 30%.`
+      },
+      default: {
+        ar: `مطابقة عالية التنسيق تضمن الاستغلال الأمثل للموارد وسد الفجوات الجغرافية بكفاءة عالية في قطاع المشروع.`,
+        en: `High-coordination matching that ensures optimal resource utilization and bridges geographical gaps in the project's sector.`
+      }
+    };
+    
+    const rat = rationales[thematic] || rationales.default;
+    document.getElementById("matching-rationale").innerText = currentLang === 'ar' ? rat.ar : rat.en;
+    
+    resultBox.style.display = "block";
+    
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }, 1400);
+}
+
+function unlockKoboSimulator() {
+  const code = document.getElementById("sim-passcode").value.trim().toLowerCase();
+  const lockScreen = document.getElementById("simulator-lock-screen");
+  const content = document.getElementById("simulator-content");
+  const errorEl = document.getElementById("sim-lock-error");
+  
+  if (code === 'yjr2026' || code === 'admin2026') {
+    lockScreen.style.display = "none";
+    content.style.display = "block";
+    errorEl.style.display = "none";
+    showToast(currentLang === 'ar' ? "تم إلغاء قفل بوابة الإدخال بنجاح!" : "Ingestion portal unlocked successfully!");
+  } else {
+    errorEl.style.display = "block";
+    document.getElementById("sim-passcode").value = "";
+  }
 }

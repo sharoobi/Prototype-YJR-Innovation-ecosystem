@@ -754,28 +754,290 @@
 
     <!-- Navigation Tabs -->
     <div class="tabs-navigation">
-      <button class="tab-btn active" id="tab-btn-dash" onclick="switchTab('tab-dashboard')">
-        <i data-lucide="bar-chart-3" class="btn-icon"></i>
-        <span id="txt-tab-dash">📊 لوحة التحكم والإحصائيات</span>
+      <button class="tab-btn active" id="tab-btn-land" onclick="switchTab('tab-landing')">
+        <i data-lucide="home" class="btn-icon"></i>
+        <span id="txt-tab-land">💡 الشاشة الرئيسية والأثر</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-dash" onclick="switchTab('tab-dashboard')">
+        <i data-lucide="map" class="btn-icon"></i>
+        <span id="txt-tab-dash">📊 الخريطة ولوحة التحكم</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-funding" onclick="switchTab('tab-funding')">
+        <i data-lucide="dollar-sign" class="btn-icon"></i>
+        <span id="txt-tab-funding">💸 دورة حياة التمويل</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-copilot" onclick="switchTab('tab-copilot')">
+        <i data-lucide="brain" class="btn-icon"></i>
+        <span id="txt-tab-copilot">🤖 المساعد الذكي AI</span>
       </button>
       <button class="tab-btn" id="tab-btn-dir" onclick="switchTab('tab-directory')">
         <i data-lucide="users" class="btn-icon"></i>
         <span id="txt-tab-dir">📁 دليل الفاعلين الكامل</span>
       </button>
       <button class="tab-btn" id="tab-btn-sim" onclick="switchTab('tab-simulator')">
-        <i data-lucide="smartphone" class="btn-icon"></i>
-        <span id="txt-tab-sim">📱 محاكي استمارة Kobo Toolbox</span>
+        <i data-lucide="lock" class="btn-icon"></i>
+        <span id="txt-tab-sim">📱 محاكي كابو (بوابة آمنة)</span>
       </button>
     </div>
 
+    <!-- Tab 0: Landing & Theory of Change (Default Active Tab) -->
+    <div id="tab-landing" class="tab-content active">
+      <!-- Storytelling & Impact Overview -->
+      <div class="glass-panel landing-hero" style="text-align: center; padding: 40px 30px; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(0, 242, 254, 0.05) 0%, rgba(138, 43, 226, 0.05) 100%); border-bottom: 2px solid var(--glass-border);">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));"></div>
+        <h2 class="hero-title ar-only" style="font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 12px; color: #ffffff;">منصة تمكين الابتكار الإنساني والاجتماعي في اليمن (YIEP)</h2>
+        <h2 class="hero-title en-only" style="font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 12px; color: #ffffff;">Yemen Humanitarian & Social Innovation Ecosystem Platform (YIEP)</h2>
+        <p class="hero-subtitle ar-only" style="font-size: 15px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 30px auto; line-height: 1.6;">رسم خريطة الفاعلين، وتوجيه التمويل الذكي، ورصد أثر التدخلات الإنسانية ميدانياً لخلق استجابة متكاملة ومستدامة.</p>
+        <p class="hero-subtitle en-only" style="font-size: 15px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 30px auto; line-height: 1.6;">Mapping local actors, streamlining smart funding, and measuring field-level impact to build a resilient, integrated response.</p>
+        
+        <!-- Impact KPIs Grid -->
+        <div class="stats-container" style="margin-top: 10px;">
+          <div class="stat-card blue">
+            <div class="stat-card-header">
+              <i data-lucide="map-pinned" class="stat-icon"></i>
+              <span class="stat-badge success">Yemen-wide</span>
+            </div>
+            <div class="stat-val" style="font-size: 36px;">215</div>
+            <div class="stat-label ar-only" style="font-weight: bold;">إجمالي الفاعلين المرصودين</div>
+            <div class="stat-label en-only" style="font-weight: bold;">Total Innovation Actors Mapped</div>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="ar-only">في الـ 22 محافظة كاملة</p>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="en-only">Across all 22 governorates</p>
+          </div>
+          <div class="stat-card cyan">
+            <div class="stat-card-header">
+              <i data-lucide="dollar-sign" class="stat-icon" style="color: #10b981;"></i>
+              <span class="stat-badge info">Active Grants</span>
+            </div>
+            <div class="stat-val" style="font-size: 36px;">$1.45M</div>
+            <div class="stat-label ar-only" style="font-weight: bold;">التمويل الموجه للابتكار</div>
+            <div class="stat-label en-only" style="font-weight: bold;">Total Directed Funding</div>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="ar-only">عبر منح تشاركية ذكية</p>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="en-only">Via collaborative grants</p>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-card-header">
+              <i data-lucide="network" class="stat-icon" style="color: #f59e0b;"></i>
+              <span class="stat-badge warning">Linkages</span>
+            </div>
+            <div class="stat-val" style="font-size: 36px;">42</div>
+            <div class="stat-label ar-only" style="font-weight: bold;">الشراكات والتحالفات النشطة</div>
+            <div class="stat-label en-only" style="font-weight: bold;">Ecosystem Active Partnerships</div>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="ar-only">روابط تشبيك بينية موثقة</p>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="en-only">Verified network relationships</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <i data-lucide="trending-up" class="stat-icon" style="color: #8a2be2;"></i>
+              <span class="stat-badge">Maturity 4.0+</span>
+            </div>
+            <div class="stat-val" style="font-size: 36px;">18</div>
+            <div class="stat-label ar-only" style="font-weight: bold;">الابتكارات الميدانية الموسعة</div>
+            <div class="stat-label en-only" style="font-weight: bold;">Scaled Innovations Mapped</div>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="ar-only">نماذج ناضجة وقابلة للتكرار</p>
+            <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;" class="en-only">Mature, replicable local models</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theory of Change (4 Layers) -->
+      <div class="glass-panel" style="margin-bottom: 20px;">
+        <h3 style="font-size: 18px; margin-bottom: 20px; text-align: center; font-weight: bold; color: var(--primary);" class="ar-only">هيكل نظرية التغيير المعتمد بالمنصة (Theory of Change Layers)</h3>
+        <h3 style="font-size: 18px; margin-bottom: 20px; text-align: center; font-weight: bold; color: var(--primary);" class="en-only">Theory of Change Architecture Layers</h3>
+        
+        <div class="theory-of-change-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+          <div class="toc-layer-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; text-align: center; position: relative;">
+            <div class="toc-layer-num" style="font-size: 26px; font-weight: 800; color: #ef4444; opacity: 0.8; margin-bottom: 10px;">01</div>
+            <h4 class="ar-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">طبقة الاحتياج (Crisis Layer)</h4>
+            <h4 class="en-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">Crisis & Need Layer</h4>
+            <p class="ar-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">تحديد الفجوات الجغرافية والقطاعية والتمويلية لمنع التكرار وتوجيه التدخلات للمناطق الأكثر حرماناً.</p>
+            <p class="en-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Identifying spatial, funding, and thematic gaps to prevent aid duplication and target hard-to-reach areas.</p>
+          </div>
+          <div class="toc-layer-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; text-align: center; position: relative;">
+            <div class="toc-layer-num" style="font-size: 26px; font-weight: 800; color: var(--primary); opacity: 0.8; margin-bottom: 10px;">02</div>
+            <h4 class="ar-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">طبقة المنظومة (Ecosystem Layer)</h4>
+            <h4 class="en-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">Ecosystem Mapping Layer</h4>
+            <p class="ar-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">رسم خرائط الفاعلين وربطهم بشبكة علاقات ديناميكية وفيزيائية تكشف القوى والتحالفات المحلية.</p>
+            <p class="en-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Visualizing actors and linking them in a dynamic network graph revealing local clusters and hubs.</p>
+          </div>
+          <div class="toc-layer-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; text-align: center; position: relative;">
+            <div class="toc-layer-num" style="font-size: 26px; font-weight: 800; color: var(--accent); opacity: 0.8; margin-bottom: 10px;">03</div>
+            <h4 class="ar-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">طبقة العمل (Action Layer)</h4>
+            <h4 class="en-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">Action & Matching Layer</h4>
+            <p class="ar-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">مطابقة الشركاء بالذكاء الاصطناعي (AI Co-Pilot) لتكوين تحالفات قوية وتتبع التمويل في دورته الكاملة.</p>
+            <p class="en-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">AI-powered partner matching to build strong consortia and track funding lifecycle milestones.</p>
+          </div>
+          <div class="toc-layer-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; text-align: center; position: relative;">
+            <div class="toc-layer-num" style="font-size: 26px; font-weight: 800; color: #10b981; opacity: 0.8; margin-bottom: 10px;">04</div>
+            <h4 class="ar-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">طبقة الأثر (Impact Layer)</h4>
+            <h4 class="en-only" style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #ffffff;">Impact & Outcomes Layer</h4>
+            <p class="ar-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">تصدير تقارير الأثر والنتائج الميدانية اللحظية وتحديث الخريطة تلقائياً بمؤشرات النضج (Maturity Scores).</p>
+            <p class="en-only" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Reporting field results, updating live maps, and assessing local maturity scores for sustainability.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Guided Simulation Wizard (العرض التفاعلي الحي للجنة التقييم) -->
+      <div class="glass-panel" style="border: 2px solid var(--accent); position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(138,43,226,0.05) 0%, var(--glass-bg) 100%);">
+        <div style="position: absolute; top:0; left:0; width:100%; height:6px; background: linear-gradient(to right, var(--accent), var(--primary));"></div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: #ffffff;">
+              <i data-lucide="play" style="color: var(--primary); fill: var(--primary); width: 22px; height: 22px;"></i>
+              <span class="ar-only">مسار العرض الحي المباشر (Interactive Proof & Live Demo Flow)</span>
+              <span class="en-only">Interactive Proof & Live Demo Flow</span>
+            </h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" class="ar-only">عزيزي المقيم: هذا المسار يختصر لك كيفية عمل النظام بالكامل في مطابقة تمويل مشروع ري زراعي بالطاقة الشمسية بالحديدة.</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" class="en-only">Dear Reviewer: This wizard simulates a full lifecycle matching a solar agriculture project in Hodeidah.</p>
+          </div>
+          <div class="demo-badge-active" style="background: rgba(0, 242, 254, 0.15); border: 1px solid var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 12px; color: var(--primary); font-weight: bold;">
+            <span class="ar-only">السيناريو: مزارعو تهامة 🌾</span>
+            <span class="en-only">Scenario: Tihama Farmers 🌾</span>
+          </div>
+        </div>
+
+        <!-- Wizard Stepper Indicator -->
+        <div class="wizard-stepper" style="display: flex; justify-content: space-between; position: relative; margin-bottom: 25px; align-items: center;">
+          <div style="position: absolute; top: 20px; left: 5%; right: 5%; height: 3px; background: rgba(255,255,255,0.08); z-index: 1;" id="wizard-progress-line"></div>
+          <div style="position: absolute; top: 20px; left: 5%; width: 0%; height: 3px; background: var(--primary); z-index: 2; transition: var(--transition);" id="wizard-progress-active"></div>
+          
+          <div class="wizard-step active" id="wstep-1" style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+            <div class="wstep-circle" style="width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-secondary); transition: var(--transition);">1</div>
+            <div class="wstep-label ar-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">1. تحديد الفجوة</div>
+            <div class="wstep-label en-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">1. Identify Gap</div>
+          </div>
+          <div class="wizard-step" id="wstep-2" style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+            <div class="wstep-circle" style="width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-secondary); transition: var(--transition);">2</div>
+            <div class="wstep-label ar-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">2. مطابقة الذكاء الاصطناعي</div>
+            <div class="wstep-label en-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">2. AI Matcher</div>
+          </div>
+          <div class="wizard-step" id="wstep-3" style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+            <div class="wstep-circle" style="width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-secondary); transition: var(--transition);">3</div>
+            <div class="wstep-label ar-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">3. تخصيص المنحة</div>
+            <div class="wstep-label en-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">3. Grant Award</div>
+          </div>
+          <div class="wizard-step" id="wstep-4" style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+            <div class="wstep-circle" style="width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-secondary); transition: var(--transition);">4</div>
+            <div class="wstep-label ar-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">4. رصد الأثر الميداني</div>
+            <div class="wstep-label en-only" style="font-size: 11px; margin-top: 8px; font-weight: 600;">4. Mapped Impact</div>
+          </div>
+        </div>
+
+        <!-- Wizard Steps Content Cards -->
+        <div class="wizard-content-box" style="margin-top: 20px; background: rgba(0,0,0,0.15); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; min-height: 120px;">
+          
+          <!-- Step 1 Content -->
+          <div class="wstep-pane active" id="wpane-1">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div style="flex: 2; min-width: 250px;">
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="ar-only">الخطوة 1: الكشف عن الفجوة الجغرافية والقطاعية في الحديدة</h4>
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="en-only">Step 1: Detect Geographical & Sector Gap in Hodeidah</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="ar-only">
+                  يعاني سهل تهامة بالحديدة من فجوة كبيرة في تمويل الطاقة المتجددة الموجهة للزراعة والأمن الغذائي، حيث تعتمد المحركات التقليدية على الديزل المكلف وغير المتوفر. سنقوم بتصفية المنصة للبحث عن الفاعلين في قطاع "الأمن الغذائي والزراعة" بالحديدة لتحديد أطراف المنظومة.
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="en-only">
+                  The Tihama plains in Hodeidah suffer from a critical funding gap in renewable energy for food security. Traditional irrigation relies on expensive diesel. We filter the platform for "Food & Agriculture" in "Hodeidah" to pinpoint local actors.
+                </p>
+              </div>
+              <div style="flex: 1; text-align: center; min-width: 150px;">
+                <button class="btn-primary" onclick="runDemoStep(1)" style="margin: 0 auto; width: 100%; justify-content: center;">
+                  <span class="ar-only">1. تصفية المنطقة والقطاع 📍</span>
+                  <span class="en-only">1. Filter Region & Sector 📍</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 Content -->
+          <div class="wstep-pane" id="wpane-2" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div style="flex: 2; min-width: 250px;">
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="ar-only">الخطوة 2: تشغيل مطابقة المساعد الذكي AI Consortium Matcher</h4>
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="en-only">Step 2: Trigger AI Consortium Matcher</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="ar-only">
+                  بما أن الفاعلين المحليين مشتتون، يقوم المساعد الذكي بتحليل درجات النضج (Maturity Scores) والروابط البينية لتشكيل تحالف ريادي. سيطابق النظام بين **شبكة مزارعي تهامة التعاونية** (وصول محلي) و**مؤسسة سحاب لحلول الطاقة الشمسية** (مبتكر تقني).
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="en-only">
+                  Since local actors work in silos, the AI Matcher analyzes maturity scores and networking links to build a consortium. It matches **Tihama Cooperative Farmers Network** (local trust/reach) with **Sahab Solar Solutions** (private tech innovator).
+                </p>
+                <div class="demo-ai-match-result" id="demo-ai-match-placeholder" style="display: none; margin-top: 10px; background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); padding: 10px; border-radius: 8px; font-size: 12px; text-align: right;">
+                  <!-- Dynamically typed AI output -->
+                </div>
+              </div>
+              <div style="flex: 1; text-align: center; min-width: 150px;">
+                <button class="btn-primary" id="btn-demo-run-ai" onclick="runDemoStep(2)" style="margin: 0 auto; width: 100%; justify-content: center; background: var(--accent); box-shadow: 0 4px 15px rgba(138,43,226,0.3);">
+                  <i data-lucide="cpu" class="btn-icon"></i>
+                  <span class="ar-only">2. تشغيل مطابقة AI 🤖</span>
+                  <span class="en-only">2. Run AI Matcher 🤖</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 Content -->
+          <div class="wstep-pane" id="wpane-3" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div style="flex: 2; min-width: 250px;">
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="ar-only">الخطوة 3: تخصيص المنحة والتمويل ($85,000)</h4>
+                <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 8px;" class="en-only">Step 3: Simulate Grant Award Allocation ($85,000)</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="ar-only">
+                  بناءً على التوصية المنسقة، يعتمد المانح الائتلاف الهولندي (DRA) تمويلاً بقيمة **$85,000** لمشروع "مضخات تهامة الزراعية الشمسية". سنقوم ببرمجة ترحيل التمويل ودمجه في دورة حياة التمويل وتنبيه النظام.
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="en-only">
+                  Based on AI advice, the Dutch Relief Alliance (DRA) approves **$85,000** for the "Tihama Solar Pumps" initiative. We simulate funding allocation, injecting it directly into the active project lifecycle.
+                </p>
+              </div>
+              <div style="flex: 1; text-align: center; min-width: 150px;">
+                <button class="btn-primary" onclick="runDemoStep(3)" style="margin: 0 auto; width: 100%; justify-content: center; background: #10b981; box-shadow: 0 4px 15px rgba(16,185,129,0.3);">
+                  <span class="ar-only">3. تخصيص المنحة والتمويل 💸</span>
+                  <span class="en-only">3. Simulate Grant Award 💸</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 Content -->
+          <div class="wstep-pane" id="wpane-4" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div style="flex: 2; min-width: 250px;">
+                <h4 style="color: #10b981; font-weight: bold; margin-bottom: 8px;" class="ar-only">الخطوة 4: رصد الأثر الميداني اللحظي (Kobo Toolbox Live Stream)</h4>
+                <h4 style="color: #10b981; font-weight: bold; margin-bottom: 8px;" class="en-only">Step 4: Mapped Impact & Live Kobo Reporting</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="ar-only">
+                  تم الانتهاء من التقييم الميداني! المزارعون أرسلوا مؤشرات الأثر عبر Kobo Toolbox: **45 مضخة مركبة، 320 مزارعاً مستفيداً، خفض تكاليف الري بـ 24%**. يمكنك الآن استعراض المشروع في بوابة دورة حياة التمويل وملاحظة تغير الإحصائيات والأرقام.
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;" class="en-only">
+                  Field execution complete! Community reports sent via Kobo Toolbox show: **45 solar pumps installed, 320 farmers empowered, 24% irrigation cost savings**. You can view this live inside the Funding lifecycle hub.
+                </p>
+              </div>
+              <div style="flex: 1; text-align: center; min-width: 150px;">
+                <button class="btn-primary" onclick="runDemoStep(4)" style="margin: 0 auto; width: 100%; justify-content: center;">
+                  <span class="ar-only">4. استعراض الأثر في بوابة التمويل 🚀</span>
+                  <span class="en-only">4. View in Funding Lifecycle 🚀</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+      <!-- Button to go directly to Sandbox -->
+      <div style="text-align: center; margin-top: 25px;">
+        <button class="btn-lang" onclick="switchTab('tab-dashboard')" style="padding: 12px 30px; border-radius: 30px; font-weight: bold; border-color: var(--primary); color: var(--primary);">
+          <span class="ar-only">تخطي المعالج ودخول المنصة التفاعلية الكاملة 🌍</span>
+          <span class="en-only">Skip Wizard & Open Full Map Dashboard 🌍</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Tab 1: Dashboard -->
-    <div id="tab-dashboard" class="tab-content active">
-      <!-- Statistics Cards -->
+    <div id="tab-dashboard" class="tab-content">
+      <!-- Upgraded Statistics Cards (Ecosystem KPIs) -->
       <div class="stats-container">
         <div class="stat-card blue">
           <div class="stat-card-header">
-            <i data-lucide="globe" class="stat-icon"></i>
-            <span class="stat-badge success" id="badge-stat-total">100%</span>
+            <i data-lucide="map-pinned" class="stat-icon"></i>
+            <span class="stat-badge success" id="badge-stat-total">Mapped</span>
           </div>
           <div class="stat-val" id="stat-total">0</div>
           <div class="stat-label" id="lbl-stat-total">إجمالي الجهات الفاعلة</div>
@@ -783,30 +1045,30 @@
         </div>
         <div class="stat-card cyan">
           <div class="stat-card-header">
-            <i data-lucide="heart" class="stat-icon" style="color: #10b981;"></i>
-            <span class="stat-badge info" id="badge-stat-civil">0%</span>
+            <i data-lucide="dollar-sign" class="stat-icon" style="color: #10b981;"></i>
+            <span class="stat-badge info" id="badge-stat-funding">Grants</span>
           </div>
-          <div class="stat-val" id="stat-civil">0</div>
-          <div class="stat-label" id="lbl-stat-civil">منظمات المجتمع المدني</div>
-          <div class="stat-progress-container"><div class="stat-progress-bar success" id="pb-stat-civil" style="width: 0%;"></div></div>
+          <div class="stat-val" id="stat-funding">$0</div>
+          <div class="stat-label" id="lbl-stat-funding">التمويل الموجه للابتكار</div>
+          <div class="stat-progress-container"><div class="stat-progress-bar success" id="pb-stat-funding" style="width: 100%;"></div></div>
         </div>
         <div class="stat-card purple">
           <div class="stat-card-header">
-            <i data-lucide="briefcase" class="stat-icon" style="color: #f59e0b;"></i>
-            <span class="stat-badge warning" id="badge-stat-private">0%</span>
+            <i data-lucide="network" class="stat-icon" style="color: #f59e0b;"></i>
+            <span class="stat-badge warning" id="badge-stat-partnerships">Links</span>
           </div>
-          <div class="stat-val" id="stat-private">0</div>
-          <div class="stat-label" id="lbl-stat-private">القطاع الخاص ورواد الأعمال</div>
-          <div class="stat-progress-container"><div class="stat-progress-bar warning" id="pb-stat-private" style="width: 0%;"></div></div>
+          <div class="stat-val" id="stat-partnerships">0</div>
+          <div class="stat-label" id="lbl-stat-partnerships">الشراكات والتحالفات</div>
+          <div class="stat-progress-container"><div class="stat-progress-bar warning" id="pb-stat-partnerships" style="width: 100%;"></div></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-header">
-            <i data-lucide="graduation-cap" class="stat-icon" style="color: #8a2be2;"></i>
-            <span class="stat-badge" id="badge-stat-public">0%</span>
+            <i data-lucide="trending-up" class="stat-icon" style="color: #8a2be2;"></i>
+            <span class="stat-badge" id="badge-stat-innovations">Maturity 4+</span>
           </div>
-          <div class="stat-val" id="stat-public">0</div>
-          <div class="stat-label" id="lbl-stat-public">القطاع الأكاديمي والحكومي</div>
-          <div class="stat-progress-container"><div class="stat-progress-bar info" id="pb-stat-public" style="width: 0%;"></div></div>
+          <div class="stat-val" id="stat-innovations">0</div>
+          <div class="stat-label" id="lbl-stat-innovations">الابتكارات الميدانية الموسعة</div>
+          <div class="stat-progress-container"><div class="stat-progress-bar info" id="pb-stat-innovations" style="width: 100%;"></div></div>
         </div>
       </div>
 
@@ -827,12 +1089,6 @@
             <label class="filter-label" id="lbl-filter-gov">المحافظة</label>
             <select id="filter-gov" class="filter-select" onchange="applyFilters()">
               <option value="all" id="opt-gov-all">كل المحافظات</option>
-              <option value="Aden">عدن (Aden)</option>
-              <option value="Sanaa">صنعاء (Sanaa)</option>
-              <option value="Taiz">تعز (Taiz)</option>
-              <option value="Hadramout">حضرموت (Hadramout)</option>
-              <option value="Marib">مأرب (Marib)</option>
-              <option value="Hodeidah">الحديدة (Hodeidah)</option>
             </select>
           </div>
 
@@ -855,6 +1111,39 @@
               <option value="adaptation" id="opt-stage-adapt">التكييف والملائمة (Adaptation)</option>
               <option value="prototyping" id="opt-stage-proto">النماذج الأولية (Prototyping)</option>
               <option value="scaling" id="opt-stage-scale">التوسع والاستدامة (Scaling)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" id="lbl-filter-role">دور الجهة</label>
+            <select id="filter-role" class="filter-select" onchange="applyFilters()">
+              <option value="all" id="opt-role-all">كل الأدوار</option>
+              <option value="funder" id="opt-role-funder">ممول (Funder)</option>
+              <option value="enabler" id="opt-role-enabler">ممكن (Enabler)</option>
+              <option value="researcher" id="opt-role-researcher">باحث (Researcher)</option>
+              <option value="implementer" id="opt-role-implementer">منفذ (Implementer)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" id="lbl-filter-thematic">المجال القطاعي</label>
+            <select id="filter-thematic" class="filter-select" onchange="applyFilters()">
+              <option value="all" id="opt-thematic-all">كل المجالات</option>
+              <option value="water_energy" id="opt-thematic-water">المياه والطاقة</option>
+              <option value="food_agri" id="opt-thematic-food">الأمن الغذائي والزراعة</option>
+              <option value="health_nutrition" id="opt-thematic-health">الصحة والتغذية</option>
+              <option value="education_tech" id="opt-thematic-education">التعليم والتكنولوجيا</option>
+              <option value="logistics_response" id="opt-thematic-logistics">اللوجستيات والاستجابة</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" id="lbl-filter-maturity">مؤشر نضج الابتكار</label>
+            <select id="filter-maturity" class="filter-select" onchange="applyFilters()">
+              <option value="all" id="opt-maturity-all">كل درجات النضج</option>
+              <option value="4" id="opt-maturity-4">4 نجوم فما فوق (★4+)</option>
+              <option value="3" id="opt-maturity-3">3 نجوم فما فوق (★3+)</option>
+              <option value="2" id="opt-maturity-2">2 نجوم فما فوق (★2+)</option>
             </select>
           </div>
 
@@ -931,9 +1220,292 @@
               <div class="chart-wrapper">
                 <canvas id="chart-stages"></canvas>
               </div>
+              <div class="chart-wrapper">
+                <canvas id="chart-thematic"></canvas>
+              </div>
             </div>
           </div>
         </main>
+      </div>
+    </div>
+
+    <!-- Tab: Funding Lifecycle Hub -->
+    <div id="tab-funding" class="tab-content">
+      <div class="glass-panel">
+        <h3 style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="dollar-sign" class="visual-icon" style="color: #10b981;"></i>
+          <span class="ar-only">💸 بوابة إدارة ودورة حياة تمويل الابتكارات</span>
+          <span class="en-only">💸 Innovation Funding & Project Lifecycle Hub</span>
+        </h3>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;" class="ar-only">تتبع تفاعلي للمشاريع الجارية والمقترحة من مرحلة الكشف الأولي عن الاحتياج حتى رصد الأثر الميداني النهائي.</p>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;" class="en-only">Interactive tracking of active and proposed projects from initial gap assessment to verified field-level impact reports.</p>
+
+        <!-- Kanban Board -->
+        <div class="funding-lifecycle-board" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+          
+          <!-- Column 1: Opportunity -->
+          <div class="kanban-col" id="col-opportunity" style="background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="kanban-header" style="border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ar-only">1. تحديد الفرصة 🔎</span>
+              <span class="en-only">1. Identify Gap 🔎</span>
+              <span class="badge count-badge" style="background: rgba(59,130,246,0.1); color: #3b82f6;" id="col-count-1">1</span>
+            </div>
+            <div class="kanban-cards" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="kanban-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; font-size: 12px; cursor: pointer; transition: var(--transition);">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">تغذية شبكة مياه مأرب بالطاقة الهيدروليكية</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">Marib Water Network Hydro Power</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 مأرب (Marib)</span>
+                  <span style="color: var(--primary);">$45,000</span>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="ar-only">الحاجة لتوليد طاقة كهرومائية مصغرة لتشغيل بئر مياه للنازحين في الوادي.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="en-only">Need to deploy micro-hydraulic generators to power a displacement camp well.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Match -->
+          <div class="kanban-col" id="col-match" style="background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="kanban-header" style="border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ar-only">2. مطابقة الشركاء 🤝</span>
+              <span class="en-only">2. Match Partners 🤝</span>
+              <span class="badge count-badge" style="background: rgba(138,43,226,0.1); color: var(--accent);" id="col-count-2">1</span>
+            </div>
+            <div class="kanban-cards" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="kanban-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; font-size: 12px; cursor: pointer; transition: var(--transition);">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">أتمتة فرز النفايات البلاستيكية في عدن</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">Aden Automated Plastic Recycling</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 عدن (Aden)</span>
+                  <span style="color: var(--primary);">$60,000</span>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="ar-only">تمت مطابقة حاضنة عدن للابتكار مع مبادرة بيئية محلية لبناء خط فرز آلي.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="en-only">Matched Aden Innovation Incubator with local eco-startup to build a sorting line.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Fund -->
+          <div class="kanban-col" id="col-fund" style="background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="kanban-header" style="border-bottom: 2px solid #f59e0b; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ar-only">3. المشاريع الممولة 💸</span>
+              <span class="en-only">3. Funded Projects 💸</span>
+              <span class="badge count-badge" style="background: rgba(245,158,11,0.1); color: #f59e0b;" id="col-count-3">1</span>
+            </div>
+            <div class="kanban-cards" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="kanban-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; font-size: 12px; cursor: pointer; transition: var(--transition);">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">العيادات الطبية المتنقلة في تعز</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">Mobile Health Clinics in Taiz</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 تعز (Taiz)</span>
+                  <span style="color: var(--primary);">$95,000</span>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="ar-only">منحة معتمدة لبناء 3 عيادات طبية متنقلة بالتعاون مع الهلال الأحمر اليمني.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="en-only">Grant approved for 3 mobile clinics setup in partnership with Yemen Red Crescent.</p>
+              </div>
+              
+              <div class="kanban-card" id="demo-funded-card" style="display: none; border-color: var(--accent); background: linear-gradient(to bottom, rgba(138,43,226,0.1), var(--glass-bg));">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">🌾 ري مزارع تهامة بالطاقة الشمسية</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">🌾 Hodeidah Solar Agriculture Irrigation</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 الحديدة (Hodeidah)</span>
+                  <span style="color: #10b981; font-weight: bold;">$85,000</span>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="ar-only">تمويل من الائتلاف الهولندي (DRA) لتوفير مضخات شمسية لشبكة مزارعي تهامة.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="en-only">Funded by Dutch Relief Alliance (DRA) for solar irrigation pumps implementation.</p>
+                <div style="margin-top: 8px; font-size: 10px; background: rgba(16,185,129,0.1); color: #10b981; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: bold;">
+                  <span class="ar-only">المانح: DRA</span>
+                  <span class="en-only">Donor: DRA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 4: Track -->
+          <div class="kanban-col" id="col-track" style="background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="kanban-header" style="border-bottom: 2px solid #8a2be2; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ar-only">4. تتبع التنفيذ 🚜</span>
+              <span class="en-only">4. Active Tracking 🚜</span>
+              <span class="badge count-badge" style="background: rgba(138,43,226,0.1); color: #8a2be2;" id="col-count-4">1</span>
+            </div>
+            <div class="kanban-cards" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="kanban-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; font-size: 12px; cursor: pointer; transition: var(--transition);">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">تطوير التعليم الرقمي بمأرب</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">Digital Education Hub in Marib</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 مأرب (Marib)</span>
+                  <span style="color: var(--primary);">$35,000</span>
+                </div>
+                <div style="margin-bottom: 8px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
+                    <span>Progress</span>
+                    <span>70%</span>
+                  </div>
+                  <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+                    <div style="width: 70%; height: 100%; background: var(--accent);"></div>
+                  </div>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="ar-only">توزيع أجهزة لوحية وتجهيز خوادم تعليمية دون اتصال للطلاب النازحين.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4;" class="en-only">Distributing tablets & setting offline servers for displaced learners in camps.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 5: Report -->
+          <div class="kanban-col" id="col-report" style="background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; min-height: 400px; display: flex; flex-direction: column;">
+            <div class="kanban-header" style="border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ar-only">5. رصد الأثر 🚀</span>
+              <span class="en-only">5. Impact Reported 🚀</span>
+              <span class="badge count-badge" style="background: rgba(16,185,129,0.1); color: #10b981;" id="col-count-5">1</span>
+            </div>
+            <div class="kanban-cards" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="kanban-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; font-size: 12px; cursor: pointer; transition: var(--transition);">
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="ar-only">مضخات المياه بالطاقة الشمسية بتهامة</div>
+                <div style="font-weight: bold; margin-bottom: 6px; color: #ffffff;" class="en-only">Tihama Solar Pumps (Completed)</div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-bottom: 8px;">
+                  <span>📍 الحديدة (Hodeidah)</span>
+                  <span style="color: #10b981; font-weight: bold;">$85,000</span>
+                </div>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4; color: #10b981;" class="ar-only">✔️ تم رصد الأثر بنجاح: ري 45 مزرعة، 320 عائلة مستفيدة، خفض كلفة الري 24%.</p>
+                <p style="font-size: 11px; opacity: 0.7; line-height: 1.4; color: #10b981;" class="en-only">✔️ Impact verified: 45 farms irrigated, 320 families empowered, 24% savings.</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: AI Smart Co-Pilot -->
+    <div id="tab-copilot" class="tab-content">
+      <div class="glass-panel" style="position: relative; overflow: hidden;">
+        <div style="position: absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(to right, var(--accent), var(--primary));"></div>
+        <h3 style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="brain" class="visual-icon" style="color: var(--accent);"></i>
+          <span class="ar-only">🤖 مساعد المنظومة الذكي للتشبيك والتحليل الجغرافي</span>
+          <span class="en-only">🤖 AI Smart Co-Pilot for Ecosystem Networking & Gap Analysis</span>
+        </h3>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;" class="ar-only">نظام دعم القرار الذكي لمطابقة الشركاء لبناء تحالفات تمويلية قوية واكتشاف الفجوات الهيكلية في المحافظات.</p>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 14px;" class="en-only">Decision support engine to form high-impact consortia and analyze localized gaps in governorates.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; flex-wrap: wrap;" id="copilot-grid-layout">
+          
+          <!-- Column Left: Input Matcher -->
+          <div class="glass-panel" style="background: rgba(0,0,0,0.1); margin: 0; padding: 20px; border: 1px solid var(--glass-border);">
+            <h4 style="font-size: 15px; margin-bottom: 15px; color: #ffffff;" class="ar-only">🛠️ محاكي مطابقة التحالفات (Consortium Matcher)</h4>
+            <h4 style="font-size: 15px; margin-bottom: 15px; color: #ffffff;" class="en-only">🛠️ Consortium Matcher Simulator</h4>
+            
+            <div class="filter-group">
+              <label class="filter-label ar-only">المحافظة المستهدفة</label>
+              <label class="filter-label en-only">Target Governorate</label>
+              <select id="copilot-gov" class="filter-select" style="background: rgba(0,0,0,0.25);">
+                <option value="Hodeidah">الحديدة (Hodeidah)</option>
+                <option value="Aden">عدن (Aden)</option>
+                <option value="Taiz">تعز (Taiz)</option>
+                <option value="Marib">مأرب (Marib)</option>
+                <option value="Sanaa">صنعاء (Sanaa)</option>
+                <option value="Hadramout">حضرموت (Hadramout)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label ar-only">المجال القطاعي</label>
+              <label class="filter-label en-only">Thematic Area</label>
+              <select id="copilot-thematic" class="filter-select" style="background: rgba(0,0,0,0.25);">
+                <option value="food_agri">الأمن الغذائي والزراعة (Food & Agriculture)</option>
+                <option value="water_energy">المياه والطاقة (Water & Energy)</option>
+                <option value="health_nutrition">الصحة والتغذية (Health & Nutrition)</option>
+                <option value="education_tech">التعليم والتكنولوجيا (Education & Tech)</option>
+                <option value="logistics_response">اللوجستيات والاستجابة (Logistics & Response)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label ar-only">ميزانية المشروع المقترحة</label>
+              <label class="filter-label en-only">Project Proposed Budget</label>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px;">
+                <span>$10,000</span>
+                <span style="color: var(--primary); font-weight: bold;" id="copilot-budget-val">$85,000</span>
+                <span>$250,000</span>
+              </div>
+              <input type="range" id="copilot-budget" min="10000" max="250000" step="5000" value="85000" style="width: 100%; cursor: pointer;" oninput="document.getElementById('copilot-budget-val').innerText = '$' + parseInt(this.value).toLocaleString()">
+            </div>
+
+            <button class="btn-primary" style="width: 100%; justify-content: center; background: var(--accent); box-shadow: 0 4px 15px rgba(138,43,226,0.3);" onclick="triggerAICopilotMatch()">
+              <i data-lucide="cpu" class="btn-icon"></i>
+              <span class="ar-only">شغل محاكي المطابقة 🚀</span>
+              <span class="en-only">Launch AI Matcher 🚀</span>
+            </button>
+          </div>
+
+          <!-- Column Right: Output & Terminal Console -->
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- Terminal panel -->
+            <div class="output-console" style="margin: 0; min-height: 150px; flex: 1;">
+              <div class="console-header">
+                <span class="ar-only">منفذ معالجة الذكاء الاصطناعي (AI Cognitive Output)</span>
+                <span class="en-only">AI Cognitive Engine Output Stream</span>
+                <span id="copilot-status">STATUS: READY</span>
+              </div>
+              <div class="console-content" id="copilot-output" style="max-height: 150px; overflow-y: auto;">
+                [INFO] Ready to analyze. Select criteria on the left and click "Launch AI Matcher" to start.
+              </div>
+            </div>
+            
+            <!-- Result Panel -->
+            <div class="glass-panel" id="copilot-result-box" style="margin: 0; padding: 15px; border-color: rgba(16,185,129,0.3); display: none; background: rgba(16,185,129,0.02);">
+              <h4 style="font-size: 13px; color: #10b981; margin-bottom: 10px; font-weight: bold;" class="ar-only">🏆 التحالف المقترح الفائز (Matched Consortium Recommendation)</h4>
+              <h4 style="font-size: 13px; color: #10b981; margin-bottom: 10px; font-weight: bold;" class="en-only">🏆 Recommended Consortium Partners</h4>
+              
+              <div class="consortium-partners" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 10px; border-radius: 8px;">
+                  <div style="font-size: 10px; text-transform: uppercase; color: var(--primary); font-weight: bold;" class="ar-only">الجهة 1 (محلية/منفذة)</div>
+                  <div style="font-size: 10px; text-transform: uppercase; color: var(--primary); font-weight: bold;" class="en-only">Partner 1 (Local/Implementer)</div>
+                  <div id="partner1-name" style="font-weight: bold; font-size: 12px; color: #ffffff; margin-top: 3px;">شبكة مزارعي تهامة</div>
+                  <div id="partner1-meta" style="font-size: 10px; opacity: 0.8; margin-top: 2px;">Maturity Score: 4.2 | Role: Implementer</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 10px; border-radius: 8px;">
+                  <div style="font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: bold;" class="ar-only">الجهة 2 (تقنية/ممكنة)</div>
+                  <div style="font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: bold;" class="en-only">Partner 2 (Technical/Enabler)</div>
+                  <div id="partner2-name" style="font-weight: bold; font-size: 12px; color: #ffffff; margin-top: 3px;">مؤسسة سحاب لطاقة الشمس</div>
+                  <div id="partner2-meta" style="font-size: 10px; opacity: 0.8; margin-top: 2px;">Maturity Score: 4.5 | Role: Enabler</div>
+                </div>
+              </div>
+              
+              <div style="background: rgba(255,255,255,0.02); border-left: 3px solid #10b981; padding: 8px 10px; border-radius: 4px; font-size: 11px;">
+                <strong>Rationale (مبررات المطابقة):</strong>
+                <span id="matching-rationale" style="opacity: 0.9;">مزارعي تهامة يتميزون بالثقة والوصول المجتمعي الواسع، بينما تمتلك سحاب الريادة في حلول المضخات وتوفير ميزانية مناسبة.</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- Ecosystem Strategic Recommendations -->
+        <div style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+          <h4 style="font-size: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="trending-up" style="color: var(--primary);"></i>
+            <span class="ar-only">💡 التوصيات الاستراتيجية للمنظومة (Ecosystem Recommendations)</span>
+            <span class="en-only">💡 System Strategic Recommendations (UNDP & World Bank Alignment)</span>
+          </h4>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex-wrap: wrap;" id="recommendations-grid-layout">
+            <div class="recommendation-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px;">
+              <span class="badge info" style="margin-bottom: 8px;">مأرب وسقطرى</span>
+              <h5 style="font-size: 13px; color: #ffffff; margin-bottom: 6px;" class="ar-only">سد فجوة الممكنين (Enablers Gap)</h5>
+              <h5 style="font-size: 13px; color: #ffffff; margin-bottom: 6px;" class="en-only">Bridge Enabler Gap in Remote Govs</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;" class="ar-only">يوجد ضعف بنسبة 55% في حاضنات ومسرعات الأعمال الموثقة في مأرب وسقطرى. نوصي بتخصيص منح لدعم حاضنات ريادة الأعمال للشباب النازحين بالتنسيق مع الجامعات المحلية.</p>
+              <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;" class="en-only">There is a 55% deficit in documented incubators/accelerators in Marib and Socotra. We recommend allocating capacity grants to launch youth tech labs with local universities.</p>
+            </div>
+            <div class="recommendation-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px;">
+              <span class="badge success" style="margin-bottom: 8px;">الحديدة وصعدة</span>
+              <h5 style="font-size: 13px; color: #ffffff; margin-bottom: 6px;" class="ar-only">تجميع فاعلي الأمن الغذائي والري</h5>
+              <h5 style="font-size: 13px; color: #ffffff; margin-bottom: 6px;" class="en-only">Consolidate Food & Water Clusters</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;" class="ar-only">التحليلات الجغرافية تدل على ضعف روابط التشبيك بين جهات الابتكار الزراعي والممولين الدوليين. نوصي بتسهيل تحالفات تشاركية تجمع بين المبتكر التقني والمستفيدين المباشرين لتقليص المخاطر الميدانية.</p>
+              <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;" class="en-only">Spatial data shows low network density between local agricultural innovators and international funders. We recommend structuring shared risk alliances to boost local deployment.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -967,8 +1539,11 @@
               <tr>
                 <th id="th-name">اسم الجهة</th>
                 <th id="th-sector">القطاع</th>
+                <th id="th-role">دور الجهة</th>
+                <th id="th-thematic">المجال القطاعي</th>
                 <th id="th-stage">مرحلة الابتكار</th>
                 <th id="th-gov">المحافظة</th>
+                <th id="th-maturity">مؤشر النضج</th>
                 <th id="th-email">البريد الإلكتروني</th>
                 <th id="th-phone">الهاتف</th>
                 <th id="th-desc">الوصف والنشاط</th>
@@ -984,7 +1559,31 @@
 
     <!-- Tab 3: Simulator -->
     <div id="tab-simulator" class="tab-content">
-      <div class="glass-panel">
+      
+      <!-- Lock Screen Gate -->
+      <div id="simulator-lock-screen" class="glass-panel" style="max-width: 450px; margin: 50px auto; text-align: center; padding: 40px 30px; border-color: var(--accent);">
+        <i data-lucide="lock" style="width: 50px; height: 50px; color: var(--accent); margin-bottom: 20px; margin-left: auto; margin-right: auto;"></i>
+        <h3 style="margin-bottom: 10px; font-weight: bold; color: #ffffff;" class="ar-only">بوابة محاكاة كابو الآمنة</h3>
+        <h3 style="margin-bottom: 10px; font-weight: bold; color: #ffffff;" class="en-only">Secure Kobo Simulator Gate</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 25px;" class="ar-only">هذه الواجهة محمية لمنع إدخال بيانات غير مصرح بها للمنظومة. الرجاء إدخال رمز المرور (تلميح: yjr2026).</p>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 25px;" class="en-only">This portal is restricted to prevent unauthorized database inserts. Enter passcode (Hint: yjr2026).</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <input type="password" id="sim-passcode" class="form-control" placeholder="••••••••" style="text-align: center; font-size: 18px; letter-spacing: 4px; background: rgba(0,0,0,0.25);">
+          <button class="btn-primary" style="justify-content: center; width: 100%;" onclick="unlockKoboSimulator()">
+            <i data-lucide="unlock" class="btn-icon"></i>
+            <span class="ar-only">فتح بوابة الإدخال 🔓</span>
+            <span class="en-only">Unlock Portal 🔓</span>
+          </button>
+          <div id="sim-lock-error" style="color: #ef4444; font-size: 12px; margin-top: 5px; display: none;">
+            <span class="ar-only">رمز المرور خاطئ! حاول مجدداً.</span>
+            <span class="en-only">Incorrect passcode! Please try again.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Simulator Content -->
+      <div id="simulator-content" class="glass-panel" style="display: none;">
         <h3 style="margin-bottom: 10px; display: flex; align-items: center;">
           <i data-lucide="smartphone" class="visual-icon"></i>
           <span id="lbl-sim-title">📱 محاكاة استمارة Kobo Toolbox لتسجيل فاعل جديد</span>
@@ -993,7 +1592,7 @@
 
         <div class="simulator-pane">
           <!-- Form Area -->
-          <div class="glass-panel" style="background: rgba(0,0,0,0.1); border: 1px dashed var(--glass-border);">
+          <div class="glass-panel" style="background: rgba(0,0,0,0.1); border: 1px dashed var(--glass-border); margin-bottom: 0;">
             <form id="kobo-form" onsubmit="handleFormSubmit(event)">
               <div class="form-grid">
                 <div class="form-group">
@@ -1027,6 +1626,29 @@
                 </div>
               </div>
 
+              <!-- NEW ROW: Role and Thematic Area -->
+              <div class="form-grid">
+                <div class="form-group">
+                  <label id="lbl-form-role">دور الجهة الفاعلة *</label>
+                  <select id="form-role" class="form-control" required>
+                    <option value="implementer" id="opt-form-role-implementer">منفذ (Implementer)</option>
+                    <option value="enabler" id="opt-form-role-enabler">ممكن (Enabler)</option>
+                    <option value="researcher" id="opt-form-role-researcher">باحث (Researcher)</option>
+                    <option value="funder" id="opt-form-role-funder">ممول (Funder)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label id="lbl-form-thematic">المجال القطاعي الرئيسي *</label>
+                  <select id="form-thematic" class="form-control" required>
+                    <option value="water_energy" id="opt-form-them-water">المياه والطاقة (Water & Energy)</option>
+                    <option value="food_agri" id="opt-form-them-food">الأمن الغذائي والزراعة (Food & Agriculture)</option>
+                    <option value="health_nutrition" id="opt-form-them-health">الصحة والتغذية (Health & Nutrition)</option>
+                    <option value="education_tech" id="opt-form-them-edu">التعليم والتكنولوجيا (Education & Tech)</option>
+                    <option value="logistics_response" id="opt-form-them-log">اللوجستيات والاستجابة (Logistics & Response)</option>
+                  </select>
+                </div>
+              </div>
+
               <div class="form-grid">
                 <div class="form-group">
                   <label id="lbl-form-gov">المحافظة *</label>
@@ -1040,22 +1662,35 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label id="lbl-form-partner">الشريك المرتبط (للتشبيك) (اختياري)</label>
-                  <select id="form-partner" class="form-control">
-                    <option value="none" id="opt-form-partner-none">لا يوجد - مستقل</option>
-                    <!-- Dynamically populated with existing actors -->
+                  <label id="lbl-form-maturity">مؤشر نضج الابتكار (Maturity Score) *</label>
+                  <select id="form-maturity" class="form-control" required>
+                    <option value="5.0">★★★★★ (5.0)</option>
+                    <option value="4.0">★★★★☆ (4.0)</option>
+                    <option value="3.5" selected>★★★☆☆ (3.5)</option>
+                    <option value="3.0">★★★☆☆ (3.0)</option>
+                    <option value="2.0">★★☆☆☆ (2.0)</option>
+                    <option value="1.0">★☆☆☆☆ (1.0)</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-grid">
                 <div class="form-group">
-                  <label id="lbl-form-email">البريد الإلكتروني</label>
-                  <input type="email" id="form-email" class="form-control" placeholder="info@example.com">
+                  <label id="lbl-form-partner">الشريك المرتبط (للتشبيك) (اختياري)</label>
+                  <select id="form-partner" class="form-control">
+                    <option value="none" id="opt-form-partner-none">لا يوجد - مستقل</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label id="lbl-form-phone">الهاتف</label>
                   <input type="text" id="form-phone" class="form-control" placeholder="+967 777111222">
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group" style="grid-column: span 2;">
+                  <label id="lbl-form-email">البريد الإلكتروني</label>
+                  <input type="email" id="form-email" class="form-control" placeholder="info@example.com">
                 </div>
               </div>
 
