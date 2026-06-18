@@ -1718,8 +1718,34 @@ function renderNetwork() {
     const nodesArray = [];
     const edgesArray = [];
     
-    // Add filtered nodes
-    filteredActors.forEach(actor => {
+    // Limit network rendering when too many nodes are present to avoid visual clutter
+    let actorsToRender = [...filteredActors];
+    const isShowingSubset = filteredActors.length > 40;
+    
+    if (isShowingSubset) {
+      // Sort by maturity score descending to showcase key innovation hubs
+      actorsToRender.sort((a, b) => (b.maturity_score || 0) - (a.maturity_score || 0));
+      actorsToRender = actorsToRender.slice(0, 40);
+    }
+    
+    // Dynamic hint text update based on subset status
+    const netHint = document.getElementById("lbl-net-hint");
+    if (netHint) {
+      if (isShowingSubset) {
+        netHint.innerText = currentLang === 'ar'
+          ? "⚠️ تم عرض أبرز 40 جهة لمنع الازدحام. استخدم الفلاتر للتبسيط."
+          : "⚠️ Showing top 40 hubs for clarity. Use sidebar filters to simplify.";
+        netHint.style.color = "var(--accent)";
+      } else {
+        netHint.innerText = currentLang === 'ar'
+          ? "اضغط على أي عقدة لعرض العلاقات والتفاصيل البينية"
+          : "Click any node to focus on its direct relationships";
+        netHint.style.color = "var(--secondary)";
+      }
+    }
+    
+    // Add nodes to render list
+    actorsToRender.forEach(actor => {
       const label = currentLang === 'ar' ? actor.name_ar : actor.name_en;
       
       // Node styling by sector & active theme
@@ -1783,10 +1809,10 @@ function renderNetwork() {
         margin: 10
       });
       
-      // Add edges for connections if target exists in our filtered list
+      // Add edges for connections if target exists in our rendered list
       if (actor.connections && Array.isArray(actor.connections)) {
         actor.connections.forEach(connId => {
-          if (connId > actor.id && filteredActors.some(a => a.id === connId)) {
+          if (connId > actor.id && actorsToRender.some(a => a.id === connId)) {
             edgesArray.push({
               from: actor.id,
               to: connId,
@@ -1809,7 +1835,7 @@ function renderNetwork() {
     const data = { nodes, edges };
     
     // Compute Network Density (edges divided by maximum possible edges)
-    const nodeCount = filteredActors.length;
+    const nodeCount = actorsToRender.length;
     let edgeCount = edgesArray.length;
     let density = 0;
     if (nodeCount > 1) {
@@ -2912,16 +2938,21 @@ function startOnboardingTour() {
 function renderTourStep() {
   if (!isTourActive) return;
   
-  // Clear previous highlights
-  document.querySelectorAll(".onboarding-highlight").forEach(el => {
-    el.classList.remove("onboarding-highlight");
-    el.classList.remove("onboarding-highlight-pulse");
-  });
-  
   const step = tourSteps[tourCurrentStep];
   if (!step) {
     endOnboardingTour();
     return;
+  }
+  
+  // Hide spotlight temporarily to avoid flashes during transitions
+  const spotlightEl = document.getElementById("onboarding-spotlight");
+  if (spotlightEl) spotlightEl.classList.add("hidden");
+  
+  // Show standard overlay backdrop by default
+  const overlayEl = document.getElementById("onboarding-overlay");
+  if (overlayEl) {
+    overlayEl.classList.remove("hidden");
+    overlayEl.classList.add("visible");
   }
   
   // Ensure correct tab is selected
@@ -2980,20 +3011,31 @@ function renderTourStep() {
 
     if (step.elementId) {
       const target = document.querySelector(step.elementId);
-      if (target) {
-        // Highlight element
-        target.classList.add("onboarding-highlight");
-        target.classList.add("onboarding-highlight-pulse");
-        
-        // Scroll into view
+      if (target && target.getBoundingClientRect().width > 0) {
+        // Scroll target into view
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Calculate absolute position
-        tooltipEl.style.position = "absolute";
-        
+        // Let scroll finish, then position spotlight and tooltip
         setTimeout(() => {
           const rect = target.getBoundingClientRect();
           const tooltipRect = tooltipEl.getBoundingClientRect();
+          
+          // Position spotlight helper at the body level
+          if (spotlightEl) {
+            spotlightEl.classList.remove("hidden");
+            spotlightEl.style.top = `${rect.top + window.scrollY}px`;
+            spotlightEl.style.left = `${rect.left + window.scrollX}px`;
+            spotlightEl.style.width = `${rect.width}px`;
+            spotlightEl.style.height = `${rect.height}px`;
+            const borderRadius = window.getComputedStyle(target).borderRadius;
+            spotlightEl.style.borderRadius = borderRadius || "8px";
+            
+            // Hide the standard overlay background so the spotlight shadow is the only darkening layer
+            if (overlayEl) overlayEl.classList.remove("visible");
+          }
+          
+          // Calculate tooltip position next to element
+          tooltipEl.style.position = "absolute";
           
           let top, left;
           
@@ -3011,7 +3053,7 @@ function renderTourStep() {
             left = rect.left + (rect.width - tooltipRect.width) / 2 + window.scrollX;
           }
           
-          // Window boundaries
+          // Window boundaries check
           if (left < 15) left = 15;
           if (left + tooltipRect.width > window.innerWidth - 15) {
             left = window.innerWidth - tooltipRect.width - 15;
@@ -3021,7 +3063,7 @@ function renderTourStep() {
           tooltipEl.style.top = `${top}px`;
           tooltipEl.style.left = `${left}px`;
           tooltipEl.style.transform = "none";
-        }, 150); // wait for scroll to finish
+        }, 250); // wait for scroll
         
         return;
       }
@@ -3032,7 +3074,7 @@ function renderTourStep() {
     tooltipEl.style.top = "50%";
     tooltipEl.style.left = "50%";
     tooltipEl.style.transform = "translate(-50%, -50%)";
-  }, 1200); // Wait 1200ms to ensure the page/tab is fully visible and map is initialized
+  }, 1200); // wait for Leaflet/Vis.js redraws
 }
 
 function nextTourStep() {
@@ -3054,14 +3096,13 @@ function prevTourStep() {
 function endOnboardingTour() {
   isTourActive = false;
   
-  // Remove highlights
-  document.querySelectorAll(".onboarding-highlight").forEach(el => {
-    el.classList.remove("onboarding-highlight");
-    el.classList.remove("onboarding-highlight-pulse");
-  });
-  
   const overlay = document.getElementById("onboarding-overlay");
+  const spotlight = document.getElementById("onboarding-spotlight");
   const tooltip = document.getElementById("onboarding-tooltip");
+  
+  if (spotlight) {
+    spotlight.classList.add("hidden");
+  }
   
   if (overlay && tooltip) {
     overlay.classList.remove("visible");

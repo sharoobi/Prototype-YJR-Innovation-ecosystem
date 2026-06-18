@@ -1580,22 +1580,26 @@ body.theme-emerald .onboarding-step-counter {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.onboarding-highlight {
-  position: relative !important;
-  z-index: 10002 !important;
-  pointer-events: none !important;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 15px 5px var(--primary) !important;
-  transition: box-shadow 0.3s ease;
+.onboarding-spotlight {
+  position: absolute;
+  z-index: 10001;
+  pointer-events: none;
+  border: 2.5px solid var(--primary);
+  box-shadow: 0 0 15px var(--primary), 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box;
+  border-radius: 8px;
+  animation: spotlight-pulse 2.2s infinite ease-in-out;
+}
+body.theme-emerald .onboarding-spotlight {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary), 0 0 0 9999px rgba(0, 0, 0, 0.55);
 }
 
-/* Make sure highlighted element outline looks awesome and glows */
-@keyframes onboarding-glow {
-  0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 8px 1px var(--primary); }
-  50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 18px 6px var(--primary); }
-  100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 8px 1px var(--primary); }
-}
-.onboarding-highlight-pulse {
-  animation: onboarding-glow 2s infinite ease-in-out;
+@keyframes spotlight-pulse {
+  0% { border-color: var(--primary); box-shadow: 0 0 8px var(--primary), 0 0 0 9999px rgba(0, 0, 0, 0.55); }
+  50% { border-color: var(--secondary); box-shadow: 0 0 18px var(--secondary), 0 0 0 9999px rgba(0, 0, 0, 0.55); }
+  100% { border-color: var(--primary); box-shadow: 0 0 8px var(--primary), 0 0 0 9999px rgba(0, 0, 0, 0.55); }
 }
 
 /* Helper to hide overlay/tooltip */
