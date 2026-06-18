@@ -400,6 +400,10 @@ let networkPhysicsEnabled = true; // Global network physics state
 let chartSectors = null;
 let chartStages = null;
 
+// Presentation & Strategy Portal State
+let currentPresSlide = 0;
+let isPresentationMode = true;
+
 // Localization Dictionaries
 const locales = {
   ar: {
@@ -555,6 +559,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load database from localStorage or load defaults
   loadDatabase();
   
+  // Init Presentation Deck
+  initPresentation();
+  
   // Apply visual theme
   changeTheme(activeTheme);
   
@@ -648,6 +655,12 @@ function changeTheme(themeName) {
   
   document.body.classList.remove('theme-neon', 'theme-emerald', 'theme-light');
   document.body.classList.add('theme-' + themeName);
+  
+  // Sync select inputs
+  const mainSel = document.getElementById("theme-selector");
+  if (mainSel) mainSel.value = themeName;
+  const presSel = document.getElementById("pres-theme-selector");
+  if (presSel) presSel.value = themeName;
   
   // Swap Leaflet map tiles dynamically
   updateMapTiles();
@@ -1002,6 +1015,9 @@ function toggleLanguage() {
   
   const toggleBtn = document.getElementById("btn-lang-toggle");
   if (toggleBtn) toggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
+  
+  const presToggleBtn = document.getElementById("pres-btn-lang-toggle");
+  if (presToggleBtn) presToggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
   
   applyLocalization();
   
@@ -1726,4 +1742,172 @@ function exportData(format) {
     link.click();
     document.body.removeChild(link);
   }
+}
+
+/* ========================================================
+   Presentation Slide Deck Controller & Strategic Navigation
+   ======================================================== */
+
+function initPresentation() {
+  const slides = document.querySelectorAll(".slide");
+  const TOTAL_SLIDES = slides.length;
+  currentPresSlide = 0;
+  
+  // Set active class on slide 0 and remove from others
+  slides.forEach((slide, idx) => {
+    if (idx === 0) {
+      slide.classList.add("active");
+    } else {
+      slide.classList.remove("active");
+    }
+  });
+  
+  const dotsContainer = document.getElementById("pres-dots-container");
+  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
+    // Create navigation dots dynamically
+    for (let i = 0; i < TOTAL_SLIDES; i++) {
+      const dot = document.createElement("div");
+      dot.className = "pres-dot" + (i === 0 ? " active" : "");
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+  }
+  
+  updatePresentationProgress(0, TOTAL_SLIDES);
+  
+  // Set language toggle label
+  const presToggleBtn = document.getElementById("pres-btn-lang-toggle");
+  if (presToggleBtn) presToggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
+  
+  // Slide swipe & keyboard support
+  setupPresentationListeners();
+}
+
+function updatePresentationProgress(n, total) {
+  const progressBar = document.getElementById("presentation-progress-bar");
+  if (progressBar) {
+    const percentage = ((n + 1) / total) * 100;
+    progressBar.style.width = percentage + "%";
+  }
+}
+
+function goToSlide(n) {
+  const slides = document.querySelectorAll(".slide");
+  const TOTAL_SLIDES = slides.length;
+  const dotsContainer = document.getElementById("pres-dots-container");
+  
+  if (n < 0 || n >= TOTAL_SLIDES || n === currentPresSlide) return;
+  
+  // Deactivate current slide & dot
+  slides[currentPresSlide].classList.remove("active");
+  if (dotsContainer && dotsContainer.children[currentPresSlide]) {
+    dotsContainer.children[currentPresSlide].classList.remove("active");
+  }
+  
+  // Activate new slide & dot
+  currentPresSlide = n;
+  slides[currentPresSlide].classList.add("active");
+  if (dotsContainer && dotsContainer.children[currentPresSlide]) {
+    dotsContainer.children[currentPresSlide].classList.add("active");
+  }
+  
+  updatePresentationProgress(n, TOTAL_SLIDES);
+  
+  // Re-trigger animations in active slide for WOW effect
+  slides[currentPresSlide].querySelectorAll('[class*="pres-"]').forEach(el => {
+    const classes = [...el.classList].filter(c => c.startsWith('pres-'));
+    classes.forEach(c => {
+      el.classList.remove(c);
+      void el.offsetWidth; // force reflow
+      el.classList.add(c);
+    });
+  });
+  
+  // Refresh Lucide Icons just in case
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+function changeSlide(dir) {
+  goToSlide(currentPresSlide + dir);
+}
+
+function setupPresentationListeners() {
+  // Keypress listener
+  document.removeEventListener("keydown", handlePresentationKeydown);
+  document.addEventListener("keydown", handlePresentationKeydown);
+  
+  // Touch Swipe listener
+  const wrapper = document.getElementById("deckWrapper");
+  if (wrapper) {
+    let touchStartX = 0;
+    wrapper.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    wrapper.addEventListener("touchend", e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 60) {
+        if (diff > 0) {
+          // Swipe left: Next slide
+          changeSlide(1);
+        } else {
+          // Swipe right: Prev slide
+          changeSlide(-1);
+        }
+      }
+    }, { passive: true });
+  }
+}
+
+function handlePresentationKeydown(e) {
+  if (!isPresentationMode) return;
+  
+  if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+    // In RTL, ArrowLeft usually goes forward, ArrowRight backward. Let's make it standard:
+    changeSlide(currentLang === 'ar' ? -1 : 1);
+  }
+  if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+    changeSlide(currentLang === 'ar' ? 1 : -1);
+  }
+}
+
+// Dashboard Transition Functions
+function enterDashboard() {
+  isPresentationMode = false;
+  
+  const presWrapper = document.getElementById("presentation-wrapper");
+  const dashWrapper = document.getElementById("dashboard-wrapper");
+  
+  if (presWrapper) presWrapper.style.display = "none";
+  if (dashWrapper) dashWrapper.style.display = "block";
+  
+  // Trigger Leaflet map dimensions recalculation since it was hidden
+  if (mapInstance) {
+    setTimeout(() => {
+      mapInstance.invalidateSize();
+    }, 250);
+  }
+  
+  // Trigger Vis.js stabilization
+  if (networkInstance) {
+    setTimeout(() => {
+      networkInstance.fit();
+    }, 250);
+  }
+}
+
+function exitDashboard() {
+  isPresentationMode = true;
+  
+  const presWrapper = document.getElementById("presentation-wrapper");
+  const dashWrapper = document.getElementById("dashboard-wrapper");
+  
+  if (presWrapper) presWrapper.style.display = "block";
+  if (dashWrapper) dashWrapper.style.display = "none";
+  
+  // Re-initialize or refresh presentation state
+  initPresentation();
 }

@@ -1045,3 +1045,248 @@ body.lang-ar .toast {
   border-bottom-style: solid;
   border-radius: 4px;
 }
+
+/* ==========================================
+   Presentation Deck & Strategic Portal CSS
+   ========================================== */
+
+#presentation-wrapper {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+}
+
+.presentation-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 1100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(17, 24, 39, 0.55) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 12px 24px !important;
+}
+
+.deck-wrapper {
+  position: absolute;
+  inset: 0;
+  background-color: #030f12;
+  /* Premium radial glow for dark visual depth */
+  background-image: radial-gradient(circle at 50% 45%, rgba(0, 103, 108, 0.22) 0%, rgba(5, 12, 15, 1) 75%);
+  overflow: hidden;
+}
+
+.slides-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 95px 6% 80px 6%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.025) translateY(12px);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+  z-index: 20;
+}
+
+/* Premium Glassmorphic Presentation Cards */
+.pres-card {
+  background: rgba(15, 28, 32, 0.42);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-radius: 28px;
+  border: 1px solid rgba(127, 252, 255, 0.13);
+  padding: 35px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+  width: 100%;
+  max-width: 900px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pres-card:hover {
+  border-color: rgba(127, 252, 255, 0.35);
+  background: rgba(15, 28, 32, 0.52);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 242, 254, 0.08);
+}
+
+/* Animated Elements for Strategy Deck */
+@keyframes presFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes presPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.pres-float {
+  animation: presFloat 6s ease-in-out infinite;
+}
+
+.pres-pulse {
+  animation: presPulse 4s ease-in-out infinite;
+}
+
+/* Presentation navigation controls */
+.presentation-controls {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  z-index: 1200;
+}
+
+.pres-nav-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 50, 55, 0.55);
+  border: 1px solid rgba(0, 103, 108, 0.35);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.pres-nav-btn:hover {
+  background: var(--primary);
+  color: #030d0d;
+  border-color: var(--primary);
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+.pres-nav-btn:active {
+  transform: scale(0.96);
+}
+
+/* Navigation dots */
+.pres-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pres-dot:hover {
+  background: rgba(0, 242, 254, 0.3);
+  transform: scale(1.15);
+}
+
+.pres-dot.active {
+  background: var(--primary);
+  transform: scale(1.35);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  width: 12px;
+  height: 12px;
+}
+
+/* Progress bar */
+#presentation-progress-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 4px;
+  z-index: 1201;
+  background: linear-gradient(90deg, var(--accent), var(--primary), var(--accent));
+  background-size: 200% 100%;
+  animation: progressShimmer 2.5s linear infinite;
+  box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
+}
+
+/* Bilingual content switching classes */
+body.lang-ar .en-only {
+  display: none !important;
+}
+
+body.lang-en .ar-only {
+  display: none !important;
+}
+
+/* Theme adaptation for Presentation */
+body.theme-emerald .deck-wrapper {
+  background-image: radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.18) 0%, rgba(4, 18, 14, 1) 75%);
+}
+
+body.theme-light .deck-wrapper {
+  background-color: #f1f5f9;
+  background-image: radial-gradient(circle at 50% 45%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 1) 75%);
+}
+
+body.theme-light .pres-card {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(37, 99, 235, 0.12);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+body.theme-light .pres-card:hover {
+  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+}
+
+body.theme-light .slide h1, 
+body.theme-light .slide h2, 
+body.theme-light .slide h4, 
+body.theme-light .slide th {
+  color: #0f172a !important;
+}
+
+body.theme-light .pres-nav-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+body.theme-light .pres-nav-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+body.theme-light .pres-dot {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0,0,0,0.05);
+}
+
+body.theme-light .pres-dot.active {
+  background: var(--primary);
+}
+
