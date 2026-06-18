@@ -1492,6 +1492,7 @@ function switchTab(tabId) {
   else if (tabId === 'tab-copilot') btnId = "tab-btn-copilot";
   else if (tabId === 'tab-directory') btnId = "tab-btn-dir";
   else if (tabId === 'tab-simulator') btnId = "tab-btn-sim";
+  else if (tabId === 'tab-pres-deck') btnId = "tab-btn-pres-deck";
   
   const activeBtn = document.getElementById(btnId);
   if (activeBtn) activeBtn.classList.add("active");
@@ -1690,6 +1691,7 @@ function updateDashboardViews() {
 }
 
 // Vis.js Network Graph (with interactive neighbors Focus Mode)
+// Vis.js Network Graph (with interactive neighbors Focus Mode & Floating details panel)
 function renderNetwork() {
   const container = document.getElementById("network-graph");
   if (!container) return;
@@ -1705,43 +1707,65 @@ function renderNetwork() {
     filteredActors.forEach(actor => {
       const label = currentLang === 'ar' ? actor.name_ar : actor.name_en;
       
-      // Node styling by sector
-      let color = { background: 'rgba(59, 130, 246, 0.85)', border: '#3b82f6', highlight: '#60a5fa' };
+      // Node styling by sector & active theme
+      let color = { background: 'rgba(59, 130, 246, 0.15)', border: '#3b82f6', highlight: { background: 'rgba(59, 130, 246, 0.3)', border: '#60a5fa' } };
+      let fontColor = '#ffffff';
+      
       if (actor.sector === 'private') {
-        color = { background: 'rgba(245, 158, 11, 0.85)', border: '#f59e0b', highlight: '#fbbf24' };
+        if (activeTheme === 'light') {
+          color = { background: '#fef3c7', border: '#d97706', highlight: { background: '#fde68a', border: '#b45309' } };
+          fontColor = '#78350f';
+        } else if (activeTheme === 'emerald') {
+          color = { background: 'rgba(217, 119, 6, 0.15)', border: '#d97706', highlight: { background: 'rgba(217, 119, 6, 0.3)', border: '#fbbf24' } };
+          fontColor = '#fcd34d';
+        } else { // neon
+          color = { background: 'rgba(245, 158, 11, 0.15)', border: '#f59e0b', highlight: { background: 'rgba(245, 158, 11, 0.3)', border: '#fbbf24' } };
+          fontColor = '#fcd34d';
+        }
       } else if (actor.sector === 'civil_society') {
-        color = { background: 'rgba(16, 185, 129, 0.85)', border: '#10b981', highlight: '#34d399' };
+        if (activeTheme === 'light') {
+          color = { background: '#dcfce7', border: '#15803d', highlight: { background: '#bbf7d0', border: '#166534' } };
+          fontColor = '#14532d';
+        } else if (activeTheme === 'emerald') {
+          color = { background: 'rgba(16, 185, 129, 0.15)', border: '#10b981', highlight: { background: 'rgba(16, 185, 129, 0.3)', border: '#34d399' } };
+          fontColor = '#a7f3d0';
+        } else { // neon
+          color = { background: 'rgba(16, 185, 129, 0.15)', border: '#10b981', highlight: { background: 'rgba(16, 185, 129, 0.3)', border: '#34d399' } };
+          fontColor = '#34d399';
+        }
+      } else { // public / default
+        if (activeTheme === 'light') {
+          color = { background: '#dbeafe', border: '#1d4ed8', highlight: { background: '#bfdbfe', border: '#1e40af' } };
+          fontColor = '#1e3a8a';
+        } else if (activeTheme === 'emerald') {
+          color = { background: 'rgba(99, 102, 241, 0.15)', border: '#6366f1', highlight: { background: 'rgba(99, 102, 241, 0.3)', border: '#818cf8' } };
+          fontColor = '#c7d2fe';
+        } else { // neon
+          color = { background: 'rgba(59, 130, 246, 0.15)', border: '#3b82f6', highlight: { background: 'rgba(59, 130, 246, 0.3)', border: '#60a5fa' } };
+          fontColor = '#60a5fa';
+        }
       }
       
-      // Dynamic shape based on role
-      let shape = 'dot';
-      const roleLower = (actor.role || '').toLowerCase();
-      const roleEnLower = (actor.role_en || '').toLowerCase();
-      const roleAr = actor.role_ar || '';
-      
-      if (roleLower === 'funder' || roleEnLower === 'funder' || roleAr === 'ممول') {
-        shape = 'diamond';
-      } else if (roleLower === 'enabler' || roleEnLower === 'enabler' || roleAr === 'ممكن') {
-        shape = 'star';
-      } else if (roleLower === 'researcher' || roleEnLower === 'researcher' || roleAr === 'باحث') {
-        shape = 'hexagon';
-      } else {
-        shape = 'dot'; // Implementer / Circle Dot
-      }
-      
-      // Dynamic size based on maturity score
-      const maturityScore = actor.maturity_score || 3.0;
-      const size = 15 + (maturityScore * 3.5);
+      // Dynamic sizes & border widths based on maturity score (outcompeting Oday)
+      const maturity = actor.maturity_score || 3.0;
+      const fSize = 10 + Math.floor(maturity * 0.8); // 12px to 14px
+      const bWidth = 1.5 + (maturity * 0.3); // 2.4px to 3px
       
       nodesArray.push({
         id: actor.id,
         label: label,
         color: color,
-        font: { color: activeTheme === 'light' ? '#0f172a' : '#e2e8f0', face: currentLang === 'ar' ? 'Tajawal' : 'Inter', size: 10, bold: true },
-        shape: shape,
-        size: size,
-        borderWidth: 2.5,
-        shadow: { enabled: true, color: 'rgba(0,0,0,0.35)', size: 5, x: 2, y: 2 }
+        font: { 
+          color: fontColor, 
+          face: currentLang === 'ar' ? 'Tajawal' : 'Inter', 
+          size: fSize, 
+          bold: true 
+        },
+        shape: 'box',
+        shapeProperties: { borderRadius: 8 },
+        borderWidth: bWidth,
+        shadow: { enabled: true, color: 'rgba(0,0,0,0.3)', size: 5, x: 2, y: 2 },
+        margin: 10
       });
       
       // Add edges for connections if target exists in our filtered list
@@ -1751,9 +1775,13 @@ function renderNetwork() {
             edgesArray.push({
               from: actor.id,
               to: connId,
-              color: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)', highlight: 'var(--primary)' },
-              width: 2.0,
-              smooth: { type: 'continuous', roundness: 0.5 }
+              color: { 
+                color: activeTheme === 'light' ? 'rgba(15, 23, 42, 0.12)' : 'rgba(255,255,255,0.12)', 
+                highlight: 'var(--primary)',
+                hover: 'var(--primary)'
+              },
+              width: 1.8,
+              smooth: { type: 'continuous', roundness: 0.45 }
             });
           }
         });
@@ -1779,17 +1807,15 @@ function renderNetwork() {
     }
     
     const options = {
-      nodes: {
-        shape: 'box',
-        margin: 10
-      },
       physics: {
         enabled: networkPhysicsEnabled,
-        stabilization: true,
+        stabilization: { iterations: 150, fit: true },
         barnesHut: {
-          gravitationalConstant: -1800,
-          centralGravity: 0.3,
-          springLength: 90
+          gravitationalConstant: -2200,
+          centralGravity: 0.25,
+          springLength: 120,
+          springConstant: 0.045,
+          damping: 0.09
         }
       },
       interaction: {
@@ -1818,21 +1844,34 @@ function renderNetwork() {
           const isConnected = connectedNodeIds.includes(node.id);
           
           if (isSelected) {
-            updateArray.push({ id: node.id, font: { size: 14 }, borderWidth: 3 });
+            updateArray.push({ id: node.id, font: { size: 14 }, borderWidth: 3.5 });
           } else if (isConnected) {
             updateArray.push({ id: node.id, opacity: 1, font: { size: 11 } });
           } else {
-            updateArray.push({ id: node.id, opacity: 0.2, font: { size: 9 } });
+            updateArray.push({ id: node.id, opacity: 0.15, font: { size: 9 } });
           }
         });
         nodes.update(updateArray);
+
+        // Show floating details panel
+        const actor = actors.find(a => a.id === selectedId);
+        if (actor) {
+          showNetworkNodeDetails(actor);
+        }
       } else {
         // Clicked in empty space: Reset opacity & sizing for all nodes
         const resetArray = [];
         nodes.forEach(node => {
-          resetArray.push({ id: node.id, opacity: 1, font: { size: 11 }, borderWidth: 1.5 });
+          const actor = actors.find(a => a.id === node.id);
+          const maturity = actor ? (actor.maturity_score || 3.0) : 3.0;
+          const fSize = 10 + Math.floor(maturity * 0.8);
+          const bWidth = 1.5 + (maturity * 0.3);
+          resetArray.push({ id: node.id, opacity: 1, font: { size: fSize }, borderWidth: bWidth });
         });
         nodes.update(resetArray);
+
+        // Close details panel
+        closeNetworkNodePanel();
       }
     });
   } catch (err) {
@@ -1851,6 +1890,67 @@ function renderNetwork() {
     const densityLabel = document.getElementById("lbl-net-density");
     if (densityLabel) densityLabel.innerText = "";
   }
+}
+
+// Show/Hide Floating Details Panel for Vis.js Network Graph
+function showNetworkNodeDetails(actor) {
+  const panel = document.getElementById("network-node-panel");
+  const body = document.getElementById("net-panel-body");
+  const title = document.getElementById("net-panel-title");
+  
+  if (!panel || !body) return;
+  
+  const name = currentLang === 'ar' ? actor.name_ar : actor.name_en;
+  const sector = currentLang === 'ar' ? actor.sector_ar : actor.sector_en;
+  const stage = currentLang === 'ar' ? actor.stage_ar : actor.stage_en;
+  const role = currentLang === 'ar' ? actor.role_ar : actor.role_en;
+  const thematic = currentLang === 'ar' ? actor.thematic_area_ar : actor.thematic_area_en;
+  const gov = currentLang === 'ar' ? actor.governorate_ar : actor.governorate_en;
+  const phone = maskPhone(actor.phone || '—');
+  const email = actor.email || '—';
+  const desc = currentLang === 'ar' ? actor.description_ar : actor.description_en;
+  const maturity = actor.maturity_score || '3.5';
+  
+  // Custom display HTML
+  title.innerText = name;
+  body.innerHTML = `
+    <div style="margin-bottom: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 6px;">
+      <strong>${currentLang === 'ar' ? 'القطاع:' : 'Sector:'}</strong> ${sector} <span style="opacity: 0.4; margin: 0 4px;">|</span> 
+      <strong>${currentLang === 'ar' ? 'الدور:' : 'Role:'}</strong> ${role}
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'المحافظة:' : 'Governorate:'}</strong> ${gov}
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'مجال التركيز:' : 'Focus Area:'}</strong> ${thematic}
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'مستوى النضج:' : 'Maturity Score:'}</strong> ${maturity} ★
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'مرحلة الابتكار:' : 'Innovation Stage:'}</strong> ${stage}
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'الهاتف:' : 'Phone:'}</strong> <span style="direction: ltr; display: inline-block;">${phone}</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <strong>${currentLang === 'ar' ? 'البريد الإلكتروني:' : 'Email:'}</strong> ${email}
+    </div>
+    <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--glass-border); color: var(--text-secondary); font-style: italic; max-height: 80px; overflow-y: auto;">
+      ${desc}
+    </div>
+  `;
+  
+  panel.classList.remove("hidden");
+  
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+function closeNetworkNodePanel() {
+  const panel = document.getElementById("network-node-panel");
+  if (panel) panel.classList.add("hidden");
 }
 
 // Network Physics Controllers

@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خريطة منظومة الابتكار في اليمن - العرض الفني</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: { 400: '#00c8d0', 500: '#00a3aa', 600: '#00868c' },
+            blue: { 400: '#00c8d0', 500: '#00a3aa', 600: '#00868c', 900: '#004d52' },
+            green: { 400: '#10b981', 500: '#059669', 600: '#047857' },
+            purple: { 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed' },
+            orange: { 400: '#fb923c', 500: '#f97316', 600: '#ea580c' },
+            yellow: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            red: { 400: '#f87171', 500: '#ef4444', 600: '#dc2626' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Almarai', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    :root {
+      --ios-glass: rgba(10, 25, 30, 0.7);
+      --ios-text: #ffffff;
+      --ios-secondary-text: #8ab8b8;
+      --ios-amber: #00c8d0;
+      --ios-amber-glow: rgba(0, 200, 210, 0.4);
+    }
+
+    .deck-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #001f22 0%, #00080a 100%);
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6vh 8vw;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scale(0.97) translateY(10px);
+      z-index: 10;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 20;
+    }
+
+    /* iOS Glassmorphic Cards */
+    .ios-card {
+      background: rgba(3, 15, 18, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 163, 170, 0.15);
+      border-radius: 20px;
+      padding: 1.75rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px rgba(127, 252, 255, 0.05);
+    }
+
+    .ios-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 200, 210, 0.35);
+      box-shadow: 0 15px 35px rgba(0, 200, 210, 0.1), 0 0 1px rgba(127, 252, 255, 0.2);
+    }
+
+    .ios-glass-card {
+      background: var(--ios-glass);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid rgba(0, 103, 108, 0.25);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 103, 108, 0.05);
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--ios-text);
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      font-weight: 800;
+    }
+
+    p,
+    .desc {
+      color: var(--ios-secondary-text);
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #7ffcff 0%, #00a3aa 50%, #00c8d0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 2px 12px rgba(0, 103, 108, 0.35));
+    }
+
+    .text-amber {
+      color: var(--ios-amber);
+    }
+
+    .bg-amber {
+      background-color: var(--ios-amber);
+    }
+
+    @keyframes draftingDraw {
+      0% {
+        stroke-dashoffset: 400;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+        filter: blur(10px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes iosFloat {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes dashFlow {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    .anim-drafting {
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: draftingDraw 3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+
+    .anim-logo-reveal {
+      animation: logoReveal 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      opacity: 0;
+      animation-delay: 1.5s;
+    }
+
+    .anim-ios-float {
+      animation: iosFloat 6s ease-in-out infinite;
+    }
+
+    .anim-pulse {
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    .anim-slideup {
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .flow-path {
+      stroke-dasharray: 8 4;
+      animation: dashFlow 2s linear infinite;
+    }
+
+    .delay-1 {
+      animation-delay: 0.15s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.45s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.6s;
+    }
+
+    .ios-btn {
+      background: linear-gradient(135deg, #00868c, #00676C);
+      color: #fff;
+      font-weight: 800;
+      padding: 0.9rem 2.5rem;
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: 'Almarai', sans-serif;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 103, 108, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(0, 163, 170, 0.3);
+    }
+
+    .ios-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 103, 108, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, #009da4, #00676C);
+    }
+
+    .ios-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1a3535;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(0, 103, 108, 0.2);
+    }
+
+    .nav-dot:hover {
+      background: #00494e;
+      transform: scale(1.2);
+    }
+
+    .nav-dot.active {
+      background: var(--ios-amber);
+      transform: scale(1.4);
+      box-shadow: 0 0 12px var(--ios-amber-glow);
+    }
+
+    /* Progress Bar */
+    #progress-bar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 4px;
+      z-index: 100;
+      background: linear-gradient(90deg, #00676C, #00c8d0, #00676C);
+      background-size: 200% 100%;
+      animation: progressShimmer 2s linear infinite;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 0 0 0 4px;
+      box-shadow: 0 0 12px rgba(0, 103, 108, 0.6), 0 0 4px rgba(0, 200, 210, 0.4);
+    }
+
+    @keyframes progressShimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .slide {
+        padding: 4vh 6vw;
+      }
+
+      .ios-card {
+        padding: 1.25rem;
+      }
+
+      h1 {
+        font-size: 1.8rem !important;
+      }
+
+      h2 {
+        font-size: 1.4rem !important;
+      }
+
+      p,
+      .desc {
+        font-size: 0.85rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="h-full">
+  <div class="deck-wrapper" id="deckWrapper">
+    <div id="progress-bar" style="width: 0%;"></div>
+
+    <!-- Slide 0: Cover -->
+    <div class="slide active" data-slide="0">
+      <div class="flex flex-col items-center gap-6 max-w-4xl w-full z-10">
+        <div class="relative w-40 h-40 md:w-48 md:h-48 mb-6 mt-2 anim-ios-float flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full blur-3xl anim-pulse"
+            style="background: linear-gradient(135deg, rgba(0,163,170,0.4), rgba(16,185,129,0.2)); animation-delay: 0.5s;">
+          </div>
+          <div
+            class="relative z-10 w-full h-full p-6 rounded-[2.2rem] flex items-center justify-center anim-logo-reveal backdrop-blur-xl"
+            style="background: rgba(3,13,13,0.65); border: 1px solid rgba(0,163,170,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,103,108,0.25);">
+            <i data-lucide="globe" class="text-amber w-24 h-24" style="filter: drop-shadow(0 0 15px rgba(0,200,210,0.6));"></i>
+          </div>
+        </div>
+
+        <div class="text-center anim-slideup" style="animation-delay: 0.8s">
+          <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+            خريطة شاملة وديناميكية <br><span class="text-gradient">لمنظومة الابتكار في اليمن</span>
+          </h1>
+          <p class="text-ios-text text-lg md:text-xl font-bold mb-3">Tender Ref: DO-DRA-09-2026</p>
+          <p class="text-ios-secondary-text text-base max-w-xl mx-auto leading-relaxed mb-6">
+            البوابة الاستراتيجية الفنية والنموذج البرمجي المطور لصالح منظمة ديفرستي ومجموعة الاستجابة المشتركة لليمن (YJR)
+          </p>
+
+          <div class="flex flex-col gap-3 items-center w-full max-w-md mx-auto mt-2">
+            <div
+              class="w-full bg-[#030f12]/85 border border-[#00676C]/30 rounded-3xl p-5 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+              <h3 class="text-amber font-bold text-lg mb-1">الائتلاف الهولندي للإغاثة (DRA)</h3>
+              <p class="text-ios-secondary-text text-xs mb-3">شريك التمويل ودعم الحلول المحلية المبتكرة في اليمن</p>
+              <div class="w-full h-px bg-gradient-to-r from-transparent via-[#00a3aa]/30 to-transparent mb-3"></div>
+              <p class="text-white font-bold text-xs flex items-center justify-center gap-2">
+                <i data-lucide="briefcase" class="text-amber" style="width:16px;"></i>
+                الاستشاري: <span class="text-white">م. هيف أحمد غانم سعد</span> | الشريك التقني: <span class="text-white">شاروبي</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Team -->
+    <div class="slide" data-slide="1">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-4 anim-slideup">فريق العمل <span
+            class="text-gradient">والتخصصات</span></h2>
+        <p class="text-ios-secondary-text text-base text-center mb-10 anim-slideup delay-1">نخبة من خبراء التخطيط الاستراتيجي وأنظمة المعلومات لإنجاح المشروع</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full anim-slideup delay-2">
+          <div class="ios-card flex flex-col items-center p-5 text-center" style="border-top: 3px solid #10b981;">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+              style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);box-shadow:0 0 15px rgba(16,185,129,0.15);">
+              <i data-lucide="user" class="text-green-400" style="width:28px;height:28px"></i>
+            </div>
+            <h3 class="text-white font-bold text-base mb-1">م. هيف أحمد سعد</h3>
+            <p class="text-ios-secondary-text text-xs">الاستشاري الرئيسي</p>
+            <p class="text-[10px] text-gray-400 mt-2">خبرة 15+ سنة في التخطيط الاستراتيجي والمشاريع الحساسة للنزاع</p>
+          </div>
+          <div class="ios-card flex flex-col items-center p-5 text-center" style="border-top: 3px solid #00c8d0;">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+              style="background:rgba(0,200,210,0.1);border:1px solid rgba(0,200,210,0.3);box-shadow:0 0 15px rgba(0,200,210,0.15);">
+              <i data-lucide="user" class="text-amber" style="width:28px;height:28px"></i>
+            </div>
+            <h3 class="text-white font-bold text-base mb-1">أ. منير العشملي</h3>
+            <p class="text-ios-secondary-text text-xs">خبير ابتكار وطني</p>
+            <p class="text-[10px] text-gray-400 mt-2">خبرة 5+ سنوات في تقييم ودعم الابتكارات والحلول الإنسانية المحلية</p>
+          </div>
+          <div class="ios-card flex flex-col items-center p-5 text-center" style="border-top: 3px solid #8b5cf6;">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+              style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);box-shadow:0 0 15px rgba(139,92,246,0.15);">
+              <i data-lucide="cpu" style="color:#a78bfa;width:28px;height:28px"></i>
+            </div>
+            <h3 class="text-white font-bold text-base mb-1">م. أمجد الشرعبي</h3>
+            <p class="text-ios-secondary-text text-xs">خبير أنظمة وIT</p>
+            <p class="text-[10px] text-gray-400 mt-2">مؤسس شاروبي، خبرة 5+ سنوات في هندسة الحلول البرمجية المتكاملة</p>
+          </div>
+          <div class="ios-card flex flex-col items-center p-5 text-center" style="border-top: 3px solid #f97316;">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+              style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);box-shadow:0 0 15px rgba(249,115,22,0.15);">
+              <i data-lucide="users" style="color:#fb923c;width:28px;height:28px"></i>
+            </div>
+            <h3 class="text-white font-bold text-base mb-1">الفريق الميداني</h3>
+            <p class="text-ios-secondary-text text-xs">10-14 باحث ميداني</p>
+            <p class="text-[10px] text-gray-400 mt-2">جامعو بيانات ذوو خبرة في المحافظات المستهدفة والمناطق الصعبة</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Project Overview -->
+    <div class="slide" data-slide="2">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">سياق وأهداف <span
+            class="text-gradient">المشروع</span></h2>
+        <p class="text-ios-secondary-text text-center text-lg mb-10 anim-slideup delay-1 max-w-3xl">يسعى هذا المشروع إلى التغلب على تشتت الجهود ورسم خريطة متكاملة تربط المانح بالمنفذين المحليين الأكفاء.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-6 anim-slideup delay-2">
+          <div class="ios-card">
+            <h4 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i data-lucide="map" class="text-amber"></i> خريطة تفاعلية</h4>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">إسقاط جغرافي رقمي دقيق للجهات الفاعلة يسمح بالتصفية حسب المحافظة، والقطاع، ومرحلة نضج الابتكار.</p>
+          </div>
+          <div class="ios-card">
+            <h4 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i data-lucide="network" class="text-purple-400"></i> تحليل الشبكات</h4>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">عرض العلاقات والروابط التشاركية بين المؤسسات (منفذين، ممولين، ممكنين) لكشف فجوات التغطية والتعاون.</p>
+          </div>
+          <div class="ios-card">
+            <h4 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i data-lucide="sliders" class="text-green-400"></i> كفاءة التمويل</h4>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">توفير آلية مطابقة ودعم اتخاذ قرار للائتلاف الهولندي تضمن التوجيه الكفء للموارد نحو الاحتياجات الملحة.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Operational Methodology -->
+    <div class="slide" data-slide="3">
+      <div class="max-w-6xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">منهجية التنفيذ الزمنية
+          <span class="text-gradient">(15 أسبوعاً)</span></h2>
+        <p class="text-ios-secondary-text text-center text-base mb-8 anim-slideup delay-1 max-w-3xl">منهجية تشاركية موزعة على 5 مراحل أساسية لضمان مطابقة متمتطلبات كراسة الشروط وجودة المخرجات.</p>
+
+        <div class="flex flex-col md:flex-row gap-6 w-full items-center anim-slideup delay-2">
+          <div class="flex-1 grid grid-cols-1 gap-3 w-full">
+            <div class="ios-card !p-4 flex items-center gap-4 border-r-4 border-amber">
+              <span class="text-amber font-bold text-lg">المرحلة 1</span>
+              <div>
+                <h4 class="text-white font-bold text-sm">التحضير والتصميم (أسبوع 1-2)</h4>
+                <p class="text-[11px] text-ios-secondary-text">صياغة الاستمارات وأدلة المقابلات والتقرير الافتتاحي (Inception).</p>
+              </div>
+            </div>
+            <div class="ios-card !p-4 flex items-center gap-4 border-r-4 border-green-500">
+              <span class="text-green-400 font-bold text-lg">المرحلة 2</span>
+              <div>
+                <h4 class="text-white font-bold text-sm">جمع البيانات والتحقق (أسبوع 3-7)</h4>
+                <p class="text-[11px] text-ios-secondary-text">نزول ميداني وجمع 120 استبانة و30 مقابلة معمقة وتيسير 4 مجموعات بؤرية.</p>
+              </div>
+            </div>
+            <div class="ios-card !p-4 flex items-center gap-4 border-r-4 border-purple-400">
+              <span class="text-purple-400 font-bold text-lg">المرحلة 3</span>
+              <div>
+                <h4 class="text-white font-bold text-sm">التطوير والتحليل البرمجي (أسبوع 8-11)</h4>
+                <p class="text-[11px] text-ios-secondary-text">تنظيف البيانات وتطوير وبرمجة لوحة التحكم والشبكة التفاعلية.</p>
+              </div>
+            </div>
+            <div class="ios-card !p-4 flex items-center gap-4 border-r-4 border-orange-400">
+              <span class="text-orange-400 font-bold text-lg">المرحلة 4 & 5</span>
+              <div>
+                <h4 class="text-white font-bold text-sm">الورشة والتدريب والتسليم (أسبوع 12-15)</h4>
+                <p class="text-[11px] text-ios-secondary-text">ورشة عمل لمصادقة البيانات وتدريب فريق ديفرستي وتسليم الحزمة المصدرية.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Problem Statement -->
+    <div class="slide" data-slide="4">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">المشكلة <span class="text-gradient">والتحديات الحالية</span></h2>
+        <p class="text-ios-secondary-text text-center text-lg mb-10 anim-slideup delay-1 max-w-3xl">تواجه الاستجابة الإنسانية في اليمن تشتتاً حاداً في البيانات وغياباً للتنسيق المشترك، مما يتسبب في هدر الموارد.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8">
+          <div class="ios-card text-center p-6 border-t-4 border-red-500">
+            <h3 class="text-white font-bold text-lg mb-3">تشتت المعلومات</h3>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">صعوبة إيجاد بيانات موثوقة وموحدة عن المبادرات المحلية والمبتكرين في المحافظات المختلفة.</p>
+          </div>
+          <div class="ios-card text-center p-6 border-t-4 border-orange-500">
+            <h3 class="text-white font-bold text-lg mb-3">ضعف التشبيك</h3>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">غياب قنوات ربط حقيقية بين المخترعين والجامعات والجهات التمويلية لتطوير الحلول الميدانية.</p>
+          </div>
+          <div class="ios-card text-center p-6 border-t-4 border-yellow-500">
+            <h3 class="text-white font-bold text-lg mb-3">عزلة المموّلين</h3>
+            <p class="text-ios-secondary-text text-sm leading-relaxed">افتقار الجهات المانحة الدولية لأدوات دقيقة ترشدهم نحو المؤسسات والابتكارات المحلية الأكثر كفاءة.</p>
+          </div>
+        </div>
+        <div class="ios-glass-card p-4 px-8 text-center w-full border border-red-500/30 bg-red-500/10">
+          <p class="text-white font-bold text-sm">النتيجة: يفتقر صناع القرار لأدوات استراتيجية ذكية تدعم التوجيه الكفء للموارد وتكشف الفجوات الجغرافية.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Strategic Goals -->
+    <div class="slide" data-slide="5">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-10 anim-slideup">أهداف <span
+            class="text-gradient">المنصة الاستراتيجية</span></h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <div class="ios-card p-6 flex items-start gap-4 border-r-4 border-green-500/50">
+            <i data-lucide="check-circle" class="text-green-400 mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-lg mb-2">رصد وتصنيف الفاعلين</h3>
+              <p class="text-ios-secondary-text text-sm">تصنيف الجهات الفاعلة وفق 3 قطاعات (عام وخاص ومجتمع مدني) وضمن 5 مراحل لدورة الابتكار.</p>
+            </div>
+          </div>
+          <div class="ios-card p-6 flex items-start gap-4 border-r-4 border-green-500/50">
+            <i data-lucide="share-2" class="text-green-400 mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-lg mb-2">تحليل شبكات العلاقات والروابط</h3>
+              <p class="text-ios-secondary-text text-sm">إظهار العلاقات المتبادلة وعلاقات التعاون وعقود التمويل بين الجهات لتسهيل عملية التطوير التشاركي.</p>
+            </div>
+          </div>
+          <div class="ios-card p-6 flex items-start gap-4 border-r-4 border-green-500/50">
+            <i data-lucide="database" class="text-green-400 mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-lg mb-2">استيراد لحظي للبيانات ميدانياً</h3>
+              <p class="text-ios-secondary-text text-sm">الربط المباشر مع استمارات Kobo Toolbox لتحديث الخرائط والتحليلات فور تعبئة المسوح في الميدان.</p>
+            </div>
+          </div>
+          <div class="ios-card p-6 flex items-start gap-4 border-r-4 border-green-500/50">
+            <i data-lucide="lightbulb" class="text-green-400 mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-lg mb-2">دعم القرار الاستراتيجي بالذكاء الاصطناعي</h3>
+              <p class="text-ios-secondary-text text-sm">نظام ذكي يحلل فجوات التغطية تلقائياً ويقترح الشركاء المثاليين بناء على نضج الابتكار والجغرافيا.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Technology Stack -->
+    <div class="slide" data-slide="6">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">الهيكل البرمجي والحلول المفتوحة المصدر <span class="text-gradient">بدون تكاليف تراخيص</span></h2>
+        <p class="text-ios-secondary-text text-center text-base mb-10 max-w-3xl">تعتمد المنصة بالكامل على تقنيات مرنة ومفتوحة المصدر لضمان السرعة، والأمان، وقابلية العمل دون اتصال بالإنترنت (Offline-first).</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mb-8">
+          <div class="ios-card text-center p-5">
+            <i data-lucide="map-pin" class="text-amber mx-auto mb-3 w-10 h-10"></i>
+            <h3 class="text-white font-bold text-sm mb-2">Leaflet JS</h3>
+            <p class="text-gray-400 text-xs">خرائط تفاعلية خفيفة الوزن وسريعة التحميل تناسب شبكات الإنترنت الضعيفة في اليمن.</p>
+          </div>
+          <div class="ios-card text-center p-5">
+            <i data-lucide="network" class="text-purple-400 mx-auto mb-3 w-10 h-10"></i>
+            <h3 class="text-white font-bold text-sm mb-2">Vis.js Network</h3>
+            <p class="text-gray-400 text-xs">تمثيل فيزيائي متحرك ثنائي الأبعاد لعقد العلاقات لتوضيح الروابط ونقاط الضعف.</p>
+          </div>
+          <div class="ios-card text-center p-5">
+            <i data-lucide="bar-chart-3" class="text-green-400 mx-auto mb-3 w-10 h-10"></i>
+            <h3 class="text-white font-bold text-sm mb-2">Chart.js</h3>
+            <p class="text-gray-400 text-xs">مخططات إحصائية متطابقة بأسلوب لوحة معلومات الأعمال UN Dashboards.</p>
+          </div>
+          <div class="ios-card text-center p-5">
+            <i data-lucide="cloud-lightning" class="text-orange-400 mx-auto mb-3 w-10 h-10"></i>
+            <h3 class="text-white font-bold text-sm mb-2">Kobo API Ingestion</h3>
+            <p class="text-gray-400 text-xs">أتمتة جلب البيانات دون خوادم وسيطة لحماية الخصوصية وضمان الاستدامة.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Compliance -->
+    <div class="slide" data-slide="7">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-8 anim-slideup">الامتثال الكامل لمتطلبات <span class="text-gradient">كراسة الشروط (TOR)</span></h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-right">
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">تغطية كافة محافظات اليمن الـ 22 وقاعدة بيانات لـ 200+ جهة.</span>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">محاكاة التشبيك ثنائي الأبعاد لعلاقات التمويل والتعاون الفني.</span>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">بوابة أمان ودخول بكلمة سر للمدراء للمحافظة على سرية البيانات.</span>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">واجهة ثنائية اللغة بالكامل (عربي/إنجليزي) مع زر تحويل فوري.</span>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">تصدير البيانات المباشر بصيغ Excel و CSV يدعم اللغة العربية.</span>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+            <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+            <span class="text-white text-xs font-bold">ضمان الاستضافة لمدة عام كامل ودعم فني ممتد لثلاثة أشهر مجاناً.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Solution Showcase -->
+    <div class="slide" data-slide="8">
+      <div class="max-w-6xl w-full z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="text-right">
+          <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">الحل البرمجي: <span class="text-gradient">المنصة التفاعلية المباشرة</span></h2>
+          <p class="text-ios-secondary-text text-base leading-relaxed mb-6">لقد قمنا ببناء وتطوير المنصة التفاعلية بالكامل ورفعها حية كإثبات مفهوم. لوحة بيانات موحدة تجمع الخرائط والشبكات والمساعد الذكي في شاشة واحدة خالية من التعقيد البصري.</p>
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-white text-xs"><i data-lucide="compass" class="text-amber"></i> نظام واجهة مستخدم بسيط مستوحى من لوحات المانحين العالمية.</div>
+            <div class="flex items-center gap-2 text-white text-xs"><i data-lucide="refresh-cw" class="text-green-400"></i> معالجة البيانات على متصفح العميل مباشرة لضمان السرعة والسرية.</div>
+          </div>
+        </div>
+
+        <div class="relative w-full max-w-sm mx-auto h-72 bg-gradient-to-br from-[#01262a] to-black rounded-3xl border border-[#00c8d0]/20 p-4 shadow-2xl flex flex-col justify-between">
+          <div class="flex justify-between items-center pb-2 border-b border-white/10">
+            <span class="text-[10px] text-amber font-bold">YIEP - Live Portal Map</span>
+            <div class="flex gap-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+            </div>
+          </div>
+          <div class="flex-1 my-3 bg-white/5 rounded-xl border border-white/5 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,163,170,0.1)_0%,transparent_70%)]"></div>
+            <div class="w-40 h-24 border border-dashed border-[#00c8d0]/30 rounded-full relative flex items-center justify-center">
+              <div class="absolute w-4 h-4 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center anim-pulse"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span></div>
+              <div class="absolute top-4 left-6 w-4 h-4 rounded-full bg-green-500/20 border border-green-500 flex items-center justify-center anim-pulse"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span></div>
+              <div class="absolute bottom-4 right-10 w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500 flex items-center justify-center anim-pulse"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span></div>
+            </div>
+            <span class="absolute bottom-2 right-2 text-[8px] text-ios-secondary-text">Leaflet Map Simulator</span>
+          </div>
+          <button class="w-full bg-[#00676C]/60 text-white text-xs py-2 rounded-xl border border-[#00c8d0]/30">دخول خريطة الابتكار</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Impact Architecture -->
+    <div class="slide" data-slide="9">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">معمارية منصة الأثر <span class="text-gradient">(Impact Architecture)</span></h2>
+        <p class="text-ios-secondary-text text-center text-base mb-8 max-w-3xl">نظام متسلسل ومدروس يجسد "إطار نظرية التغيير" للمانحين، منتقلًا من دراسة المشكلة إلى تحقيق الأثر الحقيقي ميدانياً.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full">
+          <div class="ios-card text-center border-t-4 border-red-500">
+            <span class="text-[10px] font-bold text-red-500 block mb-1">المستوى 1</span>
+            <h4 class="text-white font-bold text-sm mb-2">طبقة المشكلة (Crisis Layer)</h4>
+            <p class="text-gray-400 text-xs">تحديد الفجوات الجغرافية ونقاط الضعف والاحتياجات المحلية الملحة في اليمن.</p>
+          </div>
+          <div class="ios-card text-center border-t-4 border-yellow-500">
+            <span class="text-[10px] font-bold text-yellow-500 block mb-1">المستوى 2</span>
+            <h4 class="text-white font-bold text-sm mb-2">طبقة المنظومة (Ecosystem)</h4>
+            <p class="text-gray-400 text-xs">رصد وتصنيف الفاعلين (200+ جهة) ورسم شبكات التعاون المتبادل بدقة.</p>
+          </div>
+          <div class="ios-card text-center border-t-4 border-blue-500">
+            <span class="text-[10px] font-bold text-blue-500 block mb-1">المستوى 3</span>
+            <h4 class="text-white font-bold text-sm mb-2">طبقة العمل (Action Layer)</h4>
+            <p class="text-gray-400 text-xs">ربط ومطابقة الشركاء المانحين مع المبادرات المحلية وإطلاق عقود التمويل.</p>
+          </div>
+          <div class="ios-card text-center border-t-4 border-green-500">
+            <span class="text-[10px] font-bold text-green-500 block mb-1">المستوى 4</span>
+            <h4 class="text-white font-bold text-sm mb-2">طبقة الأثر (Impact Layer)</h4>
+            <p class="text-gray-400 text-xs">قياس مؤشرات النضج الابتكاري وحساب فرص العمل وتوسيع نطاق الحلول.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Stakeholders -->
+    <div class="slide" data-slide="10">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">شركاء وأصحاب المصلحة في <span class="text-gradient">المنظومة</span></h2>
+        <p class="text-ios-secondary-text text-center text-base mb-8 max-w-3xl">تصنيف الجهات وفق كراسة الشروط لرصد أدوارهم في دفع حركة الابتكار الإنساني والاجتماعي.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full">
+          <div class="ios-card p-4">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="wallet" class="text-amber"></i> المموّلون (Funders)</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">الائتلافات الدولية، المانحين، وبنوك التنمية التي تقدم التمويل والدعم المالي.</p>
+          </div>
+          <div class="ios-card p-4">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="cpu" class="text-purple-400"></i> الممكنون (Enablers)</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">حاضنات ومسرعات الأعمال، والشبكات التقنية التي تقدم التوجيه والتدريب والخبرة.</p>
+          </div>
+          <div class="ios-card p-4">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="book-open" class="text-blue-400"></i> الباحثون (Researchers)</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">الجامعات ومراكز الأبحاث والمفكرين الذين يحددون الفجوات ويطورون المنهجيات الأساسية.</p>
+          </div>
+          <div class="ios-card p-4">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="rocket" class="text-green-400"></i> المنفذون (Implementers)</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">منظمات المجتمع المدني المحلية والمبادرات الشبابية التي تطبق الحلول ميدانياً.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Donor Experience -->
+    <div class="slide" data-slide="11">
+      <div class="max-w-6xl w-full z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="text-right">
+          <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">تجربة الجهات المانحة: <span class="text-gradient">الشفافية الكاملة للتمويل</span></h2>
+          <p class="text-ios-secondary-text text-base leading-relaxed mb-4">تمكن المنصة ممثلي الائتلاف الهولندي للإنقاذ (DRA) والمنظمات الشريكة من رصد مسار التدفقات المالية بدقة وتتبع الأثر الفعلي.</p>
+          <div class="flex flex-col gap-3">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+              <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">معرفة أين تذهب كل منحة وأي قطاع يستحوذ على كفاءة التمويل.</span>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+              <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">تحديد المؤسسات المحلية الحاصلة على أعلى تقييمات نضج ميدانية لضمان أمان الصرف.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative w-full max-w-[240px] mx-auto h-[400px] bg-gradient-to-b from-gray-900 to-black rounded-[2.5rem] border-4 border-[#2c2c2e] p-3 shadow-2xl flex flex-col justify-between overflow-hidden">
+          <div class="flex justify-between items-center text-[9px] text-gray-400 px-2 pt-1 pb-2 border-b border-white/5">
+            <span>YIEP Mobile Portal</span>
+            <div class="flex gap-1 items-center">
+              <i data-lucide="wifi" class="w-2.5"></i>
+              <i data-lucide="battery" class="w-3"></i>
+            </div>
+          </div>
+          <div class="flex-1 my-2 bg-[#020d0f] rounded-2xl p-3 flex flex-col justify-between border border-[#00c8d0]/10">
+            <h4 class="text-[10px] font-bold text-white mb-2">📊 تتبع أثر التمويل</h4>
+            <div class="space-y-2">
+              <div class="bg-white/5 p-2 rounded-lg border border-white/5 text-[9px]">
+                <div class="flex justify-between text-white font-bold">
+                  <span>منحة مزارعي تهامة</span>
+                  <span class="text-green-400">$50,000</span>
+                </div>
+                <div class="w-full bg-white/10 h-1.5 rounded-full mt-1.5"><div class="bg-green-500 h-full rounded-full" style="width: 75%;"></div></div>
+                <span class="text-[8px] text-gray-400 block mt-1">نسبة الإنجاز الميداني: 75%</span>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg border border-white/5 text-[9px]">
+                <div class="flex justify-between text-white font-bold">
+                  <span>أبحاث طاقة تعز</span>
+                  <span class="text-green-400">$25,000</span>
+                </div>
+                <div class="w-full bg-white/10 h-1.5 rounded-full mt-1.5"><div class="bg-green-500 h-full rounded-full" style="width: 40%;"></div></div>
+                <span class="text-[8px] text-gray-400 block mt-1">نسبة الإنجاز الميداني: 40%</span>
+              </div>
+            </div>
+            <div class="bg-amber/10 p-2 rounded-lg border border-amber/30 text-center text-[9px] text-amber font-bold">إجمالي التمويل المدار: $1.45M</div>
+          </div>
+          <div class="w-28 h-2 bg-white/10 rounded-full mx-auto mb-1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Partner Experience -->
+    <div class="slide" data-slide="12">
+      <div class="max-w-6xl w-full z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="relative w-full max-w-[240px] mx-auto h-[400px] bg-gradient-to-b from-gray-900 to-black rounded-[2.5rem] border-4 border-[#2c2c2e] p-3 shadow-2xl flex flex-col justify-between overflow-hidden md:order-first">
+          <div class="flex justify-between items-center text-[9px] text-gray-400 px-2 pt-1 pb-2 border-b border-white/5">
+            <span>Actor Directory</span>
+            <div class="flex gap-1 items-center">
+              <i data-lucide="wifi" class="w-2.5"></i>
+              <i data-lucide="battery" class="w-3"></i>
+            </div>
+          </div>
+          <div class="flex-1 my-2 bg-[#020d0f] rounded-2xl p-3 flex flex-col justify-between border border-[#00c8d0]/10">
+            <h4 class="text-[10px] font-bold text-white mb-2">📁 ملفات الشركاء المحليين</h4>
+            <div class="space-y-2 flex-1 overflow-y-auto">
+              <div class="bg-white/5 p-2 rounded-lg border border-white/5 text-[9px] flex items-center gap-2">
+                <i data-lucide="heart" class="text-green-500 w-4"></i>
+                <div>
+                  <div class="text-white font-bold">مؤسسة يمن للتنمية</div>
+                  <span class="text-[7px] text-gray-400">مجتمع مدني • تعز • نضج: 4.8</span>
+                </div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg border border-white/5 text-[9px] flex items-center gap-2">
+                <i data-lucide="briefcase" class="text-yellow-500 w-4"></i>
+                <div>
+                  <div class="text-white font-bold">مؤسسة سحاب للطاقة</div>
+                  <span class="text-[7px] text-gray-400">قطاع خاص • تعز • نضج: 4.5</span>
+                </div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg border border-white/5 text-[9px] flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="text-blue-500 w-4"></i>
+                <div>
+                  <div class="text-white font-bold">جامعة عدن - مركز S&T</div>
+                  <span class="text-[7px] text-gray-400">أكاديمي • عدن • نضج: 4.9</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-[#00c8d0]/20 p-1 rounded text-center text-[8px] text-[#00c8d0] mt-2">البحث وتحديث الملفات متاح للمدراء</div>
+          </div>
+          <div class="w-28 h-2 bg-white/10 rounded-full mx-auto mb-1"></div>
+        </div>
+
+        <div class="text-right">
+          <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">تجربة الشركاء المحليين: <span class="text-gradient">الظهور وزيادة فرص التمويل</span></h2>
+          <p class="text-ios-secondary-text text-base leading-relaxed mb-4">تمنح المنصة المبادرات والمخترعين المحليين فرصة نادرة لعرض مشاريعهم أمام الممولين الدوليين، مما يسهل تشبيكهم وبناء الثقة المؤسسية.</p>
+          <div class="flex flex-col gap-3">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+              <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">إبراز الحلول المصممة خصيصاً لمواجهة مشاكل اليمن المحلية.</span>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
+              <i data-lucide="check" class="text-green-400" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">بناء شراكات مباشرة مع المؤسسات البحثية والقطاع الممكن محلياً.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: AI Co-pilot -->
+    <div class="slide" data-slide="13">
+      <div class="max-w-6xl w-full z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="text-right">
+          <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">المساعد الذكي بالذكاء الاصطناعي: <span class="text-gradient">Co-Pilot لقرارات المانحين</span></h2>
+          <p class="text-ios-secondary-text text-base leading-relaxed mb-4">في عالم 2026، يتوقع المانحون ميزات ذكاء اصطناعي تدعمهم. توفر المنصة محاكاة ذكية للمطابقة واكتشاف الفجوات بشكل تلقائي.</p>
+          <div class="flex flex-col gap-3">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-3 flex items-center gap-3">
+              <i data-lucide="cpu" class="text-[#00c8d0]" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">المطابق الذكي: مطابقة الفرص التمويلية بالشركاء الأكفأ تلقائياً.</span>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-3 flex items-center gap-3">
+              <i data-lucide="alert-triangle" class="text-yellow-500" style="width:20px;"></i>
+              <span class="text-white text-xs font-bold">كاشف الفجوات: تحديد المحافظات التي تعاني شحاً في منظمات التمكين.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-[#030f12]/80 border border-[#00676C]/30 rounded-3xl p-6 backdrop-blur-md shadow-2xl relative w-full max-w-md mx-auto">
+          <div class="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-purple-500/20 border border-purple-500 flex items-center justify-center anim-pulse">
+            <i data-lucide="sparkles" class="text-purple-400 w-6 h-6"></i>
+          </div>
+          <h4 class="text-white font-bold text-base mb-4 flex items-center gap-2">🤖 المساعد الذكي - AI Co-Pilot</h4>
+          <div class="space-y-3 text-right">
+            <div class="bg-white/5 p-3 rounded-xl border border-white/5 text-xs">
+              <span class="text-[#00c8d0] font-bold block mb-1">🔍 توصية شراكة مقترحة:</span>
+              <p class="text-gray-300 text-xs">نوصي بربط **معهد عدن التقني (ممكن)** مع **مؤسسة سحاب للطاقة (منفذ)** لتوسيع نماذج التبريد الشمسي الزراعي.</p>
+            </div>
+            <div class="bg-white/5 p-3 rounded-xl border border-white/5 text-xs">
+              <span class="text-yellow-500 font-bold block mb-1">⚠️ كشف فجوة تمكينية:</span>
+              <p class="text-gray-300 text-xs">محافظة مأرب تعاني من نقص 60% في حاضنات الأعمال. التوصية: توجيه دعم لتأسيس مسرعة أعمال تقنية لشباب المخيمات.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Funding Lifecycle -->
+    <div class="slide" data-slide="14">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">دورة حياة التمويل والمطابقة <span class="text-gradient">(Funding Lifecycle)</span></h2>
+        <p class="text-ios-secondary-text text-center text-base mb-10 max-w-3xl">تتبع ديناميكي مغلق للتدفقات التمويلية يضمن كفاءة الصرف ورقابة الأداء للمانح والمنظمة.</p>
+
+        <div class="relative w-full max-w-3xl mx-auto p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="ios-card text-center p-4 w-full md:w-40 z-10">
+            <i data-lucide="search" class="text-amber mx-auto mb-2 w-8 h-8"></i>
+            <h4 class="text-white font-bold text-xs">1. تحديد الفرصة</h4>
+            <p class="text-[10px] text-gray-400 mt-1">تحديد الاحتياج الميداني والمحافظة المستهدفة.</p>
+          </div>
+          <div class="hidden md:block flex-1 h-0.5 bg-gradient-to-r from-amber to-purple-400 relative">
+            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber anim-pulse"></span>
+          </div>
+          <div class="ios-card text-center p-4 w-full md:w-40 z-10">
+            <i data-lucide="git-pull-request" class="text-purple-400 mx-auto mb-2 w-8 h-8"></i>
+            <h4 class="text-white font-bold text-xs">2. مطابقة الجهة</h4>
+            <p class="text-[10px] text-gray-400 mt-1">اختيار الشركاء المحليين الأنسب عبر المنصة.</p>
+          </div>
+          <div class="hidden md:block flex-1 h-0.5 bg-gradient-to-r from-purple-400 to-blue-400 relative">
+            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-purple-400 anim-pulse"></span>
+          </div>
+          <div class="ios-card text-center p-4 w-full md:w-40 z-10">
+            <i data-lucide="wallet" class="text-blue-400 mx-auto mb-2 w-8 h-8"></i>
+            <h4 class="text-white font-bold text-xs">3. توجيه المنحة</h4>
+            <p class="text-[10px] text-gray-400 mt-1">صرف التمويل وتعميد خطة العمل الميدانية.</p>
+          </div>
+          <div class="hidden md:block flex-1 h-0.5 bg-gradient-to-r from-blue-400 to-green-500 relative">
+            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-400 anim-pulse"></span>
+          </div>
+          <div class="ios-card text-center p-4 w-full md:w-40 z-10">
+            <i data-lucide="check-square" class="text-green-500 mx-auto mb-2 w-8 h-8"></i>
+            <h4 class="text-white font-bold text-xs">4. رصد الأثر</h4>
+            <p class="text-[10px] text-gray-400 mt-1">تتبع النتائج وإصدار مؤشرات نضج الابتكار.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Case Study -->
+    <div class="slide" data-slide="15">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">دراسة حالة تطبيقية: <span class="text-gradient">مزارعو تهامة والطاقة الشمسية</span></h2>
+        <p class="text-ios-secondary-text text-center text-lg mb-8 max-w-3xl">كيف ساهمت المنصة التفاعلية في تشبيك جهات مختلفة لحل أزمة ري حقيقية ميدانياً.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-right">
+          <div class="ios-card p-5 border-r-4 border-red-500">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="alert-circle" class="text-red-500"></i> الاحتياج والمشكلة</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">توقف مضخات المياه الزراعية في الحديدة بسبب الارتفاع الحاد في أسعار الديزل، مما هدد المحاصيل الزراعية للأسر المحلية.</p>
+          </div>
+          <div class="ios-card p-5 border-r-4 border-purple-400">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="git-merge" class="text-purple-400"></i> المطابقة والتمويل</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">قامت المنصة بمطابقة الائتلاف الهولندي (مانح) مع مؤسسة سحاب للطاقة (منفذ خاص) وشبكة مزارعي تهامة (منفذ محلي مجتمعي).</p>
+          </div>
+          <div class="ios-card p-5 border-r-4 border-green-500">
+            <h4 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="trending-up" class="text-green-500"></i> الأثر الميداني المحقق</h4>
+            <p class="text-gray-400 text-xs leading-relaxed">توجيه منحة بقيمة $50,000، تركيب 14 مضخة شمسية ذكية، استفادة 120 أسرة مزارعة، وخفض انبعاثات الكربون بنسبة 35%.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Ethics & GDPR -->
+    <div class="slide" data-slide="16">
+      <div class="max-w-5xl w-full z-10 flex flex-col items-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 anim-slideup">أخلاقيات البحث وحماية البيانات <span class="text-gradient">(GDPR & Security)</span></h2>
+        <p class="text-ios-secondary-text text-center text-lg mb-8 max-w-3xl">نلتزم بالمعايير الصارمة لمنع الضرر والحفاظ على سرية معلومات الفاعلين في المناطق الحساسة سياسياً وأمنياً.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-right">
+          <div class="ios-card p-5 flex items-start gap-4">
+            <i data-lucide="shield-check" class="text-[#00c8d0] mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-base mb-1">الامتثال للخصوصية (GDPR)</h3>
+              <p class="text-gray-400 text-xs mt-1">حجب معلومات الاتصال المباشرة ومواقع الجهات الدقيقة عن العرض العام إلا بعد موافقة مكتوبة وصريحة من صاحب العلاقة.</p>
+            </div>
+          </div>
+          <div class="ios-card p-5 flex items-start gap-4">
+            <i data-lucide="eye-off" class="text-[#00c8d0] mt-1" style="width:24px;height:24px"></i>
+            <div>
+              <h3 class="text-white font-bold text-base mb-1">مبدأ لا ضرر ولا ضرار (Do No Harm)</h3>
+              <p class="text-gray-400 text-xs mt-1">دراسة الحساسية الأمنية لمواقع الفاعلين وابتكاراتهم قبل نشرها على الخريطة لحمايتهم الإدارية والأمنية ميدانياً.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Why Us -->
+    <div class="slide" data-slide="17">
+      <div class="max-w-4xl w-full flex flex-col items-center gap-8 z-10">
+        <div class="anim-pulse">
+          <i data-lucide="award" class="text-amber w-24 h-24" style="filter: drop-shadow(0 0 30px var(--ios-amber-glow));"></i>
+        </div>
+        <div class="text-center anim-slideup delay-1">
+          <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-2xl">لماذا نحن الشريك الأفضل <span
+              class="text-gradient">لإنجاح هذا المشروع؟</span></h2>
+          <p class="text-ios-secondary-text text-base md:text-lg max-w-2xl leading-relaxed mx-auto anim-slideup delay-2">
+            نجمع بين عمق التخطيط الاستراتيجي الحساس للنزاعات والقدرة والريادة التقنية البرمجية الفورية. بروتوتايب تفاعلي حي مكتمل يضمن التنفيذ السلس والخالي من المخاطر.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-5 anim-slideup delay-3 w-full justify-center mt-2">
+          <button onclick="window.open('index.html', '_self')"
+            class="ios-btn text-base flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto">
+            🌐 استكشاف وتجربة المنصة الحية
+          </button>
+        </div>
+
+        <div
+          class="w-full mt-6 anim-slideup delay-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row justify-around text-ios-secondary-text text-xs font-bold shadow-lg text-center">
+          <span class="flex items-center justify-center gap-2 mb-2 md:mb-0"><i data-lucide="mail" class="text-white"
+              style="width:16px"></i>info@diversityyemen.org</span>
+          <span class="flex items-center justify-center gap-2"><i data-lucide="globe" class="text-white"
+              style="width:16px"></i>diversityyemen.org</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide controls -->
+    <div class="absolute bottom-6 left-0 right-0 flex flex-col items-center justify-center gap-4 z-50">
+      <div class="flex items-center justify-center gap-6">
+        <button onclick="changeSlide(-1)"
+          class="w-12 h-12 rounded-full backdrop-blur-md flex items-center justify-center transition-all"
+          style="background:rgba(0,50,55,0.5);border:1px solid rgba(0,103,108,0.3);color:#8ab8b8;"
+          onmouseover="this.style.borderColor='rgba(0,200,210,0.6)';this.style.color='#fff';"
+          onmouseout="this.style.borderColor='rgba(0,103,108,0.3)';this.style.color='#8ab8b8';">
+          <i data-lucide="chevron-right"></i>
+        </button>
+        <div id="dotsContainer" class="flex gap-2 hidden md:flex"></div>
+        <button onclick="changeSlide(1)"
+          class="w-12 h-12 rounded-full backdrop-blur-md flex items-center justify-center transition-all"
+          style="background:rgba(0,50,55,0.5);border:1px solid rgba(0,103,108,0.3);color:#8ab8b8;"
+          onmouseover="this.style.borderColor='rgba(0,200,210,0.6)';this.style.color='#fff';"
+          onmouseout="this.style.borderColor='rgba(0,103,108,0.3)';this.style.color='#8ab8b8';">
+          <i data-lucide="chevron-left"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // عدد الشرائح مبرمج ديناميكياً ليتوافق دائماً مع عدد الديفات الفعلية
+    const slides = document.querySelectorAll('.slide');
+    const TOTAL_SLIDES = slides.length;
+    let currentSlide = 0;
+    const dotsContainer = document.getElementById('dotsContainer');
+    const progressBar = document.getElementById('progress-bar');
+
+    // إنشاء النقاط السفلية (Dots)
+    for (let i = 0; i < TOTAL_SLIDES; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+
+    // تحديث شريط التقدم الأولي
+    updateProgress(0);
+
+    function updateProgress(n) {
+      if (progressBar) {
+        const percentage = ((n + 1) / TOTAL_SLIDES) * 100;
+        progressBar.style.width = percentage + '%';
+      }
+    }
+
+    function goToSlide(n) {
+      if (n < 0 || n >= TOTAL_SLIDES || n === currentSlide) return;
+      slides[currentSlide].classList.remove('active');
+      dotsContainer.children[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+      dotsContainer.children[currentSlide].classList.add('active');
+
+      updateProgress(n);
+
+      // Re-trigger animations for WOW effect
+      slides[currentSlide].querySelectorAll('[class*="anim-"]').forEach(el => {
+        const classes = [...el.classList].filter(c => c.startsWith('anim-'));
+        classes.forEach(c => {
+          el.classList.remove(c);
+          void el.offsetWidth; // trigger reflow
+          el.classList.add(c);
+        });
+      });
+    }
+
+    function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+    // Keyboard & Swipe Support
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') changeSlide(1);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') changeSlide(-1);
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        diff > 0 ? changeSlide(1) : changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+
+</html>
