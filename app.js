@@ -579,10 +579,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Safe localStorage wrapper
+function safeGetItem(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    console.warn("localStorage is disabled or not supported:", e);
+    return null;
+  }
+}
+
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn("localStorage is disabled or not supported:", e);
+  }
+}
+
 // Database Persistence Manager
 function loadDatabase() {
-  const localDb = localStorage.getItem("yjr_actors_db");
-  const localTheme = localStorage.getItem("yjr_active_theme");
+  const localDb = safeGetItem("yjr_actors_db");
+  const localTheme = safeGetItem("yjr_active_theme");
   
   if (localTheme) {
     activeTheme = localTheme;
@@ -595,17 +613,17 @@ function loadDatabase() {
       actors = JSON.parse(localDb);
     } catch (e) {
       actors = [...defaultActorsBackup];
-      localStorage.setItem("yjr_actors_db", JSON.stringify(actors));
+      safeSetItem("yjr_actors_db", JSON.stringify(actors));
     }
   } else {
     actors = [...defaultActorsBackup];
-    localStorage.setItem("yjr_actors_db", JSON.stringify(actors));
+    safeSetItem("yjr_actors_db", JSON.stringify(actors));
   }
   filteredActors = [...actors];
 }
 
 function saveDatabase() {
-  localStorage.setItem("yjr_actors_db", JSON.stringify(actors));
+  safeSetItem("yjr_actors_db", JSON.stringify(actors));
 }
 
 function resetDatabase() {
@@ -626,7 +644,7 @@ function resetDatabase() {
 // Visual Theme Swap Manager
 function changeTheme(themeName) {
   activeTheme = themeName;
-  localStorage.setItem("yjr_active_theme", themeName);
+  safeSetItem("yjr_active_theme", themeName);
   
   document.body.classList.remove('theme-neon', 'theme-emerald', 'theme-light');
   document.body.classList.add('theme-' + themeName);
@@ -635,31 +653,33 @@ function changeTheme(themeName) {
   updateMapTiles();
   
   // Update Chart.js default colors dynamically based on light/dark theme
-  const isLight = themeName === 'light';
-  const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
-  const textColor = isLight ? '#0f172a' : '#9ca3af';
-  
-  Chart.defaults.color = textColor;
-  
-  if (chartSectors && chartStages) {
-    chartSectors.options.plugins.title.color = isLight ? '#0f172a' : '#f3f4f6';
-    chartStages.options.plugins.title.color = isLight ? '#0f172a' : '#f3f4f6';
-    chartStages.options.scales.y.grid.color = gridColor;
+  if (typeof Chart !== 'undefined') {
+    const isLight = themeName === 'light';
+    const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+    const textColor = isLight ? '#0f172a' : '#9ca3af';
     
-    // Switch chart colors for better visibility matching theme accents
-    if (themeName === 'light') {
-      chartStages.data.datasets[0].backgroundColor = 'rgba(37, 99, 235, 0.65)';
-      chartStages.data.datasets[0].borderColor = '#2563eb';
-    } else if (themeName === 'emerald') {
-      chartStages.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.65)';
-      chartStages.data.datasets[0].borderColor = '#10b981';
-    } else { // neon
-      chartStages.data.datasets[0].backgroundColor = 'rgba(138, 43, 226, 0.5)';
-      chartStages.data.datasets[0].borderColor = '#8a2be2';
+    Chart.defaults.color = textColor;
+    
+    if (chartSectors && chartStages) {
+      chartSectors.options.plugins.title.color = isLight ? '#0f172a' : '#f3f4f6';
+      chartStages.options.plugins.title.color = isLight ? '#0f172a' : '#f3f4f6';
+      chartStages.options.scales.y.grid.color = gridColor;
+      
+      // Switch chart colors for better visibility matching theme accents
+      if (themeName === 'light') {
+        chartStages.data.datasets[0].backgroundColor = 'rgba(37, 99, 235, 0.65)';
+        chartStages.data.datasets[0].borderColor = '#2563eb';
+      } else if (themeName === 'emerald') {
+        chartStages.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.65)';
+        chartStages.data.datasets[0].borderColor = '#10b981';
+      } else { // neon
+        chartStages.data.datasets[0].backgroundColor = 'rgba(138, 43, 226, 0.5)';
+        chartStages.data.datasets[0].borderColor = '#8a2be2';
+      }
+      
+      chartSectors.update();
+      chartStages.update();
     }
-    
-    chartSectors.update();
-    chartStages.update();
   }
   
   // Update markers to match colors if map initialized
@@ -816,93 +836,140 @@ function initMap() {
   const mapContainer = document.getElementById("yemen-map");
   if (!mapContainer) return;
   
-  // Center of Yemen: Lat 15.0, Lng 46.5, Zoom 6
-  mapInstance = L.map("yemen-map").setView([15.0, 46.5], 6);
-  
-  // Setup theme-based tile layer
-  updateMapTiles();
-  
-  markersGroup = L.layerGroup().addTo(mapInstance);
+  try {
+    if (typeof L === 'undefined') {
+      throw new Error("Leaflet library failed to load");
+    }
+    // Center of Yemen: Lat 15.0, Lng 46.5, Zoom 6
+    mapInstance = L.map("yemen-map").setView([15.0, 46.5], 6);
+    
+    // Setup theme-based tile layer
+    updateMapTiles();
+    
+    markersGroup = L.layerGroup().addTo(mapInstance);
+  } catch (err) {
+    console.error("Map initialization failed:", err);
+    mapContainer.innerHTML = `
+      <div class="offline-placeholder" style="padding: 40px 20px; text-align: center; color: var(--text-secondary); background: rgba(0, 0, 0, 0.1); border: 1px dashed var(--glass-border); border-radius: 8px; margin: 10px 0;">
+        <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
+        <p style="font-weight: bold; margin-bottom: 8px;">
+          \${currentLang === 'ar' ? 'تعذر تحميل خريطة اليمن التفاعلية' : 'Interactive Map could not be loaded'}
+        </p>
+        <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
+          \${currentLang === 'ar' ? 'يتطلب تحميل الخريطة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Leaflet والخرائط الأساسية.' : 'Loading the map requires an active internet connection to load Leaflet and map tiles.'}
+        </p>
+      </div>
+    `;
+  }
 }
 
 // Update Map tiles dynamically based on theme selection
 function updateMapTiles() {
-  if (!mapInstance) return;
+  if (!mapInstance || typeof L === 'undefined') return;
   
-  if (mapTileLayer) {
-    mapInstance.removeLayer(mapTileLayer);
+  try {
+    if (mapTileLayer) {
+      mapInstance.removeLayer(mapTileLayer);
+    }
+    
+    let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'; // Neon (Default Dark)
+    if (activeTheme === 'light') {
+      tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'; // Frosty Light (Positron)
+    } else if (activeTheme === 'emerald') {
+      tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; // Emerald Organic (Voyager)
+    }
+    
+    mapTileLayer = L.tileLayer(tileUrl, {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(mapInstance);
+  } catch (err) {
+    console.error("Failed to update map tiles:", err);
   }
-  
-  let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'; // Neon (Default Dark)
-  if (activeTheme === 'light') {
-    tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'; // Frosty Light (Positron)
-  } else if (activeTheme === 'emerald') {
-    tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; // Emerald Organic (Voyager)
-  }
-  
-  mapTileLayer = L.tileLayer(tileUrl, {
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    subdomains: 'abcd',
-    maxZoom: 20
-  }).addTo(mapInstance);
 }
 
 // Setup Charts
 function initCharts() {
-  const ctxSectors = document.getElementById("chart-sectors").getContext("2d");
-  const ctxStages = document.getElementById("chart-stages").getContext("2d");
+  const canvasSectors = document.getElementById("chart-sectors");
+  const canvasStages = document.getElementById("chart-stages");
+  if (!canvasSectors || !canvasStages) return;
   
-  Chart.defaults.color = activeTheme === 'light' ? '#0f172a' : '#9ca3af';
-  Chart.defaults.font.family = currentLang === 'ar' ? 'Tajawal' : 'Inter';
-  
-  // Sectors Chart
-  chartSectors = new Chart(ctxSectors, {
-    type: 'doughnut',
-    data: {
-      labels: [],
-      datasets: [{
-        data: [],
-        backgroundColor: ['rgba(59, 130, 246, 0.65)', 'rgba(245, 158, 11, 0.65)', 'rgba(16, 185, 129, 0.65)'],
-        borderColor: ['#3b82f6', '#f59e0b', '#10b981'],
-        borderWidth: 1.5
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
-        title: { display: true, text: currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution', color: activeTheme === 'light' ? '#0f172a' : '#f3f4f6' }
-      }
+  try {
+    if (typeof Chart === 'undefined') {
+      throw new Error("Chart.js library failed to load");
     }
-  });
-
-  // Stages Chart
-  chartStages = new Chart(ctxStages, {
-    type: 'bar',
-    data: {
-      labels: [],
-      datasets: [{
-        label: currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors',
-        data: [],
-        backgroundColor: activeTheme === 'light' ? 'rgba(124, 58, 237, 0.65)' : 'rgba(138, 43, 226, 0.5)',
-        borderColor: activeTheme === 'light' ? '#7c3aed' : '#8a2be2',
-        borderWidth: 1.5
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: { beginAtZero: true, grid: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255, 255, 255, 0.05)' } },
-        x: { grid: { display: false } }
+    const ctxSectors = canvasSectors.getContext("2d");
+    const ctxStages = canvasStages.getContext("2d");
+    
+    Chart.defaults.color = activeTheme === 'light' ? '#0f172a' : '#9ca3af';
+    Chart.defaults.font.family = currentLang === 'ar' ? 'Tajawal' : 'Inter';
+    
+    // Sectors Chart
+    chartSectors = new Chart(ctxSectors, {
+      type: 'doughnut',
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: ['rgba(59, 130, 246, 0.65)', 'rgba(245, 158, 11, 0.65)', 'rgba(16, 185, 129, 0.65)'],
+          borderColor: ['#3b82f6', '#f59e0b', '#10b981'],
+          borderWidth: 1.5
+        }]
       },
-      plugins: {
-        legend: { display: false },
-        title: { display: true, text: currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages', color: activeTheme === 'light' ? '#0f172a' : '#f3f4f6' }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+          title: { display: true, text: currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution', color: activeTheme === 'light' ? '#0f172a' : '#f3f4f6' }
+        }
       }
+    });
+  
+    // Stages Chart
+    chartStages = new Chart(ctxStages, {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [{
+          label: currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors',
+          data: [],
+          backgroundColor: activeTheme === 'light' ? 'rgba(124, 58, 237, 0.65)' : 'rgba(138, 43, 226, 0.5)',
+          borderColor: activeTheme === 'light' ? '#7c3aed' : '#8a2be2',
+          borderWidth: 1.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, grid: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255, 255, 255, 0.05)' } },
+          x: { grid: { display: false } }
+        },
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages', color: activeTheme === 'light' ? '#0f172a' : '#f3f4f6' }
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Charts initialization failed:", err);
+    const chartsGrid = document.querySelector(".charts-grid");
+    if (chartsGrid) {
+      chartsGrid.innerHTML = `
+        <div class="offline-placeholder" style="grid-column: span 2; padding: 40px 20px; text-align: center; color: var(--text-secondary); border: 1px dashed var(--glass-border); border-radius: 8px; background: rgba(0, 0, 0, 0.1);">
+          <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
+          <p style="font-weight: bold; margin-bottom: 8px;">
+            \${currentLang === 'ar' ? 'تعذر تحميل الرسوم البيانية التحليلية' : 'Analytical Charts could not be loaded'}
+          </p>
+          <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
+            \${currentLang === 'ar' ? 'يتطلب رسم المخططات اتصالاً نشطاً بالإنترنت لتحميل مكتبة Chart.js.' : 'Rendering charts requires an active internet connection to load the Chart.js library.'}
+          </p>
+        </div>
+      `;
     }
-  });
+  }
 }
 
 // Populate Partners dropdown in form simulator
@@ -934,15 +1001,17 @@ function toggleLanguage() {
   document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
   
   const toggleBtn = document.getElementById("btn-lang-toggle");
-  toggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
+  if (toggleBtn) toggleBtn.innerText = currentLang === 'ar' ? 'English' : 'العربية';
   
   applyLocalization();
   
-  // Re-run graphs and charts in new language
-  Chart.defaults.font.family = currentLang === 'ar' ? 'Tajawal' : 'Inter';
-  chartSectors.options.plugins.title.text = currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution';
-  chartStages.options.plugins.title.text = currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages';
-  chartStages.data.datasets[0].label = currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors';
+  // Re-run graphs and charts in new language if Chart.js is loaded
+  if (typeof Chart !== 'undefined' && chartSectors && chartStages) {
+    Chart.defaults.font.family = currentLang === 'ar' ? 'Tajawal' : 'Inter';
+    chartSectors.options.plugins.title.text = currentLang === 'ar' ? 'توزيع القطاعات' : 'Sectors Distribution';
+    chartStages.options.plugins.title.text = currentLang === 'ar' ? 'مراحل الابتكار' : 'Innovation Stages';
+    chartStages.data.datasets[0].label = currentLang === 'ar' ? 'عدد الجهات' : 'No. of Actors';
+  }
   
   populateFiltersAndForms();
   updateDashboardViews();
@@ -1107,10 +1176,15 @@ function updateDashboardViews() {
   const privateCount = filteredActors.filter(a => a.sector === 'private').length;
   const publicCount = filteredActors.filter(a => a.sector === 'public').length;
 
-  document.getElementById("stat-total").innerText = totalCount;
-  document.getElementById("stat-civil").innerText = civilCount;
-  document.getElementById("stat-private").innerText = privateCount;
-  document.getElementById("stat-public").innerText = publicCount;
+  const statTotalEl = document.getElementById("stat-total");
+  const statCivilEl = document.getElementById("stat-civil");
+  const statPrivateEl = document.getElementById("stat-private");
+  const statPublicEl = document.getElementById("stat-public");
+
+  if (statTotalEl) statTotalEl.innerText = totalCount;
+  if (statCivilEl) statCivilEl.innerText = civilCount;
+  if (statPrivateEl) statPrivateEl.innerText = privateCount;
+  if (statPublicEl) statPublicEl.innerText = publicCount;
 
   // Calculate percentages
   const civilPct = totalCount > 0 ? Math.round((civilCount / totalCount) * 100) : 0;
@@ -1118,64 +1192,89 @@ function updateDashboardViews() {
   const publicPct = totalCount > 0 ? Math.round((publicCount / totalCount) * 100) : 0;
 
   // Update progress bars widths
-  document.getElementById("pb-stat-total").style.width = "100%";
-  document.getElementById("pb-stat-civil").style.width = civilPct + "%";
-  document.getElementById("pb-stat-private").style.width = privatePct + "%";
-  document.getElementById("pb-stat-public").style.width = publicPct + "%";
+  const pbTotal = document.getElementById("pb-stat-total");
+  const pbCivil = document.getElementById("pb-stat-civil");
+  const pbPrivate = document.getElementById("pb-stat-private");
+  const pbPublic = document.getElementById("pb-stat-public");
+
+  if (pbTotal) pbTotal.style.width = "100%";
+  if (pbCivil) pbCivil.style.width = civilPct + "%";
+  if (pbPrivate) pbPrivate.style.width = privatePct + "%";
+  if (pbPublic) pbPublic.style.width = publicPct + "%";
 
   // Update badges text
-  document.getElementById("badge-stat-civil").innerText = civilPct + "%";
-  document.getElementById("badge-stat-private").innerText = privatePct + "%";
-  document.getElementById("badge-stat-public").innerText = publicPct + "%";
+  const badgeCivil = document.getElementById("badge-stat-civil");
+  const badgePrivate = document.getElementById("badge-stat-private");
+  const badgePublic = document.getElementById("badge-stat-public");
+
+  if (badgeCivil) badgeCivil.innerText = civilPct + "%";
+  if (badgePrivate) badgePrivate.innerText = privatePct + "%";
+  if (badgePublic) badgePublic.innerText = publicPct + "%";
   
   // 2. Render Map markers with Sonar Pulse CSS
-  if (markersGroup) {
-    markersGroup.clearLayers();
-    filteredActors.forEach(actor => {
-      const title = currentLang === 'ar' ? actor.name_ar : actor.name_en;
-      const desc = currentLang === 'ar' ? actor.description_ar : actor.description_en;
-      const secName = currentLang === 'ar' ? actor.sector_ar : actor.sector_en;
-      const stgName = currentLang === 'ar' ? actor.stage_ar : actor.stage_en;
-      const govName = currentLang === 'ar' ? actor.governorate_ar : actor.governorate_en;
-      
-      const popupContent = `
-        <div class="popup-title">${title}</div>
-        <div style="font-size: 11px; margin-bottom: 5px;">
-          <strong>${currentLang === 'ar' ? 'القطاع' : 'Sector'}:</strong> ${secName} | 
-          <strong>${currentLang === 'ar' ? 'المحافظة' : 'Gov'}:</strong> ${govName}
-        </div>
-        <div style="font-size: 11px; margin-bottom: 8px;">
-          <strong>${currentLang === 'ar' ? 'المرحلة' : 'Stage'}:</strong> ${stgName}
-        </div>
-        <div class="popup-desc">${desc}</div>
-        <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; color: var(--primary);">
-          ${actor.email || ''} | ${actor.phone || ''}
-        </div>
-      `;
-      
-      // Marker color coding based on sector
-      let color = '#3b82f6'; // public
-      if (actor.sector === 'private') color = '#f59e0b';
-      if (actor.sector === 'civil_society') color = '#10b981';
-      
-      // Dynamic Sonar Pulse Icon
-      const customIcon = L.divIcon({
-        className: 'custom-map-icon',
-        html: `<div class="sonar-dot" style="background-color: ${color}; color: ${color};"></div>`,
-        iconSize: [14, 14]
-      });
+  try {
+    if (typeof L !== 'undefined' && markersGroup) {
+      markersGroup.clearLayers();
+      filteredActors.forEach(actor => {
+        const title = currentLang === 'ar' ? actor.name_ar : actor.name_en;
+        const desc = currentLang === 'ar' ? actor.description_ar : actor.description_en;
+        const secName = currentLang === 'ar' ? actor.sector_ar : actor.sector_en;
+        const stgName = currentLang === 'ar' ? actor.stage_ar : actor.stage_en;
+        const govName = currentLang === 'ar' ? actor.governorate_ar : actor.governorate_en;
+        
+        const popupContent = `
+          <div class="popup-title">${title}</div>
+          <div style="font-size: 11px; margin-bottom: 5px;">
+            <strong>\${currentLang === 'ar' ? 'القطاع' : 'Sector'}:</strong> \${secName} | 
+            <strong>\${currentLang === 'ar' ? 'المحافظة' : 'Gov'}:</strong> \${govName}
+          </div>
+          <div style="font-size: 11px; margin-bottom: 8px;">
+            <strong>\${currentLang === 'ar' ? 'المرحلة' : 'Stage'}:</strong> \${stgName}
+          </div>
+          <div class="popup-desc">\${desc}</div>
+          <div style="font-size: 10px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; color: var(--primary);">
+            \${actor.email || ''} | \${actor.phone || ''}
+          </div>
+        `;
+        
+        // Marker color coding based on sector
+        let color = '#3b82f6'; // public
+        if (actor.sector === 'private') color = '#f59e0b';
+        if (actor.sector === 'civil_society') color = '#10b981';
+        
+        // Dynamic Sonar Pulse Icon
+        const customIcon = L.divIcon({
+          className: 'custom-map-icon',
+          html: `<div class="sonar-dot" style="background-color: \${color}; color: \${color};"></div>`,
+          iconSize: [14, 14]
+        });
 
-      L.marker([actor.lat, actor.lng], { icon: customIcon })
-        .bindPopup(popupContent)
-        .addTo(markersGroup);
-    });
+        L.marker([actor.lat, actor.lng], { icon: customIcon })
+          .bindPopup(popupContent)
+          .addTo(markersGroup);
+      });
+    }
+  } catch (err) {
+    console.error("Error drawing map markers:", err);
   }
   
   // 3. Render Vis.js Network Graph
-  renderNetwork();
+  try {
+    if (typeof vis !== 'undefined') {
+      renderNetwork();
+    }
+  } catch (err) {
+    console.error("Error drawing vis network:", err);
+  }
   
   // 4. Render Chart.js
-  renderCharts();
+  try {
+    if (typeof Chart !== 'undefined' && chartSectors && chartStages) {
+      renderCharts();
+    }
+  } catch (err) {
+    console.error("Error updating charts:", err);
+  }
   
   // 5. Populate table directory
   renderDirectoryTable();
@@ -1189,130 +1288,150 @@ function renderNetwork() {
   const container = document.getElementById("network-graph");
   if (!container) return;
   
-  const nodesArray = [];
-  const edgesArray = [];
-  
-  // Add filtered nodes
-  filteredActors.forEach(actor => {
-    const label = currentLang === 'ar' ? actor.name_ar : actor.name_en;
-    
-    // Node styling by sector
-    let color = { background: 'rgba(59, 130, 246, 0.85)', border: '#3b82f6', highlight: '#60a5fa' };
-    if (actor.sector === 'private') {
-      color = { background: 'rgba(245, 158, 11, 0.85)', border: '#f59e0b', highlight: '#fbbf24' };
-    } else if (actor.sector === 'civil_society') {
-      color = { background: 'rgba(16, 185, 129, 0.85)', border: '#10b981', highlight: '#34d399' };
+  try {
+    if (typeof vis === 'undefined') {
+      throw new Error("Vis.js library failed to load");
     }
+    const nodesArray = [];
+    const edgesArray = [];
     
-    nodesArray.push({
-      id: actor.id,
-      label: label,
-      color: color,
-      font: { color: activeTheme === 'light' ? '#0f172a' : '#ffffff', face: currentLang === 'ar' ? 'Tajawal' : 'Inter', size: 11, bold: true },
-      shape: 'box',
-      borderWidth: 1.5,
-      shadow: true,
-      margin: 8
+    // Add filtered nodes
+    filteredActors.forEach(actor => {
+      const label = currentLang === 'ar' ? actor.name_ar : actor.name_en;
+      
+      // Node styling by sector
+      let color = { background: 'rgba(59, 130, 246, 0.85)', border: '#3b82f6', highlight: '#60a5fa' };
+      if (actor.sector === 'private') {
+        color = { background: 'rgba(245, 158, 11, 0.85)', border: '#f59e0b', highlight: '#fbbf24' };
+      } else if (actor.sector === 'civil_society') {
+        color = { background: 'rgba(16, 185, 129, 0.85)', border: '#10b981', highlight: '#34d399' };
+      }
+      
+      nodesArray.push({
+        id: actor.id,
+        label: label,
+        color: color,
+        font: { color: activeTheme === 'light' ? '#0f172a' : '#ffffff', face: currentLang === 'ar' ? 'Tajawal' : 'Inter', size: 11, bold: true },
+        shape: 'box',
+        borderWidth: 1.5,
+        shadow: true,
+        margin: 8
+      });
+      
+      // Add edges for connections if target exists in our filtered list
+      if (actor.connections && Array.isArray(actor.connections)) {
+        actor.connections.forEach(connId => {
+          if (connId > actor.id && filteredActors.some(a => a.id === connId)) {
+            edgesArray.push({
+              from: actor.id,
+              to: connId,
+              color: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.15)', highlight: 'var(--primary)' },
+              width: 1.5
+            });
+          }
+        });
+      }
     });
     
-    // Add edges for connections if target exists in our filtered list
-    if (actor.connections && Array.isArray(actor.connections)) {
-      actor.connections.forEach(connId => {
-        if (connId > actor.id && filteredActors.some(a => a.id === connId)) {
-          edgesArray.push({
-            from: actor.id,
-            to: connId,
-            color: { color: activeTheme === 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.15)', highlight: 'var(--primary)' },
-            width: 1.5
-          });
-        }
-      });
+    const nodes = new vis.DataSet(nodesArray);
+    const edges = new vis.DataSet(edgesArray);
+    
+    const data = { nodes, edges };
+    
+    // Compute Network Density (edges divided by maximum possible edges)
+    const nodeCount = filteredActors.length;
+    let edgeCount = edgesArray.length;
+    let density = 0;
+    if (nodeCount > 1) {
+      const maxEdges = (nodeCount * (nodeCount - 1)) / 2;
+      density = ((edgeCount / maxEdges) * 100).toFixed(1);
     }
-  });
-  
-  const nodes = new vis.DataSet(nodesArray);
-  const edges = new vis.DataSet(edgesArray);
-  
-  const data = { nodes, edges };
-  
-  // Compute Network Density (edges divided by maximum possible edges)
-  const nodeCount = filteredActors.length;
-  let edgeCount = edgesArray.length;
-  let density = 0;
-  if (nodeCount > 1) {
-    const maxEdges = (nodeCount * (nodeCount - 1)) / 2;
-    density = ((edgeCount / maxEdges) * 100).toFixed(1);
-  }
-  const densityLabel = document.getElementById("lbl-net-density");
-  if (densityLabel) {
-    densityLabel.innerText = (currentLang === 'ar' ? locales.ar.lblNetDensity : locales.en.lblNetDensity) + density + "%";
-  }
-  
-  const options = {
-    nodes: {
-      shape: 'box',
-      margin: 10
-    },
-    physics: {
-      enabled: networkPhysicsEnabled,
-      stabilization: true,
-      barnesHut: {
-        gravitationalConstant: -1800,
-        centralGravity: 0.3,
-        springLength: 90
+    const densityLabel = document.getElementById("lbl-net-density");
+    if (densityLabel) {
+      densityLabel.innerText = (currentLang === 'ar' ? locales.ar.lblNetDensity : locales.en.lblNetDensity) + density + "%";
+    }
+    
+    const options = {
+      nodes: {
+        shape: 'box',
+        margin: 10
+      },
+      physics: {
+        enabled: networkPhysicsEnabled,
+        stabilization: true,
+        barnesHut: {
+          gravitationalConstant: -1800,
+          centralGravity: 0.3,
+          springLength: 90
+        }
+      },
+      interaction: {
+        hover: true,
+        zoomView: true
       }
-    },
-    interaction: {
-      hover: true,
-      zoomView: true
+    };
+    
+    if (networkInstance) {
+      networkInstance.destroy();
     }
-  };
-  
-  if (networkInstance) {
-    networkInstance.destroy();
-  }
-  networkInstance = new vis.Network(container, data, options);
-  
-  // Vis.js interactive Focus Mode logic
-  networkInstance.on("click", function (params) {
-    if (params.nodes.length > 0) {
-      const selectedId = params.nodes[0];
-      
-      // Find connected nodes
-      const connectedNodeIds = networkInstance.getConnectedNodes(selectedId);
-      
-      // Style updates: Highlight selection + neighbors, blur others
-      const updateArray = [];
-      nodes.forEach(node => {
-        const isSelected = node.id === selectedId;
-        const isConnected = connectedNodeIds.includes(node.id);
+    networkInstance = new vis.Network(container, data, options);
+    
+    // Vis.js interactive Focus Mode logic
+    networkInstance.on("click", function (params) {
+      if (params.nodes.length > 0) {
+        const selectedId = params.nodes[0];
         
-        if (isSelected) {
-          updateArray.push({ id: node.id, font: { size: 14 }, borderWidth: 3 });
-        } else if (isConnected) {
-          updateArray.push({ id: node.id, opacity: 1, font: { size: 11 } });
-        } else {
-          updateArray.push({ id: node.id, opacity: 0.2, font: { size: 9 } });
-        }
-      });
-      nodes.update(updateArray);
-    } else {
-      // Clicked in empty space: Reset opacity & sizing for all nodes
-      const resetArray = [];
-      nodes.forEach(node => {
-        resetArray.push({ id: node.id, opacity: 1, font: { size: 11 }, borderWidth: 1.5 });
-      });
-      nodes.update(resetArray);
-    }
-  });
+        // Find connected nodes
+        const connectedNodeIds = networkInstance.getConnectedNodes(selectedId);
+        
+        // Style updates: Highlight selection + neighbors, blur others
+        const updateArray = [];
+        nodes.forEach(node => {
+          const isSelected = node.id === selectedId;
+          const isConnected = connectedNodeIds.includes(node.id);
+          
+          if (isSelected) {
+            updateArray.push({ id: node.id, font: { size: 14 }, borderWidth: 3 });
+          } else if (isConnected) {
+            updateArray.push({ id: node.id, opacity: 1, font: { size: 11 } });
+          } else {
+            updateArray.push({ id: node.id, opacity: 0.2, font: { size: 9 } });
+          }
+        });
+        nodes.update(updateArray);
+      } else {
+        // Clicked in empty space: Reset opacity & sizing for all nodes
+        const resetArray = [];
+        nodes.forEach(node => {
+          resetArray.push({ id: node.id, opacity: 1, font: { size: 11 }, borderWidth: 1.5 });
+        });
+        nodes.update(resetArray);
+      }
+    });
+  } catch (err) {
+    console.error("Network graph rendering failed:", err);
+    container.innerHTML = `
+      <div class="offline-placeholder" style="padding: 40px 20px; text-align: center; color: var(--text-secondary); background: rgba(0,0,0,0.1); border: 1px dashed var(--glass-border); border-radius: 8px;">
+        <i data-lucide="wifi-off" style="width: 48px; height: 48px; margin-bottom: 15px; color: var(--primary); display: inline-block;"></i>
+        <p style="font-weight: bold; margin-bottom: 8px;">
+          \${currentLang === 'ar' ? 'تعذر تحميل شبكة العلاقات التفاعلية' : 'Interactive Linkages Network could not be loaded'}
+        </p>
+        <p style="font-size: 12px; max-width: 320px; margin: 0 auto; opacity: 0.8;">
+          \${currentLang === 'ar' ? 'تتطلب هذه الشبكة اتصالاً نشطاً بالإنترنت لتحميل مكتبة Vis.js وتشغيل المحاكي الفيزيائي.' : 'This network graph requires an active internet connection to load the Vis.js library.'}
+        </p>
+      </div>
+    `;
+    const densityLabel = document.getElementById("lbl-net-density");
+    if (densityLabel) densityLabel.innerText = "";
+  }
 }
 
 // Network Physics Controllers
 function toggleNetworkPhysics() {
+  if (typeof vis === 'undefined' || !networkInstance) return;
+  
   networkPhysicsEnabled = !networkPhysicsEnabled;
-  if (networkInstance) {
-    networkInstance.setOptions({ physics: { enabled: networkPhysicsEnabled } });
-  }
+  networkInstance.setOptions({ physics: { enabled: networkPhysicsEnabled } });
   
   // Re-run language check to apply the correct translated string
   const label = currentLang === 'ar' ? 
@@ -1337,14 +1456,13 @@ function toggleNetworkPhysics() {
 }
 
 function stabilizeNetwork() {
-  if (networkInstance) {
-    networkInstance.stabilize();
-  }
+  if (typeof vis === 'undefined' || !networkInstance) return;
+  networkInstance.stabilize();
 }
 
 // Chart.js render updates
 function renderCharts() {
-  if (!chartSectors || !chartStages) return;
+  if (typeof Chart === 'undefined' || !chartSectors || !chartStages) return;
   
   // Calculate Sectors distribution
   const countsSector = { civil_society: 0, private: 0, public: 0 };
