@@ -1435,4 +1435,173 @@ body.theme-light .kanban-col {
   }
 }
 
+/* ==========================================
+   Interactive Onboarding Tour Styles
+   ========================================== */
+.onboarding-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: auto;
+}
+.onboarding-overlay.visible {
+  opacity: 1;
+}
+
+.onboarding-tooltip {
+  position: fixed;
+  z-index: 10005;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 18px;
+  width: 330px;
+  max-width: 90vw;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease, top 0.3s ease, left 0.3s ease;
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: auto;
+  overflow: hidden;
+}
+.onboarding-tooltip.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.onboarding-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.onboarding-tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  margin-top: 4px;
+}
+
+.onboarding-step-counter {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--primary);
+  background: rgba(0, 242, 254, 0.1);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+body.theme-emerald .onboarding-step-counter {
+  color: var(--primary);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.onboarding-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+  padding: 0 5px;
+}
+.onboarding-close-btn:hover {
+  color: #ef4444;
+}
+
+.onboarding-tooltip-body h4 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.onboarding-tooltip-body p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.onboarding-tooltip-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.onboarding-tooltip-footer button {
+  flex: 1;
+  padding: 7px 12px;
+  font-size: 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.onboarding-tooltip-footer .btn-primary {
+  background: var(--primary);
+  color: var(--bg-main);
+  border-color: var(--primary);
+}
+.onboarding-tooltip-footer .btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.onboarding-tooltip-footer .btn-sec {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-color: var(--glass-border);
+}
+.onboarding-tooltip-footer .btn-sec:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.onboarding-highlight {
+  position: relative !important;
+  z-index: 10002 !important;
+  pointer-events: none !important;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 15px 5px var(--primary) !important;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Make sure highlighted element outline looks awesome and glows */
+@keyframes onboarding-glow {
+  0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 8px 1px var(--primary); }
+  50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 18px 6px var(--primary); }
+  100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 8px 1px var(--primary); }
+}
+.onboarding-highlight-pulse {
+  animation: onboarding-glow 2s infinite ease-in-out;
+}
+
+/* Helper to hide overlay/tooltip */
+.hidden {
+  display: none !important;
+  opacity: 0 !important;
+}
+
 

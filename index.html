@@ -748,6 +748,11 @@
             <span class="ar-only">عرض الشرائح الفنية (كامل)</span>
             <span class="en-only">Technical Pitch Deck (Full)</span>
           </a>
+          <button class="btn-lang" id="btn-start-tour" onclick="startOnboardingTour()" style="background: rgba(138, 43, 226, 0.1); border: 1px solid rgba(138, 43, 226, 0.3); padding: 8px 16px; border-radius: 30px; font-size: 13px; color: var(--accent); display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; margin-right: 8px;">
+            <i data-lucide="compass" class="btn-icon-sm" style="color: var(--accent);"></i>
+            <span class="ar-only">جولة إرشادية 🧭</span>
+            <span class="en-only">Guided Tour 🧭</span>
+          </button>
           <select id="theme-selector" class="filter-select" style="width: auto; padding: 6px 12px; font-size: 13px;" onchange="changeTheme(this.value)">
             <option value="neon"> Neon 🌌</option>
             <option value="emerald">Emerald Organic 🌿</option>
@@ -897,7 +902,7 @@
       </div>
 
       <!-- Live Guided Simulation Wizard (العرض التفاعلي الحي للجنة التقييم) -->
-      <div class="glass-panel" style="border: 2px solid var(--accent); position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(138,43,226,0.05) 0%, var(--glass-bg) 100%);">
+      <div id="guided-scenario-wizard" class="glass-panel" style="border: 2px solid var(--accent); position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(138,43,226,0.05) 0%, var(--glass-bg) 100%);">
         <div style="position: absolute; top:0; left:0; width:100%; height:6px; background: linear-gradient(to right, var(--accent), var(--primary));"></div>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
@@ -1998,6 +2003,25 @@
         </p>
       </div>
     </footer>
+  </div>
+
+  <!-- Custom Onboarding Tour Elements -->
+  <div id="onboarding-overlay" class="onboarding-overlay hidden" onclick="endOnboardingTour()"></div>
+  <div id="onboarding-tooltip" class="onboarding-tooltip hidden">
+    <div class="onboarding-progress-bar" id="onboarding-progress"></div>
+    <div class="onboarding-tooltip-header">
+      <span class="onboarding-step-counter" id="onboarding-step-num">Step 1 of 10</span>
+      <button class="onboarding-close-btn" onclick="endOnboardingTour()">&times;</button>
+    </div>
+    <div class="onboarding-tooltip-body">
+      <h4 id="onboarding-title">Title</h4>
+      <p id="onboarding-desc">Description</p>
+    </div>
+    <div class="onboarding-tooltip-footer">
+      <button class="btn-sec btn-sm" id="onboarding-prev-btn" onclick="prevTourStep()"></button>
+      <button class="btn-primary btn-sm" id="onboarding-next-btn" onclick="nextTourStep()"></button>
+      <button class="btn-sec btn-sm" id="onboarding-skip-btn" onclick="endOnboardingTour()"></button>
+    </div>
   </div>
 
   <div id="toast-container"></div>

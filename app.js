@@ -656,6 +656,8 @@ let networkPhysicsEnabled = true; // Global network physics state
 let chartSectors = null;
 let chartStages = null;
 let chartThematic = null;
+let isTourActive = false;
+let tourCurrentStep = 0;
 
 function maskPhone(phone) {
   if (!phone) return '-';
@@ -848,6 +850,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.lucide) {
     window.lucide.createIcons();
   }
+
+  // Auto-trigger tour if never completed
+  setTimeout(() => {
+    const tourCompleted = safeGetItem("yiep_tour_completed");
+    if (!tourCompleted) {
+      startOnboardingTour();
+    }
+  }, 1200);
 });
 
 // Safe localStorage wrapper
@@ -1461,6 +1471,10 @@ function applyLocalization() {
   document.getElementById("txt-footer-philosophy-desc").innerText = dict.txtFooterPhilosophyDesc;
   document.getElementById("txt-footer-meta-title").innerHTML = `<i data-lucide="info" class="btn-icon-sm"></i> <span>${dict.txtFooterMetaTitle}</span>`;
   document.getElementById("txt-footer-copy").innerHTML = dict.txtFooterCopy;
+  
+  if (isTourActive) {
+    renderTourStep();
+  }
   
   // Refresh Lucide Icons after translations are inserted
   if (window.lucide) {
@@ -2736,4 +2750,333 @@ function unlockKoboSimulator() {
     errorEl.style.display = "block";
     document.getElementById("sim-passcode").value = "";
   }
+}
+
+// ==========================================
+// Interactive Onboarding Tour Engine
+// ==========================================
+
+const tourSteps = [
+  {
+    elementId: null,
+    tab: "tab-landing",
+    placement: "center",
+    title: {
+      ar: "مرحباً بك في منصة YIEP! 🧭",
+      en: "Welcome to YIEP Platform! 🧭"
+    },
+    desc: {
+      ar: "يسعدنا مرافقتك في جولة إرشادية سريعة لاستعراض الطبقات الاستراتيجية والميزات الفنية التي قمنا بتطويرها لتمكين الابتكار الإنساني والاجتماعي في اليمن وقياس أثره.",
+      en: "We are pleased to guide you on a quick interactive tour to showcase the strategic layers and technical features designed to map and enable humanitarian innovation in Yemen."
+    }
+  },
+  {
+    elementId: ".header-controls",
+    tab: "tab-landing",
+    placement: "bottom",
+    title: {
+      ar: "لوحة التحكم الرئيسية والإعدادات",
+      en: "Global Controls & Customizations"
+    },
+    desc: {
+      ar: "هنا يمكنك تبديل اللغات (عربي/إنجليزي) وتغيير المظهر البصري (Neon, Emerald, Light). كما قمنا بدمج العرض التقديمي الفني كشريحة تفاعلية مدمجة في شريط التبويبات لتسهيل التصفح.",
+      en: "Here you can toggle languages (AR/EN), switch between visual themes, or access the embedded Technical Pitch Deck for direct, seamless evaluation."
+    }
+  },
+  {
+    elementId: "#guided-scenario-wizard",
+    tab: "tab-landing",
+    placement: "bottom",
+    title: {
+      ar: "شاشة الهبوط وقصة الأثر (Theory of Change)",
+      en: "Landing Page & Impact Narrative"
+    },
+    desc: {
+      ar: "تطبيقاً لمبدأ 'القصة > النظام'، تبدأ المنصة بالتعريف بأساس المشكلة الإنسانية في اليمن ونظرية التغيير لـ YJR، مع تقديم معالج تفاعلي يحاكي منح التمويل ميدانياً.",
+      en: "Following the 'Story > System' principle, the platform welcomes users with Yemen's humanitarian challenges and the YJR Theory of Change, backed by a step-by-step interactive scenario wizard."
+    }
+  },
+  {
+    elementId: "#yemen-map",
+    tab: "tab-dashboard",
+    placement: "top",
+    title: {
+      ar: "📍 الخريطة التفاعلية الجغرافية",
+      en: "📍 Interactive Geoportal Map"
+    },
+    desc: {
+      ar: "تعرض توزيع 215 فاعلاً واقعياً عبر جميع محافظات اليمن الـ 22. تتميز بالتعريب الديناميكي التلقائي لمسميات المحافظات لتتوافق تماماً مع لغة المقيم النشطة.",
+      en: "Plots 215 real actors distributed across all 22 Yemeni governorates, featuring automatic dynamic localization of map labels to match the reviewer's language."
+    }
+  },
+  {
+    elementId: "#network-graph",
+    tab: "tab-dashboard",
+    placement: "top",
+    title: {
+      ar: "🕸️ شبكة العلاقات والتشبيك البيني",
+      en: "🕸️ Interactive Ecosystem Network Graph"
+    },
+    desc: {
+      ar: "تحلل وترسم الروابط والشراكات بفيزيائية حركة تفاعلية (Vis.js). بمجرد النقر على أي جهة، تظهر لوحة عائمة تفصيلية زجاجية. هذه ميزة مخصصة بالكامل تتفوق على جمود أدوات BI التقليدية.",
+      en: "Analyzes and maps inter-organization relationships using active physics. Clicking any node focuses on its connections and reveals a floating glassmorphic details card—a custom feature static BI tools cannot match."
+    }
+  },
+  {
+    elementId: ".filter-section",
+    tab: "tab-dashboard",
+    placement: "right",
+    title: {
+      ar: "🎛️ التصفية والفرز متعدد الأبعاد",
+      en: "🎛️ Multi-dimensional Filter Sidebar"
+    },
+    desc: {
+      ar: "تتيح للمانحين تصنيف المنظومة فورياً بناءً على دور الجهة (منفذ، ممول، ممكن)، والقطاع الإنساني، ومؤشر النضج للابتكار (من 1 إلى 5 نجوم).",
+      en: "Allows evaluators to instantly filter actors based on ecosystem role (funder, enabler, researcher, implementer), humanitarian sector, or innovation maturity rating."
+    }
+  },
+  {
+    elementId: "#copilot-grid-layout",
+    tab: "tab-copilot",
+    placement: "top",
+    title: {
+      ar: "🧠 المساعد الذكي AI ودعم القرار",
+      en: "🧠 Smart AI Co-Pilot & Decision Support"
+    },
+    desc: {
+      ar: "يقوم بمطابقة الشركاء لبناء تحالفات مؤهلة (Consortia) واكتشاف الفجوات التمويلية والجغرافية، وتوفير توصيات استشارية ذكية مكتوبة لدعم المانحين.",
+      en: "Simulates an AI engine matching local actors to build qualified consortia, discovering funding gaps, and producing written advisory recommendations to aid donor decision-making."
+    }
+  },
+  {
+    elementId: "#simulator-lock-screen",
+    tab: "tab-simulator",
+    placement: "top",
+    title: {
+      ar: "📱 محاكي استمارة Kobo Toolbox",
+      en: "📱 Kobo Toolbox Feedback Loop"
+    },
+    desc: {
+      ar: "يحاكي استجابة وتدفق البيانات الفورية من الميدان لتحديث النظام تلقائياً. قمنا بحمايته برمز مرور (yjr2026) لمنع التلاعب وضمان الأمن الرقمي.",
+      en: "Simulates real-time field data ingestion. Access is protected by an admin passcode gate (yjr2026) to prevent unauthorized changes, ensuring data security and integrity."
+    }
+  },
+  {
+    elementId: "#tab-architecture",
+    tab: "tab-architecture",
+    placement: "top",
+    title: {
+      ar: "💡 الاستراتيجية والمعمارية الهندسية",
+      en: "💡 Tech Strategy & System Architecture"
+    },
+    desc: {
+      ar: "تعرض المخطط الهندسي لتدفق البيانات، وجدول مقارنة الجدوى الاستثمارية والمالية مع Power BI، وخارطة طريق زمنية متكاملة لـ 24 أسبوعاً تثبت جاهزيتنا القصوى للتنفيذ.",
+      en: "Details the technical blueprint, budget cost-efficiency comparison against standard BI tools, and a structured 24-week deployment roadmap proving our execution readiness."
+    }
+  },
+  {
+    elementId: null,
+    tab: "tab-landing",
+    placement: "center",
+    title: {
+      ar: "🧭 اكتملت الجولة الإرشادية بنجاح!",
+      en: "🧭 Guided Tour Completed!"
+    },
+    desc: {
+      ar: "شكراً لوقتك! أنت الآن جاهز لاستكشاف المنصة والتفاعل مع الخرائط والرسوم البيانية وتجربة محاكاة التمويل بنفسك. نتمنى لك تجربة ممتعة!",
+      en: "Thank you for your time! You are now ready to explore all layers of the portal. Try playing with the interactive filters or running the live funding scenario!"
+    }
+  }
+];
+
+function startOnboardingTour() {
+  isTourActive = true;
+  tourCurrentStep = 0;
+  
+  const overlay = document.getElementById("onboarding-overlay");
+  const tooltip = document.getElementById("onboarding-tooltip");
+  
+  if (overlay && tooltip) {
+    overlay.classList.remove("hidden");
+    tooltip.classList.remove("hidden");
+    
+    // Add micro delay for transition
+    setTimeout(() => {
+      overlay.classList.add("visible");
+      tooltip.classList.add("visible");
+      renderTourStep();
+    }, 50);
+  }
+}
+
+function renderTourStep() {
+  if (!isTourActive) return;
+  
+  // Clear previous highlights
+  document.querySelectorAll(".onboarding-highlight").forEach(el => {
+    el.classList.remove("onboarding-highlight");
+    el.classList.remove("onboarding-highlight-pulse");
+  });
+  
+  const step = tourSteps[tourCurrentStep];
+  if (!step) {
+    endOnboardingTour();
+    return;
+  }
+  
+  // Ensure correct tab is selected
+  if (step.tab) {
+    switchTab(step.tab);
+  }
+  
+  // Update texts based on active language
+  const titleText = currentLang === 'ar' ? step.title.ar : step.title.en;
+  const descText = currentLang === 'ar' ? step.desc.ar : step.desc.en;
+  
+  document.getElementById("onboarding-title").innerText = titleText;
+  document.getElementById("onboarding-desc").innerText = descText;
+  
+  // Step counter
+  const stepCounter = document.getElementById("onboarding-step-num");
+  if (stepCounter) {
+    stepCounter.innerText = currentLang === 'ar' 
+      ? `الخطوة ${tourCurrentStep + 1} من ${tourSteps.length}` 
+      : `Step ${tourCurrentStep + 1} of ${tourSteps.length}`;
+  }
+  
+  // Progress Bar width
+  const progressPercent = ((tourCurrentStep + 1) / tourSteps.length) * 100;
+  const progressBar = document.getElementById("onboarding-progress");
+  if (progressBar) {
+    progressBar.style.width = `${progressPercent}%`;
+  }
+  
+  // Button translations and states
+  const prevBtn = document.getElementById("onboarding-prev-btn");
+  const nextBtn = document.getElementById("onboarding-next-btn");
+  const skipBtn = document.getElementById("onboarding-skip-btn");
+  
+  if (prevBtn) {
+    prevBtn.innerText = currentLang === 'ar' ? "السابق" : "Prev";
+    prevBtn.style.display = tourCurrentStep === 0 ? "none" : "block";
+  }
+  
+  if (nextBtn) {
+    if (tourCurrentStep === tourSteps.length - 1) {
+      nextBtn.innerText = currentLang === 'ar' ? "إنهاء الجولة" : "Finish";
+    } else {
+      nextBtn.innerText = currentLang === 'ar' ? "التالي" : "Next";
+    }
+  }
+  
+  if (skipBtn) {
+    skipBtn.innerText = currentLang === 'ar' ? "تخطي" : "Skip";
+  }
+  
+  // Wait a moment for tab switching or layout reflows, then highlight and position
+  setTimeout(() => {
+    const tooltipEl = document.getElementById("onboarding-tooltip");
+    if (!tooltipEl) return;
+
+    if (step.elementId) {
+      const target = document.querySelector(step.elementId);
+      if (target) {
+        // Highlight element
+        target.classList.add("onboarding-highlight");
+        target.classList.add("onboarding-highlight-pulse");
+        
+        // Scroll into view
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Calculate absolute position
+        tooltipEl.style.position = "absolute";
+        
+        setTimeout(() => {
+          const rect = target.getBoundingClientRect();
+          const tooltipRect = tooltipEl.getBoundingClientRect();
+          
+          let top, left;
+          
+          if (step.placement === 'top') {
+            top = rect.top - tooltipRect.height - 15 + window.scrollY;
+            left = rect.left + (rect.width - tooltipRect.width) / 2 + window.scrollX;
+          } else if (step.placement === 'left') {
+            top = rect.top + (rect.height - tooltipRect.height) / 2 + window.scrollY;
+            left = rect.left - tooltipRect.width - 15 + window.scrollX;
+          } else if (step.placement === 'right') {
+            top = rect.top + (rect.height - tooltipRect.height) / 2 + window.scrollY;
+            left = rect.right + 15 + window.scrollX;
+          } else { // bottom or fallback
+            top = rect.bottom + 15 + window.scrollY;
+            left = rect.left + (rect.width - tooltipRect.width) / 2 + window.scrollX;
+          }
+          
+          // Window boundaries
+          if (left < 15) left = 15;
+          if (left + tooltipRect.width > window.innerWidth - 15) {
+            left = window.innerWidth - tooltipRect.width - 15;
+          }
+          if (top < 15) top = 15;
+          
+          tooltipEl.style.top = `${top}px`;
+          tooltipEl.style.left = `${left}px`;
+          tooltipEl.style.transform = "none";
+        }, 150); // wait for scroll to finish
+        
+        return;
+      }
+    }
+    
+    // Default fallback: Center in screen (Fixed position)
+    tooltipEl.style.position = "fixed";
+    tooltipEl.style.top = "50%";
+    tooltipEl.style.left = "50%";
+    tooltipEl.style.transform = "translate(-50%, -50%)";
+  }, 1200); // Wait 1200ms to ensure the page/tab is fully visible and map is initialized
+}
+
+function nextTourStep() {
+  if (tourCurrentStep < tourSteps.length - 1) {
+    tourCurrentStep++;
+    renderTourStep();
+  } else {
+    endOnboardingTour();
+  }
+}
+
+function prevTourStep() {
+  if (tourCurrentStep > 0) {
+    tourCurrentStep--;
+    renderTourStep();
+  }
+}
+
+function endOnboardingTour() {
+  isTourActive = false;
+  
+  // Remove highlights
+  document.querySelectorAll(".onboarding-highlight").forEach(el => {
+    el.classList.remove("onboarding-highlight");
+    el.classList.remove("onboarding-highlight-pulse");
+  });
+  
+  const overlay = document.getElementById("onboarding-overlay");
+  const tooltip = document.getElementById("onboarding-tooltip");
+  
+  if (overlay && tooltip) {
+    overlay.classList.remove("visible");
+    tooltip.classList.remove("visible");
+    
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+      tooltip.classList.add("hidden");
+    }, 300);
+  }
+  
+  // Save completion state
+  safeSetItem("yiep_tour_completed", "true");
+  
+  // Go back to landing page
+  switchTab("tab-landing");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
