@@ -1493,6 +1493,7 @@ function switchTab(tabId) {
   else if (tabId === 'tab-directory') btnId = "tab-btn-dir";
   else if (tabId === 'tab-simulator') btnId = "tab-btn-sim";
   else if (tabId === 'tab-pres-deck') btnId = "tab-btn-pres-deck";
+  else if (tabId === 'tab-architecture') btnId = "tab-btn-arch";
   
   const activeBtn = document.getElementById(btnId);
   if (activeBtn) activeBtn.classList.add("active");
@@ -1746,7 +1747,7 @@ function renderNetwork() {
         }
       }
       
-      // Dynamic sizes & border widths based on maturity score (outcompeting Oday)
+      // Dynamic sizes & border widths based on maturity score representing actor importance
       const maturity = actor.maturity_score || 3.0;
       const fSize = 10 + Math.floor(maturity * 0.8); // 12px to 14px
       const bWidth = 1.5 + (maturity * 0.3); // 2.4px to 3px

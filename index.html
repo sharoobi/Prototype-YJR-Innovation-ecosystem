@@ -793,6 +793,11 @@
         <span class="ar-only">🖥️ العرض الفني التفصيلي</span>
         <span class="en-only">🖥️ Detailed Technical Deck</span>
       </button>
+      <button class="tab-btn" id="tab-btn-arch" onclick="switchTab('tab-architecture')">
+        <i data-lucide="book-open" class="btn-icon"></i>
+        <span class="ar-only">💡 المنهجية والمعمارية</span>
+        <span class="en-only">💡 Architecture & Strategy</span>
+      </button>
     </div>
 
     <!-- Tab 0: Landing & Theory of Change (Default Active Tab) -->
@@ -1750,6 +1755,203 @@
             <div class="console-content" id="console-output">
   [INFO] Awaiting form submission. When you submit a new actor, the raw JSON payload parsed by the Kobo API will be displayed here, showing real-time ingestion to our interactive database.
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 6: Architecture & Strategy -->
+    <div id="tab-architecture" class="tab-content">
+      <div class="glass-panel" style="position: relative; overflow: hidden; margin-bottom: 20px;">
+        <div style="position: absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));"></div>
+        
+        <h3 style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="book-open" class="visual-icon" style="color: var(--primary);"></i>
+          <span class="ar-only">💡 المنهجية البرمجية والمعمارية الاستراتيجية للمنظومة</span>
+          <span class="en-only">💡 Software Methodology & Strategic Architecture</span>
+        </h3>
+        
+        <p class="ar-only" style="color: var(--text-secondary); margin-bottom: 30px; font-size: 14px; line-height: 1.7;">
+          رؤية هندسية متكاملة توضح منهجية التطوير والتحول الرقمي لبروتوتايب خريطة الابتكار في اليمن إلى نظام إنتاجي متكامل ومستدام بالاعتماد على أفضل الممارسات البرمجية العالمية.
+        </p>
+        <p class="en-only" style="color: var(--text-secondary); margin-bottom: 30px; font-size: 14px; line-height: 1.7;">
+          An integrated engineering vision detailing the development methodology and digital transformation of the YIEP prototype into a production-ready, sustainable system based on global software best practices.
+        </p>
+
+        <!-- Dynamic Architecture Diagram -->
+        <h4 style="font-size: 15px; margin-bottom: 20px; font-weight: bold; color: var(--primary);" class="ar-only">⚙️ دياجرام تدفق البيانات والمعمارية الهيكلية</h4>
+        <h4 style="font-size: 15px; margin-bottom: 20px; font-weight: bold; color: var(--primary);" class="en-only">⚙️ Data Flow & Architectural System Diagram</h4>
+        
+        <div class="arch-diagram-container" style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; position: relative;">
+          <!-- Node Layer 1 -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; text-align: center;">
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--accent); background: rgba(138, 43, 226, 0.05);">
+              <i data-lucide="smartphone" style="color: var(--accent); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">بوابة الإدخال الميدانية (Kobo)</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">Field Ingestion Gate (Kobo)</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">جمع الاستمارات ميدانياً وعبر الأوفلاين عبر استبيانات Kobo Toolbox API</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Offline field data collection via standard Kobo Toolbox REST API</p>
+            </div>
+            
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--primary); background: rgba(0, 242, 254, 0.05);">
+              <i data-lucide="shield-check" style="color: var(--primary); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">بوابة الفحص والأمان</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">Validation & Security Gate</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">تنقية البيانات وحجب أرقام الاتصال للامتثال لسرية المانحين (GDPR)</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Data sanitization and privacy masking for GDPR compliance</p>
+            </div>
+            
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--secondary); background: rgba(79, 172, 254, 0.05);">
+              <i data-lucide="database" style="color: var(--secondary); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">قاعدة البيانات المهيكلة (Laravel)</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">Structured Database (Laravel)</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">محرك Laravel 11 المحدث مع PostgreSQL لإدارة الفاعلين والشبكات وسجل المشاريع</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Laravel 11 backend with PostgreSQL for relations and audit caching</p>
+            </div>
+          </div>
+
+          <!-- Flow Connectors SVG -->
+          <div style="text-align: center; margin: -10px 0; color: var(--primary);">
+            <i data-lucide="arrow-down" style="width: 24px; height: 24px; display: inline-block; animation: pulseGlow 1.5s infinite;"></i>
+          </div>
+
+          <!-- Node Layer 2 -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; text-align: center;">
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--primary); background: rgba(0, 242, 254, 0.05);">
+              <i data-lucide="brain" style="color: var(--primary); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">محرك الذكاء الاصطناعي (AI Engine)</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">AI Matcher & Gaps Engine</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">مطابقة التحالفات تلقائياً وتحليل كثافة التشبيك وتحديد الفجوات القطاعية</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Automated consortium matching, linkage density, and gap analyzer</p>
+            </div>
+
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--accent); background: rgba(138, 43, 226, 0.05);">
+              <i data-lucide="network" style="color: var(--accent); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">الخريطة التفاعلية والشبكة (UI)</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">Leaflet & Vis.js Interactive UI</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">تمثيل جغرافي لليمن مع طبقة شبكات العلاقات التفاعلية بالأنماط الصندوقية والتحليل</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Geospatial Yemen mapping with Vis.js custom physics relationship network</p>
+            </div>
+
+            <div class="glass-panel" style="margin-bottom: 0; padding: 15px; border-color: var(--secondary); background: rgba(79, 172, 254, 0.05);">
+              <i data-lucide="trending-up" style="color: var(--secondary); width: 28px; height: 28px; margin: 0 auto 10px auto;"></i>
+              <h5 style="font-size: 13px; font-weight: bold;" class="ar-only">تقارير الأثر واللوحات الإحصائية</h5>
+              <h5 style="font-size: 13px; font-weight: bold;" class="en-only">Impact Metrics & Visual Charts</h5>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="ar-only">الرسوم البيانية التراكمية، تتبع دورة المشاريع Kanban ومخرجات التقارير</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 5px;" class="en-only">Chart.js trends, thematic polar area chart, and project lifecycle Kanban</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategic Comparison Panel -->
+        <h4 style="font-size: 15px; margin-bottom: 15px; font-weight: bold; color: var(--secondary);" class="ar-only">📊 دراسة مقارنة: تطبيق ويب مخصص مقابل أدوات التحليل التقليدية (Power BI / Tableau)</h4>
+        <h4 style="font-size: 15px; margin-bottom: 15px; font-weight: bold; color: var(--secondary);" class="en-only">📊 Strategic Comparison: Custom Web App vs. Standard BI Tools (Power BI / Tableau)</h4>
+        
+        <div class="directory-table-wrapper" style="margin-bottom: 30px;">
+          <table class="directory-table" style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: right;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.03);">
+                <th style="padding: 10px; border: 1px solid var(--glass-border);" class="ar-only">الميزة الفنية / الاستراتيجية</th>
+                <th style="padding: 10px; border: 1px solid var(--glass-border);" class="en-only">Technical / Strategic Feature</th>
+                <th style="padding: 10px; border: 1px solid var(--glass-border); color: var(--primary);" class="ar-only">منصتنا المخصصة (Custom Platform)</th>
+                <th style="padding: 10px; border: 1px solid var(--glass-border); color: var(--primary);" class="en-only">Our Custom Platform (Laravel/JS)</th>
+                <th style="padding: 10px; border: 1px solid var(--glass-border); color: #f59e0b;" class="ar-only">أدوات BI القياسية (مثل مقترح المنافسين)</th>
+                <th style="padding: 10px; border: 1px solid var(--glass-border); color: #f59e0b;" class="en-only">Standard BI tools (Standard Proposal)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="ar-only">تكلفة التراخيص والرسوم المتكررة</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="en-only">Licensing & Recurring Fees</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="ar-only">مجانية بالكامل (مفتوحة المصدر)، بدون أي رسوم تراخيص مستخدمين</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="en-only">100% Free (Open-source stack), zero license fees for donors/users</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="ar-only">مرتفعة جداً، تتطلب تراخيص Pro لكل مستخدم/مانح شهرياً</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="en-only">High cost, requires Pro licenses for every active viewer monthly</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="ar-only">شبكة علاقات فيزيائية تفاعلية (Dynamic Graph Physics)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="en-only">Interactive Graph Physics</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="ar-only">مدعومة بالكامل عبر Vis.js مع فيزيائية حركة نشطة، تصفية وحساب الكثافة</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="en-only">Fully integrated Vis.js engine with gravity simulation & focus mode</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="ar-only">محدودة جداً أو تتطلب مكونات إضافية مكلفة وغير مرنة</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="en-only">Very limited, static representations without custom interactive physics</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="ar-only">التعديل وإدخال البيانات المباشر (Data Write-back)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="en-only">Live Data Ingestion & Write-back</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="ar-only">مدعوم بالكامل (استمارة إدخال مباشرة، محاكي كابو للبيانات مع قفل أمان)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="en-only">Fully supported (direct UI forms, live Kobo webhook, lock gate)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="ar-only">غير ممكن مباشرة، يتطلب قواعد بيانات وسيطة أو برمجيات إضافية</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="en-only">Read-only, requires external databases/services to write back data</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="ar-only">أمان وخصوصية البيانات (GDPR & Privacies)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="en-only">Security & Data Privacy (GDPR)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="ar-only">تعتمد على إعدادات متقدمة لحماية وتشفير وحجب الهواتف والبيانات الحساسة لضمان الخصوصية</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="en-only">Dynamic masking algorithms, customizable role access, and secure filters</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="ar-only">تعتمد على إعدادات خارجية معقدة وقد تتسرب البيانات بالخطأ في التقارير</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="en-only">Difficult to enforce custom masking dynamically on exports</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="ar-only">العمل دون اتصال والتشغيل المحلي (Offline Capability)</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); font-weight: bold;" class="en-only">Offline-First Capability</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="ar-only">تعمل كأوفلاين بالكامل (كاش محلي) متوافق مع ظروف الإنترنت في اليمن</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #10b981;" class="en-only">Works entirely offline (local browser cache) suited for Yemen's infrastructure</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="ar-only">تتطلب اتصالاً سحابياً نشطاً ومستمراً بسيرفرات مايكروسوفت/تابلو</td>
+                <td style="padding: 10px; border: 1px solid var(--glass-border); color: #ef4444;" class="en-only">Fails to load entirely without active cloud connection to BI servers</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modern Project Phases Roadmap -->
+        <h4 style="font-size: 15px; margin-bottom: 20px; font-weight: bold; color: var(--accent);" class="ar-only">🗺️ الجدول الزمني وخطة تنفيذ المشروع الاستراتيجية</h4>
+        <h4 style="font-size: 15px; margin-bottom: 20px; font-weight: bold; color: var(--accent);" class="en-only">🗺️ Strategic Project Timeline & Phases Roadmap</h4>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          <div style="border-right: 3px solid var(--primary); padding-right: 15px; margin-bottom: 5px;" class="ar-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--primary);">المرحلة 1: التدشين والتحليل والمطابقة البنيوية (الأسبوع 1 - 4)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">صياغة المتمتطلبات البرمجية وتصميم واجهات الإدخال وتدفق الاستمارات وإعداد هيكل قاعدة البيانات.</p>
+          </div>
+          <div style="border-left: 3px solid var(--primary); padding-left: 15px; margin-bottom: 5px; text-align: left;" class="en-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--primary);">Phase 1: Inception, Analysis & Co-design (Weeks 1 - 4)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">Scope definition, database schema formulation, UI/UX mockups validation, and Kobo form mapping.</p>
+          </div>
+
+          <div style="border-right: 3px solid var(--accent); padding-right: 15px; margin-bottom: 5px;" class="ar-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--accent);">المرحلة 2: التطوير الخلفي وقاعدة البيانات وتكامل APIs (الأسبوع 5 - 10)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">بناء الواجهة الخلفية بـ Laravel 11، وربط قاعدة البيانات، وتكامل خطافات الويب (Webhooks) مع Kobo API.</p>
+          </div>
+          <div style="border-left: 3px solid var(--accent); padding-left: 15px; margin-bottom: 5px; text-align: left;" class="en-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--accent);">Phase 2: Backend Development, Database & API Integration (Weeks 5 - 10)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">Laravel 11 backend setup, database deployment, RESTful APIs, and Kobo Webhooks implementation.</p>
+          </div>
+
+          <div style="border-right: 3px solid var(--secondary); padding-right: 15px; margin-bottom: 5px;" class="ar-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--secondary);">المرحلة 3: لوحات التحكم التفاعلية ومحرك الذكاء الاصطناعي (الأسبوع 11 - 16)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">تطوير خرائط Leaflet المتقدمة، وبرمجة شبكات العلاقات في Vis.js، وبناء خوارزميات محرك AI وجدول المشاريع.</p>
+          </div>
+          <div style="border-left: 3px solid var(--secondary); padding-left: 15px; margin-bottom: 5px; text-align: left;" class="en-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: var(--secondary);">Phase 3: Interactive Visualizations & AI Engine (Weeks 11 - 16)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">Leaflet geoportal, Vis.js graph physics engine integration, AI matching algorithm, and Kanban boards.</p>
+          </div>
+
+          <div style="border-right: 3px solid #10b981; padding-right: 15px; margin-bottom: 5px;" class="ar-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: #10b981;">المرحلة 4: الأمان والخصوصية واختبارات القبول (الأسبوع 17 - 20)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">اختبار جودة النظام وأمانه، والامتثال لخصوصية GDPR و"مبدأ عدم إلحاق الضرر"، وحجب أرقام المسؤولين.</p>
+          </div>
+          <div style="border-left: 3px solid #10b981; padding-left: 15px; margin-bottom: 5px; text-align: left;" class="en-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: #10b981;">Phase 4: Security, QA Auditing & Acceptance Testing (Weeks 17 - 20)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">GDPR compliance audit, vulnerability scanning, load testing, and UAT (User Acceptance Testing) with coordinators.</p>
+          </div>
+
+          <div style="border-right: 3px solid #fb923c; padding-right: 15px; margin-bottom: 5px;" class="ar-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: #fb923c;">المرحلة 5: الإطلاق والتدريب والتمكين الميداني (الأسبوع 21 - 24)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">نشر النظام على خوادم آمنة، وتدريب فريق منظمة ديفرستي والشركاء، ونقل ملكية الكود المصدري بالكامل.</p>
+          </div>
+          <div style="border-left: 3px solid #fb923c; padding-left: 15px; margin-bottom: 5px; text-align: left;" class="en-only">
+            <h5 style="font-weight: bold; font-size: 13px; color: #fb923c;">Phase 5: Deployment, Local Training & Handoff (Weeks 21 - 24)</h5>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">Production launch on secure servers, capacity-building workshops for local actors, and source code handoff.</p>
           </div>
         </div>
       </div>
